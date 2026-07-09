@@ -8,57 +8,11 @@ backend:
 media_folder: "assets/images/uploads"
 public_folder: "/assets/images/uploads"
 
-locale: "fa"
-
-
 collections:
   - name: "posts"
-    label: "نوشته‌ها"
-    label_singular: "نوشته"
+    label: "Posts"
     folder: "_posts"
     create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
-    editor:
-      preview: true
-
     fields:
-      - label: "عنوان"
-        name: "title"
-        widget: "string"
-
-      - label: "تاریخ انتشار"
-        name: "date"
-        widget: "datetime"
-        format: "YYYY-MM-DD HH:mm:ss Z"
-
-      - label: "خلاصه"
-        name: "excerpt"
-        widget: "text"
-        required: false
-
-      - label: "تصویر شاخص"
-        name: "image"
-        widget: "image"
-        required: false
-
-      - label: "دسته‌بندی‌ها"
-        name: "categories"
-        widget: "list"
-        required: false
-        allow_add: true
-
-      - label: "برچسب‌ها"
-        name: "tags"
-        widget: "list"
-        required: false
-        allow_add: true
-
-      - label: "منتشر شود؟"
-        name: "published"
-        widget: "boolean"
-        default: true
-
-      - label: "محتوا"
-        name: "body"
-        widget: "markdown"
-
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Body", name: "body", widget: "markdown" }
