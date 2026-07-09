@@ -2,8 +2,10 @@
 layout: post
 title: "اولین نوشته من"
 date: 2026-07-09
-categories: blog
+categories: [blog]
+tags: [یادداشت, شروع, وبلاگ]
 ---
+
 
 سلام! این اولین نوشته من در وبلاگ GitHub Pages است.
 
