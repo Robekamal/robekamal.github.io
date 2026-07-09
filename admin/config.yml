@@ -10,7 +10,6 @@ public_folder: "/assets/images/uploads"
 
 locale: "fa"
 
-publish_mode: editorial_workflow
 
 collections:
   - name: "posts"
