@@ -2,6 +2,9 @@ backend:
   name: github
   repo: elmmdo/elmmdo.github.io
   branch: main
+  base_url: https://YOUR-RENDER-APP.onrender.com
+  auth_endpoint: auth
+
 
 media_folder: "assets/images/uploads"
 public_folder: "/assets/images/uploads"
