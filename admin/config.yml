@@ -2,8 +2,9 @@ backend:
   name: github
   repo: elmmdo/elmmdo.github.io
   branch: main
-  base_url: https://decap-oauth-provider-w5bm.onrender.com
+  base_url: https://decap-oauth.elmmdo78.workers.dev
   auth_endpoint: auth
+
 
 
 
