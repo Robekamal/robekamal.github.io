@@ -11,6 +11,9 @@ media_folder: "assets/images/uploads"
 public_folder: "/assets/images/uploads"
 
 collections:
+  # ==========================================
+  # نوشته‌ها
+  # ==========================================
   - name: "posts"
     label: "نوشته‌ها"
     label_singular: "نوشته"
@@ -114,6 +117,7 @@ collections:
         name: "image_alt"
         widget: "string"
         required: false
+        hint: "توضیح کوتاهی از تصویر برای دسترس‌پذیری و سئو وارد کنید."
 
       - label: "نوشته ویژه"
         name: "featured"
@@ -132,6 +136,9 @@ collections:
         widget: "markdown"
         required: true
 
+  # ==========================================
+  # صفحه‌های ثابت
+  # ==========================================
   - name: "pages"
     label: "صفحه‌ها"
     label_singular: "صفحه"
@@ -139,9 +146,13 @@ collections:
     delete: false
 
     files:
+      # --------------------------------------
+      # درباره
+      # --------------------------------------
       - label: "درباره"
         name: "about"
         file: "about.md"
+
         fields:
           - label: "عنوان"
             name: "title"
@@ -152,6 +163,7 @@ collections:
             name: "permalink"
             widget: "string"
             required: false
+            hint: "برای نمونه: /about/"
 
           - label: "توضیح کوتاه"
             name: "description"
@@ -162,6 +174,10 @@ collections:
             name: "image"
             widget: "image"
             required: false
+            choose_url: true
+            media_library:
+              config:
+                multiple: false
 
           - label: "نمایش در منو"
             name: "show_in_menu"
@@ -174,16 +190,22 @@ collections:
             widget: "number"
             default: 1
             value_type: "int"
+            min: 1
             required: false
 
           - label: "متن صفحه"
             name: "body"
             widget: "markdown"
             required: false
+            hint: "محتوای صفحه درباره را در این قسمت بنویسید."
 
+      # --------------------------------------
+      # بایگانی
+      # --------------------------------------
       - label: "بایگانی"
         name: "archive"
         file: "archive.md"
+
         fields:
           - label: "عنوان"
             name: "title"
@@ -194,20 +216,26 @@ collections:
             name: "permalink"
             widget: "string"
             required: false
+            hint: "برای نمونه: /archive/"
 
           - label: "توضیح کوتاه"
             name: "description"
             widget: "text"
             required: false
 
-          - label: "متن صفحه"
+          - label: "کد صفحه"
             name: "body"
-            widget: "markdown"
+            widget: "text"
             required: false
+            hint: "این قسمت شامل کد HTML و Liquid است؛ ساختار و علائم کد را تغییر ندهید."
 
+      # --------------------------------------
+      # دسته‌بندی‌ها
+      # --------------------------------------
       - label: "دسته‌بندی‌ها"
         name: "categories"
         file: "categories.md"
+
         fields:
           - label: "عنوان"
             name: "title"
@@ -218,15 +246,21 @@ collections:
             name: "permalink"
             widget: "string"
             required: false
+            hint: "برای نمونه: /categories/"
 
-          - label: "متن صفحه"
+          - label: "کد صفحه"
             name: "body"
-            widget: "markdown"
+            widget: "text"
             required: false
+            hint: "این قسمت شامل کد HTML و Liquid است؛ ساختار و علائم کد را تغییر ندهید."
 
+      # --------------------------------------
+      # برچسب‌ها
+      # --------------------------------------
       - label: "برچسب‌ها"
         name: "tags"
         file: "tags.md"
+
         fields:
           - label: "عنوان"
             name: "title"
@@ -237,15 +271,21 @@ collections:
             name: "permalink"
             widget: "string"
             required: false
+            hint: "برای نمونه: /tags/"
 
-          - label: "متن صفحه"
+          - label: "کد صفحه"
             name: "body"
-            widget: "markdown"
+            widget: "text"
             required: false
+            hint: "این قسمت شامل کد HTML و Liquid است؛ ساختار و علائم کد را تغییر ندهید."
 
+      # --------------------------------------
+      # جست‌وجو
+      # --------------------------------------
       - label: "جست‌وجو"
         name: "search"
         file: "search.md"
+
         fields:
           - label: "عنوان"
             name: "title"
@@ -256,12 +296,17 @@ collections:
             name: "permalink"
             widget: "string"
             required: false
+            hint: "برای نمونه: /search/"
 
-          - label: "متن صفحه"
+          - label: "کد صفحه"
             name: "body"
-            widget: "markdown"
+            widget: "text"
             required: false
+            hint: "این قسمت ممکن است شامل HTML، JavaScript یا Liquid باشد؛ ساختار و علائم کد را تغییر ندهید."
 
+  # ==========================================
+  # پروژه‌ها
+  # ==========================================
   - name: "projects"
     label: "پروژه‌ها"
     label_singular: "پروژه"
@@ -307,16 +352,22 @@ collections:
         name: "image"
         widget: "image"
         required: false
+        choose_url: true
+        media_library:
+          config:
+            multiple: false
 
       - label: "آدرس پروژه"
         name: "url"
         widget: "string"
         required: false
+        hint: "نشانی کامل پروژه را همراه با https:// وارد کنید."
 
       - label: "مخزن GitHub"
         name: "github"
         widget: "string"
         required: false
+        hint: "نشانی کامل مخزن GitHub را وارد کنید."
 
       - label: "فناوری‌ها"
         name: "technologies"
@@ -339,6 +390,9 @@ collections:
         widget: "markdown"
         required: false
 
+  # ==========================================
+  # تنظیمات سایت
+  # ==========================================
   - name: "settings"
     label: "تنظیمات سایت"
     label_singular: "تنظیمات"
@@ -357,48 +411,4 @@ collections:
             default: "Elmmdo"
             required: true
 
-          - label: "توضیحات سایت"
-            name: "site_description"
-            widget: "text"
-            required: false
-
-          - label: "لوگوی سایت"
-            name: "logo"
-            widget: "image"
-            required: false
-
-          - label: "تصویر آیکون سایت"
-            name: "favicon"
-            widget: "image"
-            required: false
-
-          - label: "نام نویسنده"
-            name: "author_name"
-            widget: "string"
-            default: "Elmmdo"
-            required: false
-
-          - label: "ایمیل"
-            name: "email"
-            widget: "string"
-            required: false
-
-          - label: "لینک GitHub"
-            name: "github"
-            widget: "string"
-            required: false
-
-          - label: "لینک تلگرام"
-            name: "telegram"
-            widget: "string"
-            required: false
-
-          - label: "لینک اینستاگرام"
-            name: "instagram"
-            widget: "string"
-            required: false
-
-          - label: "متن پایین سایت"
-            name: "footer_text"
-            widget: "string"
-            required: false
+          - label: "توضیحات 
