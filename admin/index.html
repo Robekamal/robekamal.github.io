@@ -2,6 +2,7 @@
 <html lang="fa" dir="rtl">
   <head>
     <meta charset="utf-8">
+
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, maximum-scale=1"
@@ -18,8 +19,8 @@
       html,
       body {
         direction: rtl;
-        margin: 0;
         min-height: 100%;
+        margin: 0;
         background: #f5f7fa;
       }
 
@@ -41,8 +42,8 @@
         line-height: 1.9;
       }
 
-      [role="button"],
-      button {
+      button,
+      [role="button"] {
         font-weight: 600;
       }
     </style>
@@ -63,6 +64,7 @@
           margin: 0 auto;
           padding: 32px;
           color: #1f2937;
+          background: #ffffff;
           font-family: Vazirmatn, Tahoma, Arial, sans-serif;
           line-height: 2;
         }
@@ -119,6 +121,14 @@
           color: #2563eb;
         }
 
+        blockquote {
+          margin: 24px 0;
+          padding: 12px 20px;
+          border-right: 4px solid #2563eb;
+          background: #f8fafc;
+          color: #475569;
+        }
+
         pre {
           overflow-x: auto;
           direction: ltr;
@@ -144,13 +154,20 @@
         return createElement(
           "article",
           null,
+
           data.get("image")
             ? createElement("img", {
                 src: data.get("image"),
                 alt: data.get("image_alt") || data.get("title") || "",
               })
             : null,
-          createElement("h1", null, data.get("title") || "عنوان نوشته"),
+
+          createElement(
+            "h1",
+            null,
+            data.get("title") || "عنوان نوشته"
+          ),
+
           data.get("description")
             ? createElement(
                 "p",
@@ -158,20 +175,29 @@
                 data.get("description")
               )
             : null,
+
           createElement(
             "div",
             { className: "meta" },
+
             data.get("category")
               ? createElement("span", null, data.get("category"))
               : null,
+
             data.get("author")
               ? createElement("span", null, data.get("author"))
               : null,
+
             data.get("date")
               ? createElement("span", null, data.get("date"))
               : null
           ),
-          createElement("div", { className: "content" }, widgetFor("body"))
+
+          createElement(
+            "div",
+            { className: "content" },
+            widgetFor("body")
+          )
         );
       }
 
@@ -181,13 +207,20 @@
         return createElement(
           "article",
           null,
+
           data.get("image")
             ? createElement("img", {
                 src: data.get("image"),
                 alt: data.get("title") || "",
               })
             : null,
-          createElement("h1", null, data.get("title") || "عنوان صفحه"),
+
+          createElement(
+            "h1",
+            null,
+            data.get("title") || "عنوان صفحه"
+          ),
+
           data.get("description")
             ? createElement(
                 "p",
@@ -195,8 +228,12 @@
                 data.get("description")
               )
             : null,
-          createElement("div", { class = entry.get("data");
-        const technologiesbody"))
+
+          createElement(
+            "div",
+            { className: "content" },
+            widgetFor("body")
+          )
         );
       }
 
@@ -207,13 +244,20 @@
         return createElement(
           "article",
           null,
+
           data.get("image")
             ? createElement("img", {
                 src: data.get("image"),
                 alt: data.get("title") || "",
               })
             : null,
-          createElement("h1", null, data.get("title") || "عنوان پروژه"),
+
+          createElement(
+            "h1",
+            null,
+            data.get("title") || "عنوان پروژه"
+          ),
+
           data.get("description")
             ? createElement(
                 "p",
@@ -221,18 +265,28 @@
                 data.get("description")
               )
             : null,
+
           technologies && technologies.size
             ? createElement(
                 "div",
                 { className: "meta" },
                 technologies
                   .toArray()
-                  .map((technology) =>
-                    createElement("span", { key: technology }, technology)
-                  )
+                  .map(function (technology, index) {
+                    return createElement(
+                      "span",
+                      { key: technology + "-" + index },
+                      technology
+                    );
+                  })
               )
             : null,
-          createElement("div", { className: "content" }, widgetFor("body"))
+
+          createElement(
+            "div",
+            { className: "content" },
+            widgetFor("body")
+          )
         );
       }
 
