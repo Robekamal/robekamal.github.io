@@ -411,4 +411,60 @@ collections:
             default: "Elmmdo"
             required: true
 
-          - label: "توضیحات 
+          - label: "توضیحات سایت"
+            name: "site_description"
+            widget: "text"
+            required: false
+
+          - label: "لوگوی سایت"
+            name: "logo"
+            widget: "image"
+            required: false
+            choose_url: true
+            media_library:
+              config:
+                multiple: false
+
+          - label: "تصویر آیکون سایت"
+            name: "favicon"
+            widget: "image"
+            required: false
+            choose_url: true
+            media_library:
+              config:
+                multiple: false
+
+          - label: "نام نویسنده"
+            name: "author_name"
+            widget: "string"
+            default: "Elmmdo"
+            required: false
+
+          - label: "ایمیل"
+            name: "email"
+            widget: "string"
+            required: false
+            hint: "برای نمونه: name@example.com"
+
+          - label: "لینک GitHub"
+            name: "github"
+            widget: "string"
+            required: false
+            hint: "نشانی کامل پروفایل GitHub را وارد کنید."
+
+          - label: "لینک تلگرام"
+            name: "telegram"
+            widget: "string"
+            required: false
+            hint: "نشانی کامل حساب یا کانال تلگرام را وارد کنید."
+
+          - label: "لینک اینستاگرام"
+            name: "instagram"
+            widget: "string"
+            required: false
+            hint: "نشانی کامل صفحه اینستاگرام را وارد کنید."
+
+          - label: "متن پایین سایت"
+            name: "footer_text"
+            widget: "string"
+            required: false
