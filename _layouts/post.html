@@ -3,6 +3,10 @@ layout: default
 ---
 
 <article class="post">
+  {% if page.image %}
+  <img src="{{ page.image | relative_url }}" alt="{{ page.title }}" class="post-cover">
+{% endif %}
+
   <header class="post-header">
     <h1>{{ page.title }}</h1>
 
