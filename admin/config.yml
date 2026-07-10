@@ -1,3 +1,7 @@
+media_folder: "assets/images/uploads"
+public_folder: "/assets/images/uploads"
+
+
 backend:
   name: github
   repo: elmmdo/elmmdo.github.io
