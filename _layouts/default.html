@@ -1,426 +1,119 @@
 <!doctype html>
 <html lang="{{ site.lang | default: 'fa' }}" dir="rtl">
-<head>
-  <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>
+      {% if page.title %}
+        {{ page.title }} | {{ site.title }}
+      {% else %}
+        {{ site.title }}
+      {% endif %}
+    </title>
 
-  <meta name="theme-color" content="#6d5dfc">
+    <meta name="description" content="{{ page.description | default: site.description | strip_html | normalize_whitespace | escape }}">
 
-  <title>
-    {% if page.title and page.title != "خانه" %}
-      {{ page.title }} | {{ site.title }}
-    {% else %}
-      {{ site.title }}
+    <link rel="canonical" href="{{ page.url | absolute_url }}">
+
+    <meta property="og:locale" content="fa_IR">
+    <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
+    <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta property="og:description" content="{{ page.description | default: site.description | strip_html | normalize_whitespace | escape }}">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
+    <meta property="og:site_name" content="{{ site.title }}">
+
+    {% if page.image %}
+      <meta property="og:image" content="{{ page.image | absolute_url }}">
+      <meta name="twitter:image" content="{{ page.image | absolute_url }}">
     {% endif %}
-  </title>
 
-  <meta
-    name="description"
-    content="{{ page.description | default: page.excerpt | default: site.description | strip_html | strip_newlines | truncate: 160 | escape }}"
-  >
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta name="twitter:description" content="{{ page.description | default: site.description | strip_html | normalize_whitespace | escape }}">
 
-  <link
-    rel="canonical"
-    href="{{ page.url | absolute_url }}"
-  >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <meta property="og:locale" content="fa_IR">
-  <meta property="og:site_name" content="{{ site.title | escape }}">
-  <meta property="og:title" content="{{ page.title | default: site.title | escape }}">
-  <meta
-    property="og:description"
-    content="{{ page.description | default: page.excerpt | default: site.description | strip_html | strip_newlines | truncate: 160 | escape }}"
-  >
-  <meta property="og:url" content="{{ page.url | absolute_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 
-  {% if page.image %}
-    <meta property="og:image" content="{{ page.image | absolute_url }}">
-  {% endif %}
+    {% feed_meta %}
+    {% seo title=false %}
+  </head>
 
-  {% if page.layout == "post" %}
-    <meta property="og:type" content="article">
-  {% else %}
-    <meta property="og:type" content="website">
-  {% endif %}
+  <body>
+    <div class="reading-progress" data-reading-progress></div>
 
-  <meta name="twitter:card" content="summary_large_image">
+    <div class="site-shell">
+      <header class="site-header">
+        <div class="container">
+          <div class="topbar">
+            <div class="topbar__social">
+              <a href="#" aria-label="اینستاگرام">IG</a>
+              <a href="#" aria-label="تلگرام">TG</a>
+              <a href="#" aria-label="ایکس">X</a>
+            </div>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <a class="site-brand" href="{{ '/' | relative_url }}">
+              <span class="site-brand__eyebrow">Persian Journal</span>
+              <span class="site-brand__name">{{ site.title }}</span>
+            </a>
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet"
-  >
+            <div class="topbar__actions">
+              <button class="icon-button" type="button" data-theme-toggle aria-label="تغییر حالت روشن و تاریک">
+                <span aria-hidden="true">☾</span>
+              </button>
 
-  <script>
-    (function () {
-      try {
-        const savedTheme = localStorage.getItem("blog-theme");
-        const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        const theme = savedTheme || (systemDark ? "dark" : "light");
+              <a class="subscribe-button" href="{{ '/about/' | relative_url }}">عضویت</a>
 
-        document.documentElement.setAttribute("data-theme", theme);
-      } catch (error) {
-        document.documentElement.setAttribute("data-theme", "light");
-      }
-    })();
-  </script>
+              <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-label="باز کردن منو">
+                <span></span>
+                <span></span>
+                <span></span>
+              </button>
+            </div>
+          </div>
 
-  <link
-    rel="stylesheet"
-    href="{{ '/assets/css/style.css' | relative_url }}"
-  >
-</head>
+          <nav class="site-nav" data-site-nav aria-label="منوی اصلی">
+            <a href="{{ '/' | relative_url }}">خانه</a>
+            <a href="{{ '/archive/' | relative_url }}">آرشیو</a>
+            <a href="{{ '/categories/' | relative_url }}">دسته‌بندی‌ها</a>
+            <a href="{{ '/tags/' | relative_url }}">برچسب‌ها</a>
+            <a href="{{ '/about/' | relative_url }}">درباره من</a>
+          </nav>
+        </div>
+      </header>
 
-<body>
-  <a class="skip-link" href="#main-content">
-    رفتن به محتوای اصلی
-  </a>
+      <main class="site-main">
+        {{ content }}
+      </main>
 
-  <div class="reading-progress" aria-hidden="true">
-    <span id="reading-progress-bar"></span>
-  </div>
+      <footer class="site-footer">
+        <div class="container">
+          <div class="site-footer__inner">
+            <a class="site-footer__brand" href="{{ '/' | relative_url }}">{{ site.title }}</a>
 
-  <header class="site-header" id="site-header">
-    <div class="container nav">
-      <a
-        class="brand"
-        href="{{ '/' | relative_url }}"
-        aria-label="صفحه اصلی {{ site.title }}"
-      >
-        <span class="brand-mark" aria-hidden="true">ن</span>
+            <p>
+              {{ site.description | default: 'وبلاگ فارسی با طراحی مجله‌ای، مدرن و سریع.' }}
+            </p>
 
-        <span class="brand-content">
-          <strong>{{ site.title }}</strong>
-          <small>یادداشت‌ها و پژوهش‌ها</small>
-        </span>
-      </a>
+            <div class="site-footer__links">
+              <a href="{{ '/' | relative_url }}">خانه</a>
+              <a href="{{ '/archive/' | relative_url }}">آرشیو</a>
+              <a href="{{ '/categories/' | relative_url }}">دسته‌بندی‌ها</a>
+              <a href="{{ '/about/' | relative_url }}">درباره من</a>
+            </div>
 
-      <button
-        class="menu-toggle"
-        id="menu-toggle"
-        type="button"
-        aria-label="باز کردن منو"
-        aria-expanded="false"
-        aria-controls="site-nav"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-
-      <nav class="site-nav" id="site-nav" aria-label="منوی اصلی">
-        <a
-          href="{{ '/' | relative_url }}"
-          {% if page.url == "/" %}class="active"{% endif %}
-        >
-          خانه
-        </a>
-
-        <a
-          href="{{ '/archive/' | relative_url }}"
-          {% if page.url contains "/archive" %}class="active"{% endif %}
-        >
-          آرشیو
-        </a>
-
-        <a
-          href="{{ '/categories/' | relative_url }}"
-          {% if page.url contains "/categories" %}class="active"{% endif %}
-        >
-          موضوعات
-        </a>
-
-        <a
-          href="{{ '/tags/' | relative_url }}"
-          {% if page.url contains "/tags" %}class="active"{% endif %}
-        >
-          برچسب‌ها
-        </a>
-
-        <a
-          href="{{ '/search/' | relative_url }}"
-          {% if page.url contains "/search" %}class="active"{% endif %}
-        >
-          جست‌وجو
-        </a>
-
-        <a
-          href="{{ '/about/' | relative_url }}"
-          {% if page.url contains "/about" %}class="active"{% endif %}
-        >
-          درباره
-        </a>
-      </nav>
-
-      <div class="nav-actions">
-        <a
-          class="icon-button search-button"
-          href="{{ '/search/' | relative_url }}"
-          aria-label="جست‌وجو"
-          title="جست‌وجو"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            width="20"
-            height="20"
-            aria-hidden="true"
-          >
-            <circle cx="11" cy="11" r="7"></circle>
-            <path d="m20 20-4-4"></path>
-          </svg>
-        </a>
-
-        <button
-          class="icon-button theme-toggle"
-          id="theme-toggle"
-          type="button"
-          aria-label="تغییر حالت روشن و تاریک"
-          title="تغییر پوسته"
-        >
-          <svg
-            class="sun-icon"
-            viewBox="0 0 24 24"
-            width="20"
-            height="20"
-            aria-hidden="true"
-          >
-            <circle cx="12" cy="12" r="4"></circle>
-            <path d="M12 2v2"></path>
-            <path d="M12 20v2"></path>
-            <path d="m4.93 4.93 1.42 1.42"></path>
-            <path d="m17.66 17.66 1.41 1.41"></path>
-            <path d="M2 12h2"></path>
-            <path d="M20 12h2"></path>
-            <path d="m6.34 17.66-1.41 1.41"></path>
-            <path d="m19.07 4.93-1.41 1.42"></path>
-          </svg>
-
-          <svg
-            class="moon-icon"
-            viewBox="0 0 24 24"
-            width="20"
-            height="20"
-            aria-hidden="true"
-          >
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <main
-    class="container site-main"
-    id="main-content"
-    tabindex="-1"
-  >
-    {{ content }}
-  </main>
-
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div class="footer-about">
-        <a class="footer-brand" href="{{ '/' | relative_url }}">
-          <span class="brand-mark" aria-hidden="true">ن</span>
-          <strong>{{ site.title }}</strong>
-        </a>
-
-        <p>
-          {{ site.description }}
-        </p>
-      </div>
-
-      <div class="footer-links">
-        <strong>دسترسی سریع</strong>
-
-        <a href="{{ '/' | relative_url }}">خانه</a>
-        <a href="{{ '/archive/' | relative_url }}">آرشیو نوشته‌ها</a>
-        <a href="{{ '/categories/' | relative_url }}">موضوعات</a>
-        <a href="{{ '/about/' | relative_url }}">درباره من</a>
-      </div>
-
-      <div class="footer-links">
-        <strong>مطالب</strong>
-
-        <a href="{{ '/tags/' | relative_url }}">برچسب‌ها</a>
-        <a href="{{ '/search/' | relative_url }}">جست‌وجو</a>
-        <a href="{{ '/projects/' | relative_url }}">پروژه‌ها</a>
-      </div>
+            <p class="site-footer__copy">
+              © {{ site.time | date: "%Y" }} {{ site.title }}. همه حقوق محفوظ است.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
 
-    <div class="container footer-bottom">
-      <p>
-        © {{ site.time | date: "%Y" }} {{ site.title }}؛ همه حقوق محفوظ است.
-      </p>
-
-      <button class="back-to-top" id="back-to-top" type="button">
-        بازگشت به بالا
-        <span aria-hidden="true">↑</span>
-      </button>
-    </div>
-  </footer>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const root = document.documentElement;
-      const themeToggle = document.getElementById("theme-toggle");
-      const menuToggle = document.getElementById("menu-toggle");
-      const siteNav = document.getElementById("site-nav");
-      const backToTop = document.getElementById("back-to-top");
-      const progressBar = document.getElementById("reading-progress-bar");
-      const postContent = document.querySelector(".post-content");
-
-      function updateThemeLabel() {
-        if (!themeToggle) return;
-
-        const theme = root.getAttribute("data-theme");
-        const label =
-          theme === "dark"
-            ? "فعال‌کردن حالت روشن"
-            : "فعال‌کردن حالت تاریک";
-
-        themeToggle.setAttribute("aria-label", label);
-        themeToggle.setAttribute("title", label);
-      }
-
-      updateThemeLabel();
-
-      if (themeToggle) {
-        themeToggle.addEventListener("click", function () {
-          const currentTheme = root.getAttribute("data-theme");
-          const nextTheme = currentTheme === "dark" ? "light" : "dark";
-
-          root.setAttribute("data-theme", nextTheme);
-
-          try {
-            localStorage.setItem("blog-theme", nextTheme);
-          } catch (error) {
-            /* ذخیره‌سازی محلی در دسترس نیست */
-          }
-
-          updateThemeLabel();
-        });
-      }
-
-      if (menuToggle && siteNav) {
-        menuToggle.addEventListener("click", function () {
-          const isOpen = siteNav.classList.toggle("is-open");
-
-          menuToggle.classList.toggle("is-open", isOpen);
-          menuToggle.setAttribute("aria-expanded", String(isOpen));
-          document.body.classList.toggle("menu-open", isOpen);
-        });
-
-        siteNav.querySelectorAll("a").forEach(function (link) {
-          link.addEventListener("click", function () {
-            siteNav.classList.remove("is-open");
-            menuToggle.classList.remove("is-open");
-            menuToggle.setAttribute("aria-expanded", "false");
-            document.body.classList.remove("menu-open");
-          });
-        });
-      }
-
-      if (backToTop) {
-        backToTop.addEventListener("click", function () {
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-          });
-        });
-      }
-
-      function updateReadingProgress() {
-        if (!progressBar || !postContent) return;
-
-        const articleTop =
-          postContent.getBoundingClientRect().top + window.scrollY;
-
-        const articleHeight = postContent.offsetHeight;
-        const viewportHeight = window.innerHeight;
-        const scrollPosition = window.scrollY;
-
-        const availableDistance = Math.max(
-          articleHeight - viewportHeight,
-          1
-        );
-
-        const progress =
-          ((scrollPosition - articleTop + 120) / availableDistance) * 100;
-
-        const safeProgress = Math.min(100, Math.max(0, progress));
-
-        progressBar.style.width = safeProgress + "%";
-      }
-
-      if (postContent) {
-        window.addEventListener("scroll", updateReadingProgress, {
-          passive: true
-        });
-
-        window.addEventListener("resize", updateReadingProgress);
-        updateReadingProgress();
-      }
-
-      document.querySelectorAll(".copy-link-button").forEach(function (button) {
-        button.addEventListener("click", async function () {
-          const originalText = button.innerHTML;
-
-          try {
-            await navigator.clipboard.writeText(window.location.href);
-            button.textContent = "لینک کپی شد ✓";
-          } catch (error) {
-            const temporaryInput = document.createElement("input");
-            temporaryInput.value = window.location.href;
-            document.body.appendChild(temporaryInput);
-            temporaryInput.select();
-            document.execCommand("copy");
-            temporaryInput.remove();
-            button.textContent = "لینک کپی شد ✓";
-          }
-
-          setTimeout(function () {
-            button.innerHTML = originalText;
-          }, 2000);
-        });
-      });
-
-      const toc = document.getElementById("table-of-contents");
-
-      if (toc && postContent) {
-        const headings = postContent.querySelectorAll("h2, h3");
-
-        if (headings.length === 0) {
-          const tocWrapper = toc.closest(".post-toc");
-
-          if (tocWrapper) {
-            tocWrapper.style.display = "none";
-          }
-        } else {
-          headings.forEach(function (heading, index) {
-            if (!heading.id) {
-              heading.id = "heading-" + (index + 1);
-            }
-
-            const link = document.createElement("a");
-            link.href = "#" + heading.id;
-            link.textContent = heading.textContent;
-
-            if (heading.tagName.toLowerCase() === "h3") {
-              link.classList.add("toc-subitem");
-            }
-
-            toc.appendChild(link);
-          });
-        }
-      }
-    });
-  </script>
-  <script src="{{ '/assets/js/main.js' | relative_url }}" defer></script>
-
-</body>
+    <script src="{{ '/assets/js/main.js' | relative_url }}" defer></script>
+  </body>
 </html>
