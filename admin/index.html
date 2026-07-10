@@ -16,7 +16,7 @@
     >
 
     <style>
-      html,
+            html,
       body {
         direction: rtl;
         min-height: 100%;
@@ -33,7 +33,8 @@
       }
 
       input,
-      textarea {
+      textarea,
+      select {
         direction: rtl;
         text-align: right;
       }
@@ -46,43 +47,65 @@
       [role="button"] {
         font-weight: 600;
       }
-            [class*="AppHeader"],
+
+      [class*="AppHeader"],
       [class*="Sidebar"],
       [class*="CollectionTop"],
+      [class*="CollectionControls"],
+      [class*="EntriesCollection"],
+      [class*="EntryListing"],
       [class*="ControlPane"],
       [class*="EditorContainer"],
-      [class*="ToolbarContainer"] {
-        direction: rtl;
-      }
-
-      [class*="Sidebar"] {
-        text-align: right;
-      }
-
-      [class*="Sidebar"] input {
-        text-align: right;
-      }
-
-      [class*="CollectionTop"] {
-        flex-direction: row-reverse;
-      }
-
-      [class*="CollectionTop"] button {
-        margin-right: 0 !important;
-      }
-
-      [class*="ListCard"],
-      [class*="ListItem"],
-      [class*="EntryListing"],
-      [class*="ControlPane"] {
-        text-align: right;
-      }
-
+      [class*="ToolbarContainer"],
       [class*="Dropdown"],
       [class*="Menu"],
       [class*="Popover"] {
         direction: rtl;
         text-align: right;
+      }
+
+      [class*="Sidebar"] {
+        position: static !important;
+        z-index: auto !important;
+        min-width: 300px !important;
+        max-width: 340px !important;
+        text-align: right;
+      }
+
+      [class*="Sidebar"] input {
+        direction: rtl;
+        text-align: right;
+      }
+
+      [class*="CollectionTop"],
+      [class*="CollectionControls"],
+      [class*="EntriesCollection"],
+      [class*="Entries"] {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+      }
+
+      [class*="CollectionTop"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+        align-items: flex-start;
+      }
+
+      [class*="CollectionTop"] h1,
+      [class*="CollectionTop"] h2,
+      [class*="CollectionTop"] p {
+        text-align: right !important;
+      }
+
+      [class*="ListCard"],
+      [class*="ListItem"],
+      [class*="EntryListing"] {
+        direction: rtl;
+        text-align: right;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
       }
 
       [class*="Search"] input,
@@ -96,48 +119,14 @@
         margin-left: 8px;
         margin-right: 0;
       }
-      main,
-      [class*="AppMain"],
-      [class*="CollectionMain"],
-      [class*="CollectionContainer"] {
-        direction: rtl;
-      }
-
-      [class*="Sidebar"] {
-        position: relative !important;
-        z-index: 10 !important;
-        min-width: 300px !important;
-      }
-
-      [class*="CollectionTop"],
-      [class*="CollectionControls"],
-      [class*="EntriesCollection"],
-      [class*="Entries"] {
-        margin-right: 320px !important;
-      }
-
-      [class*="CollectionTop"] {
-        width: auto !important;
-      }
-
-      [class*="ListCard"],
-      [class*="ListItem"] {
-        direction: rtl;
-        text-align: right;
-      }
 
       @media (max-width: 900px) {
-        [class*="CollectionTop"],
-        [class*="CollectionControls"],
-        [class*="EntriesCollection"],
-        [class*="Entries"] {
-          margin-right: 0 !important;
-        }
-
         [class*="Sidebar"] {
           min-width: auto !important;
+          max-width: none !important;
         }
       }
+
 
     </style>
   </head>
