@@ -96,6 +96,48 @@
         margin-left: 8px;
         margin-right: 0;
       }
+      main,
+      [class*="AppMain"],
+      [class*="CollectionMain"],
+      [class*="CollectionContainer"] {
+        direction: rtl;
+      }
+
+      [class*="Sidebar"] {
+        position: relative !important;
+        z-index: 10 !important;
+        min-width: 300px !important;
+      }
+
+      [class*="CollectionTop"],
+      [class*="CollectionControls"],
+      [class*="EntriesCollection"],
+      [class*="Entries"] {
+        margin-right: 320px !important;
+      }
+
+      [class*="CollectionTop"] {
+        width: auto !important;
+      }
+
+      [class*="ListCard"],
+      [class*="ListItem"] {
+        direction: rtl;
+        text-align: right;
+      }
+
+      @media (max-width: 900px) {
+        [class*="CollectionTop"],
+        [class*="CollectionControls"],
+        [class*="EntriesCollection"],
+        [class*="Entries"] {
+          margin-right: 0 !important;
+        }
+
+        [class*="Sidebar"] {
+          min-width: auto !important;
+        }
+      }
 
     </style>
   </head>
