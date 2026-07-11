@@ -2,232 +2,74 @@
 layout: default
 ---
 
-{% assign words = content | strip_html | number_of_words %}
-{% assign reading_time = words | divided_by: 180 | plus: 1 %}
-
-<article class="single-post">
-  <header class="post-hero">
-    <div class="container">
-      <div class="post-hero__inner" data-reveal>
-        {% if page.categories and page.categories.size > 0 %}
-          <div class="post-hero__categories">
-            {% for category in page.categories %}
-              <a href="{{ '/categories/' | append: category | slugify | append: '/' | relative_url }}">
-                {{ category }}
-              </a>
-            {% endfor %}
-          </div>
-        {% endif %}
-
-        <h1>{{ page.title }}</h1>
-
-        {% if page.description %}
-          <p class="post-hero__description">{{ page.description }}</p>
-        {% elsif page.excerpt %}
-          <p class="post-hero__description">
-            {{ page.excerpt | strip_html | strip_newlines }}
-          </p>
-        {% endif %}
-
-        <div class="post-hero__meta">
-          <div class="post-author">
-            {% if site.author.avatar %}
-              <img
-                src="{{ site.author.avatar | relative_url }}"
-                alt="{{ site.author.name | default: site.title | escape }}"
-                width="48"
-                height="48"
-              >
-            {% else %}
-              <span class="post-author__avatar">
-                {{ site.author.name | default: site.title | slice: 0 }}
-              </span>
-            {% endif %}
-
-            <div>
-              <strong>{{ site.author.name | default: site.title }}</strong>
-
-              <span>
-                <time datetime="{{ page.date | date_to_xmlschema }}">
-                  {{ page.date | date: "%Y/%m/%d" }}
-                </time>
-              </span>
-            </div>
-          </div>
-
-          <div class="post-reading-meta">
-            <span>{{ reading_time }} دقیقه مطالعه</span>
-            <span>{{ words }} واژه</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  {% if page.image %}
-    <div class="post-cover container" data-reveal>
-      <figure>
-        <img
-          src="{{ page.image | relative_url }}"
-          alt="{{ page.image_alt | default: page.title | escape }}"
-          loading="eager"
-        >
-
-        {% if page.image_caption %}
-          <figcaption>{{ page.image_caption }}</figcaption>
-        {% endif %}
-      </figure>
-    </div>
-  {% endif %}
-
-  <div class="post-layout container">
-    <aside class="post-sidebar post-sidebar--right" data-reveal>
-      <div class="post-sidebar__sticky">
-        <div class="post-share">
-          <span class="post-sidebar__title">اشتراک‌گذاری</span>
-
-          <button
-            class="post-share__button"
-            type="button"
-            data-copy-link
-            aria-label="کپی‌کردن پیوند مقاله"
-          >
-            <span aria-hidden="true">⧉</span>
-            <span data-copy-label>کپی لینک</span>
-          </button>
-
-          <a
-            class="post-share__button"
-            href="https://twitter.com/intent/tweet?text={{ page.title | uri_escape }}&url={{ page.url | absolute_url | uri_escape }}"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span aria-hidden="true">𝕏</span>
-            <span>اشتراک در X</span>
-          </a>
-
-          <a
-            class="post-share__button"
-            href="https://www.linkedin.com/sharing/share-offsite/?url={{ page.url | absolute_url | uri_escape }}"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span aria-hidden="true">in</span>
-            <span>لینکدین</span>
-          </a>
-        </div>
-      </div>
-    </aside>
-
-    <main class="post-main">
-      <div class="post-content" data-post-content data-reveal>
-        {{ content }}
-      </div>
-
-      {% if page.tags and page.tags.size > 0 %}
-        <footer class="post-tags">
-          <span class="post-tags__title">برچسب‌ها</span>
-
-          <div class="post-tags__list">
-            {% for tag in page.tags %}
-              <a href="{{ '/tags/' | append: tag | slugify | append: '/' | relative_url }}">
-                #{{ tag }}
-              </a>
-            {% endfor %}
-          </div>
-        </footer>
+<main class="single-post-page">
+  <article class="single-post">
+    <header class="single-post-header">
+      {% if page.categories and page.categories.size > 0 %}
+        <a class="single-post-category" href="{{ '/categories/' | relative_url }}">
+          {{ page.categories[0] }}
+        </a>
       {% endif %}
 
-      <section class="post-author-card" data-reveal>
-        {% if site.author.avatar %}
-          <img
-            src="{{ site.author.avatar | relative_url }}"
-            alt="{{ site.author.name | default: site.title | escape }}"
-            loading="lazy"
-          >
-        {% else %}
-          <span class="post-author-card__avatar">
-            {{ site.author.name | default: site.title | slice: 0 }}
-          </span>
+      <h1 class="single-post-title">{{ page.title }}</h1>
+
+      <div class="single-post-meta">
+        {% if page.author %}
+          <span>{{ page.author }}</span>
+          <span aria-hidden="true">•</span>
         {% endif %}
 
-        <div>
-          <span class="section-kicker">دربارهٔ نویسنده</span>
-          <h2>{{ site.author.name | default: site.title }}</h2>
+        {% if page.date %}
+          <time datetime="{{ page.date | date_to_xmlschema }}">
+            {{ page.date | date: "%Y/%m/%d" }}
+          </time>
+          <span aria-hidden="true">•</span>
+        {% endif %}
 
-          <p>
-            {{ site.author.bio
-               | default: site.description
-               | default: "نویسنده و گردانندهٔ این وبلاگ." }}
-          </p>
-
-          {% if site.author.url %}
-            <a class="read-more" href="{{ site.author.url }}">
-              بیشتر بدانید
-              <span aria-hidden="true">←</span>
-            </a>
+        <span>
+          {% assign words = content | strip_html | number_of_words %}
+          {% assign minutes = words | divided_by: 200 %}
+          {% if minutes < 1 %}
+            کمتر از ۱ دقیقه مطالعه
           {% else %}
-            <a class="read-more" href="{{ '/about/' | relative_url }}">
-              بیشتر بدانید
-              <span aria-hidden="true">←</span>
-            </a>
+            {{ minutes }} دقیقه مطالعه
           {% endif %}
-        </div>
-      </section>
-    </main>
-
-    <aside class="post-sidebar post-sidebar--left" data-reveal>
-      <div class="post-sidebar__sticky">
-        <div class="post-toc">
-          <span class="post-sidebar__title">در این نوشته</span>
-
-          <nav
-            class="post-toc__navigation"
-            data-toc
-            aria-label="فهرست مطالب"
-          >
-            <p class="post-toc__empty">فهرست مطالب در حال آماده‌سازی است.</p>
-          </nav>
-        </div>
-
-        <div class="post-progress-info">
-          <span>پیشرفت مطالعه</span>
-
-          <div class="post-progress-info__track">
-            <span data-article-progress></span>
-          </div>
-
-          <strong data-article-progress-label>۰٪</strong>
-        </div>
+        </span>
       </div>
-    </aside>
-  </div>
+    </header>
 
-  {% if page.previous or page.next %}
-    <nav class="post-navigation container" aria-label="پیمایش نوشته‌ها">
-      {% if page.previous %}
-        <a
-          class="post-navigation__item post-navigation__item--previous"
-          href="{{ page.previous.url | relative_url }}"
-          data-reveal
-        >
-          <span>نوشتهٔ قبلی</span>
-          <strong>{{ page.previous.title }}</strong>
-        </a>
-      {% else %}
-        <span></span>
+    {% if page.image %}
+      <figure class="single-post-cover">
+        <img src="{{ page.image | relative_url }}" alt="{{ page.title | escape }}">
+      </figure>
+    {% endif %}
+
+    <div class="single-post-content">
+      {{ content }}
+    </div>
+
+    <footer class="single-post-footer">
+      {% if page.tags and page.tags.size > 0 %}
+        <div class="single-post-tags">
+          {% for tag in page.tags %}
+            <a href="{{ '/tags/' | relative_url }}">#{{ tag }}</a>
+          {% endfor %}
+        </div>
       {% endif %}
 
-      {% if page.next %}
-        <a
-          class="post-navigation__item post-navigation__item--next"
-          href="{{ page.next.url | relative_url }}"
-          data-reveal
-        >
-          <span>نوشتهٔ بعدی</span>
-          <strong>{{ page.next.title }}</strong>
-        </a>
-      {% endif %}
-    </nav>
-  {% endif %}
-</article>
+      <a class="back-to-articles" href="{{ '/' | relative_url }}">
+        بازگشت به صفحه اصلی
+      </a>
+    </footer>
+  </article>
+</main>
+
+<button
+  id="backToTop"
+  class="back-to-top"
+  type="button"
+  aria-label="بازگشت به بالای صفحه"
+  title="بازگشت به بالا"
+>
+  ↑
+</button>
