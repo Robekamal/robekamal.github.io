@@ -1,6 +1,6 @@
 ---
 layout: post
-title: اولین نوشته من
+title: خطای شناختی ذهن‌خوانی
 date: 2026-07-11T17:07
 author: امیر بصری
 category: عمومی
