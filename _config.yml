@@ -29,6 +29,9 @@ defaults:
 
 markdown: kramdown
 
+future: false
+show_drafts: false
+
 kramdown:
   input: GFM
   syntax_highlighter: rouge
