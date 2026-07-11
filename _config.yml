@@ -1,11 +1,15 @@
 title: "نام وبلاگ من"
 description: "یادداشت‌ها، پژوهش‌ها و نوشته‌های شخصی من"
+
 lang: "fa"
-dir: "rtl"
+direction: "rtl"
 timezone: "Asia/Tehran"
 
 url: "https://elmmdo.github.io"
 baseurl: ""
+
+instagram_url: "https://instagram.com/YOUR_USERNAME"
+telegram_url: "https://t.me/YOUR_USERNAME"
 
 permalink: /blog/:year/:month/:day/:title/
 
@@ -26,6 +30,10 @@ defaults:
       type: "projects"
     values:
       layout: "default"
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
 
 markdown: kramdown
 
