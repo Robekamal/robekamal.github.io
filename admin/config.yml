@@ -38,17 +38,12 @@ collections:
         field: "featured"
         pattern: "true"
 
-      - label: "پیش‌نویس‌ها"
-        field: "published"
-        pattern: "false"
-
       - label: "منتشر شود"
         name: "published"
         widget: "boolean"
         default: true
         required: true
         hint: "اگر غیرفعال باشد، نوشته ذخیره می‌شود اما Jekyll آن را در سایت منتشر نمی‌کند."
-
 
     view_groups:
       - label: "دسته‌بندی"
