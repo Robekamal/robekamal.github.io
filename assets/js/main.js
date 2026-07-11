@@ -1,16 +1,21 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const body = document.body;
-  const siteHeader = document.querySelector(".site-header");
-  const readingProgress = document.getElementById("readingProgress");
+"use strict";
 
-  const overlay =
-    document.getElementById("pageOverlay") ||
-    document.getElementById("overlay");
+document.addEventListener("DOMContentLoaded", () => {
+  /* =======================================================
+     Element references
+     ======================================================= */
+
+  const root = document.documentElement;
+  const body = document.body;
+
+  const siteHeader = document.getElementById("siteHeader");
+
+  const themeButton = document.getElementById("themeButton");
+  const themeIcon = document.getElementById("themeIcon");
 
   const menuButton = document.getElementById("menuButton");
   const closeMenuButton = document.getElementById("closeMenuButton");
   const mobileMenu = document.getElementById("mobileMenu");
-  const mobileMenuLinks = document.querySelectorAll(".mobile-nav a");
 
   const searchButton = document.getElementById("searchButton");
   const closeSearchButton = document.getElementById("closeSearchButton");
@@ -18,392 +23,516 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchForm = document.getElementById("searchForm");
   const searchInput = document.getElementById("searchInput");
   const searchMessage = document.getElementById("searchMessage");
-  const searchTags = document.querySelectorAll(
-    "[data-search-term], .search-tags button, .search-tags a"
-  );
+  const searchResults = document.getElementById("searchResults");
+  const searchTagButtons = document.querySelectorAll("[data-search-term]");
 
-  const themeButton = document.getElementById("themeButton");
-  const themeIcon = document.getElementById("themeIcon");
-
-  const articleList = document.querySelector(".article-list");
-  const loadMoreButton = document.getElementById("loadMoreButton");
-  const filterButtons = document.querySelectorAll("[data-filter]");
-  const articlesEmptyState =
-    document.getElementById("articlesEmptyState");
+  const pageOverlay = document.getElementById("pageOverlay");
+  const readingProgress = document.getElementById("readingProgress");
+  const postContent = document.querySelector(".post-content");
 
   const backToTop = document.getElementById("backToTop");
   const currentYear = document.getElementById("currentYear");
 
-  const normalizeText = (text = "") =>
-    text
+  /* =======================================================
+     Small utilities
+     ======================================================= */
+
+  function setBodyScrollLock(locked) {
+    body.classList.toggle("no-scroll", locked);
+  }
+
+  function normalizePersianText(value = "") {
+    return String(value)
       .toLocaleLowerCase("fa")
-      .replace(/[يى]/g, "ی")
+      .replace(/ي/g, "ی")
       .replace(/ك/g, "ک")
       .replace(/\u200c/g, " ")
+      .replace(/[إأٱآ]/g, "ا")
+      .replace(/ة/g, "ه")
       .replace(/\s+/g, " ")
       .trim();
+  }
 
-  const getArticles = () =>
-    Array.from(
-      document.querySelectorAll(
-        "[data-article], .article-list .horizontal-card"
-      )
+  function escapeHTML(value = "") {
+    const temporaryElement = document.createElement("div");
+    temporaryElement.textContent = String(value);
+    return temporaryElement.innerHTML;
+  }
+
+  function isMobileMenuOpen() {
+    return mobileMenu?.classList.contains("is-open") ?? false;
+  }
+
+  function isSearchOpen() {
+    return searchPanel?.classList.contains("is-open") ?? false;
+  }
+
+  function updateOverlay() {
+    if (!pageOverlay) return;
+
+    const shouldShowOverlay =
+      isMobileMenuOpen() || isSearchOpen();
+
+    pageOverlay.classList.toggle("is-visible", shouldShowOverlay);
+    pageOverlay.setAttribute(
+      "aria-hidden",
+      shouldShowOverlay ? "false" : "true"
     );
 
-  const lockPageScroll = () => {
-    const shouldLock =
-      mobileMenu?.classList.contains("is-open") ||
-      searchPanel?.classList.contains("is-open");
-
-    body.classList.toggle("no-scroll", Boolean(shouldLock));
-  };
-
-  const setOverlayState = () => {
-    const shouldShow = mobileMenu?.classList.contains("is-open");
-    overlay?.classList.toggle("is-visible", Boolean(shouldShow));
-  };
-
-  const openMenu = () => {
-    if (!mobileMenu) return;
-
-    closeSearch(false);
-    mobileMenu.classList.add("is-open");
-    mobileMenu.setAttribute("aria-hidden", "false");
-    menuButton?.setAttribute("aria-expanded", "true");
-
-    setOverlayState();
-    lockPageScroll();
-    closeMenuButton?.focus();
-  };
-
-  const closeMenu = (restoreFocus = false) => {
-    if (!mobileMenu) return;
-
-    mobileMenu.classList.remove("is-open");
-    mobileMenu.setAttribute("aria-hidden", "true");
-    menuButton?.setAttribute("aria-expanded", "false");
-
-    setOverlayState();
-    lockPageScroll();
-
-    if (restoreFocus) {
-      menuButton?.focus();
-    }
-  };
-
-  const openSearch = () => {
-    if (!searchPanel) return;
-
-    closeMenu(false);
-    searchPanel.classList.add("is-open");
-    searchPanel.setAttribute("aria-hidden", "false");
-    searchButton?.setAttribute("aria-expanded", "true");
-
-    lockPageScroll();
-
-    window.setTimeout(() => {
-      searchInput?.focus();
-    }, 150);
-  };
-
-  const closeSearch = (restoreFocus = false) => {
-    if (!searchPanel) return;
-
-    searchPanel.classList.remove("is-open");
-    searchPanel.setAttribute("aria-hidden", "true");
-    searchButton?.setAttribute("aria-expanded", "false");
-
-    if (searchMessage) {
-      searchMessage.textContent = "";
-    }
-
-    lockPageScroll();
-
-    if (restoreFocus) {
-      searchButton?.focus();
-    }
-  };
-
-  menuButton?.addEventListener("click", openMenu);
-  closeMenuButton?.addEventListener("click", () => closeMenu(true));
-  overlay?.addEventListener("click", () => closeMenu(false));
-
-  mobileMenuLinks.forEach((link) => {
-    link.addEventListener("click", () => closeMenu(false));
-  });
-
-  searchButton?.addEventListener("click", openSearch);
-  closeSearchButton?.addEventListener("click", () => closeSearch(true));
-
-  searchPanel?.addEventListener("click", (event) => {
-    if (event.target === searchPanel) {
-      closeSearch(true);
-    }
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape") return;
-
-    if (searchPanel?.classList.contains("is-open")) {
-      closeSearch(true);
-      return;
-    }
-
-    if (mobileMenu?.classList.contains("is-open")) {
-      closeMenu(true);
-    }
-  });
-
-  const searchArticles = (rawQuery) => {
-    const query = normalizeText(rawQuery);
-    const articles = getArticles();
-    let matchCount = 0;
-
-    articles.forEach((article) => {
-      const searchableText = normalizeText(
-        article.dataset.searchable || article.textContent
-      );
-
-      const isMatch = !query || searchableText.includes(query);
-
-      article.hidden = !isMatch;
-      article.classList.toggle("is-search-hidden", !isMatch);
-
-      if (isMatch) {
-        matchCount += 1;
-      }
-    });
-
-    if (searchMessage) {
-      if (!query) {
-        searchMessage.textContent = "";
-      } else if (query.length < 2) {
-        searchMessage.textContent =
-          "لطفاً حداقل دو حرف برای جست‌وجو وارد کنید.";
-      } else if (matchCount) {
-        searchMessage.textContent =
-          `${matchCount.toLocaleString("fa-IR")} مطلب مرتبط پیدا شد.`;
-      } else {
-        searchMessage.textContent =
-          `نتیجه‌ای برای «${rawQuery.trim()}» پیدا نشد.`;
-      }
-    }
-
-    return matchCount;
-  };
-
-  searchInput?.addEventListener("input", () => {
-  const query = searchInput.value.trim();
-
-  if (!query) {
-    searchArticles("");
-    return;
+    setBodyScrollLock(shouldShowOverlay);
   }
 
-  if (query.length < 2) {
-    if (searchMessage) {
-      searchMessage.textContent =
-        "لطفاً حداقل دو حرف برای جست‌وجو وارد کنید.";
+  /* =======================================================
+     Theme
+     ======================================================= */
+
+  const THEME_STORAGE_KEY = "site-theme";
+
+  function getSavedTheme() {
+    try {
+      return localStorage.getItem(THEME_STORAGE_KEY);
+    } catch (error) {
+      return null;
     }
-    return;
   }
 
-  searchArticles(query);
-});
+  function saveTheme(theme) {
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch (error) {
+      // Local storage may be unavailable in privacy mode.
+    }
+  }
 
+  function getPreferredTheme() {
+    const savedTheme = getSavedTheme();
 
-  searchForm?.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const query = searchInput?.value.trim() || "";
-
-    if (query.length < 2) {
-      if (searchMessage) {
-        searchMessage.textContent =
-          "لطفاً حداقل دو حرف برای جست‌وجو وارد کنید.";
-      }
-
-      searchInput?.focus();
-      return;
+    if (savedTheme === "light" || savedTheme === "dark") {
+      return savedTheme;
     }
 
-    searchArticles(query);
-  });
+    if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      return "dark";
+    }
 
-  searchTags.forEach((tag) => {
-    tag.addEventListener("click", (event) => {
-      event.preventDefault();
+    return "light";
+  }
 
-      const term =
-        tag.dataset.searchTerm ||
-        tag.textContent.trim().replace(/^#/, "");
-
-      if (!searchInput || !term) return;
-
-      searchInput.value = term;
-      searchArticles(term);
-      searchInput.focus();
-    });
-  });
-
-  const setTheme = (theme) => {
+  function applyTheme(theme, persist = true) {
     const isDark = theme === "dark";
 
-    body.classList.toggle("dark-theme", isDark);
-    body.dataset.theme = isDark ? "dark" : "light";
+    root.dataset.theme = isDark ? "dark" : "light";
+    root.style.colorScheme = isDark ? "dark" : "light";
+
+    if (themeButton) {
+      themeButton.setAttribute(
+        "aria-label",
+        isDark
+          ? "فعال‌کردن حالت روشن"
+          : "فعال‌کردن حالت تاریک"
+      );
+
+      themeButton.setAttribute(
+        "aria-pressed",
+        isDark ? "true" : "false"
+      );
+
+      themeButton.title = isDark
+        ? "حالت روشن"
+        : "حالت تاریک";
+    }
 
     if (themeIcon) {
       themeIcon.textContent = isDark ? "☀" : "☾";
     }
 
-    themeButton?.setAttribute(
-      "aria-label",
-      isDark ? "فعال‌کردن پوسته روشن" : "فعال‌کردن پوسته تاریک"
-    );
-
-    themeButton?.setAttribute(
-      "title",
-      isDark ? "پوسته روشن" : "پوسته تاریک"
-    );
-  };
-
-  let savedTheme = null;
-
-  try {
-    savedTheme =
-      localStorage.getItem("revayat-theme") ||
-      localStorage.getItem("edge-theme");
-  } catch {
-    savedTheme = null;
+    if (persist) {
+      saveTheme(isDark ? "dark" : "light");
+    }
   }
 
-  const systemPrefersDark =
-    window.matchMedia?.("(prefers-color-scheme: dark)").matches;
-
-  setTheme(savedTheme || (systemPrefersDark ? "dark" : "light"));
+  applyTheme(getPreferredTheme(), false);
 
   themeButton?.addEventListener("click", () => {
-    const nextTheme = body.classList.contains("dark-theme")
-      ? "light"
-      : "dark";
+    const nextTheme =
+      root.dataset.theme === "dark" ? "light" : "dark";
 
-    setTheme(nextTheme);
+    applyTheme(nextTheme);
+  });
 
-    try {
-      localStorage.setItem("revayat-theme", nextTheme);
-    } catch {
-      // پوسته همچنان برای نشست فعلی اعمال می‌شود.
+  /* =======================================================
+     Mobile menu
+     ======================================================= */
+
+  function openMobileMenu() {
+    if (!mobileMenu || !menuButton) return;
+
+    closeSearchPanel(false);
+
+    mobileMenu.classList.add("is-open");
+    mobileMenu.setAttribute("aria-hidden", "false");
+
+    menuButton.classList.add("is-active");
+    menuButton.setAttribute("aria-expanded", "true");
+    menuButton.setAttribute("aria-label", "بستن منوی اصلی");
+
+    updateOverlay();
+
+    const firstLink = mobileMenu.querySelector("a");
+
+    window.setTimeout(() => {
+      firstLink?.focus();
+    }, 100);
+  }
+
+  function closeMobileMenu(returnFocus = true) {
+    if (!mobileMenu || !menuButton) return;
+
+    const wasOpen = isMobileMenuOpen();
+
+    mobileMenu.classList.remove("is-open");
+    mobileMenu.setAttribute("aria-hidden", "true");
+
+    menuButton.classList.remove("is-active");
+    menuButton.setAttribute("aria-expanded", "false");
+    menuButton.setAttribute("aria-label", "بازکردن منوی اصلی");
+
+    updateOverlay();
+
+    if (wasOpen && returnFocus) {
+      menuButton.focus();
+    }
+  }
+
+  menuButton?.addEventListener("click", () => {
+    if (isMobileMenuOpen()) {
+      closeMobileMenu();
+    } else {
+      openMobileMenu();
     }
   });
 
-  const getArticleCategory = (article) =>
-    normalizeText(
-      article.dataset.category ||
-      article.querySelector(".category")?.textContent ||
-      ""
-    );
+  closeMenuButton?.addEventListener("click", () => {
+    closeMobileMenu();
+  });
 
-  const filterArticles = (selectedFilter) => {
-    const normalizedFilter = normalizeText(selectedFilter);
-    const showAll =
-      !normalizedFilter ||
-      ["all", "همه", "همه مطالب"].includes(normalizedFilter);
-
-    let visibleCount = 0;
-
-    getArticles().forEach((article) => {
-      const category = getArticleCategory(article);
-      const isMatch =
-        showAll ||
-        category === normalizedFilter ||
-        category.includes(normalizedFilter);
-
-      article.hidden = !isMatch;
-      article.classList.toggle("is-filtered-out", !isMatch);
-
-      if (isMatch) {
-        visibleCount += 1;
-      }
-    });
-
-    filterButtons.forEach((button) => {
-      const isActive =
-        normalizeText(button.dataset.filter) === normalizedFilter;
-
-      button.classList.toggle("active", isActive);
-      button.classList.toggle("is-active", isActive);
-      button.setAttribute("aria-pressed", String(isActive));
-    });
-
-    if (articlesEmptyState) {
-      articlesEmptyState.hidden = visibleCount > 0;
-    }
-  };
-
-  filterButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      filterArticles(button.dataset.filter || "all");
+  mobileMenu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      closeMobileMenu(false);
     });
   });
 
-  loadMoreButton?.addEventListener("click", () => {
-    const hiddenExtraArticles = Array.from(
-      document.querySelectorAll(
-        ".article-list .is-extra[hidden], [data-article].is-extra[hidden]"
-      )
+  /* =======================================================
+     Search panel
+     ======================================================= */
+
+  function openSearchPanel() {
+    if (!searchPanel || !searchButton) return;
+
+    closeMobileMenu(false);
+
+    searchPanel.classList.add("is-open");
+    searchPanel.setAttribute("aria-hidden", "false");
+
+    searchButton.setAttribute("aria-expanded", "true");
+    searchButton.setAttribute("aria-label", "بستن جست‌وجو");
+
+    updateOverlay();
+
+    window.setTimeout(() => {
+      searchInput?.focus();
+    }, 100);
+  }
+
+  function closeSearchPanel(returnFocus = true) {
+    if (!searchPanel || !searchButton) return;
+
+    const wasOpen = isSearchOpen();
+
+    searchPanel.classList.remove("is-open");
+    searchPanel.setAttribute("aria-hidden", "true");
+
+    searchButton.setAttribute("aria-expanded", "false");
+    searchButton.setAttribute("aria-label", "بازکردن جست‌وجو");
+
+    updateOverlay();
+
+    if (wasOpen && returnFocus) {
+      searchButton.focus();
+    }
+  }
+
+  searchButton?.addEventListener("click", () => {
+    if (isSearchOpen()) {
+      closeSearchPanel();
+    } else {
+      openSearchPanel();
+    }
+  });
+
+  closeSearchButton?.addEventListener("click", () => {
+    closeSearchPanel();
+  });
+
+  pageOverlay?.addEventListener("click", () => {
+    closeMobileMenu(false);
+    closeSearchPanel(false);
+    updateOverlay();
+  });
+
+  /* =======================================================
+     Search data and search results
+     ======================================================= */
+
+  function collectSearchItems() {
+    const selectors = [
+      "[data-search-item]",
+      ".post-card",
+      ".article-card",
+      ".featured-card",
+      "article.post-preview"
+    ];
+
+    const elements = Array.from(
+      document.querySelectorAll(selectors.join(","))
     );
 
-    if (hiddenExtraArticles.length) {
-      hiddenExtraArticles.forEach((article, index) => {
-        article.hidden = false;
-        article.style.animationDelay = `${index * 80}ms`;
-        article.classList.add("is-revealed");
-      });
+    const uniqueElements = [...new Set(elements)];
 
-      loadMoreButton.disabled = true;
-      loadMoreButton.textContent = "همه مطالب نمایش داده شدند";
+    return uniqueElements
+      .map((element) => {
+        const titleElement = element.querySelector(
+          "[data-search-title], h2, h3, .post-title, .card-title"
+        );
+
+        const descriptionElement = element.querySelector(
+          "[data-search-description], .post-excerpt, .card-excerpt, p"
+        );
+
+        const categoryElement = element.querySelector(
+          "[data-search-category], .post-category, .card-category"
+        );
+
+        const linkElement =
+          element.matches("a[href]")
+            ? element
+            : element.querySelector("a[href]");
+
+        const title =
+          element.dataset.searchTitle ||
+          titleElement?.textContent?.trim() ||
+          "";
+
+        const description =
+          element.dataset.searchDescription ||
+          descriptionElement?.textContent?.trim() ||
+          "";
+
+        const category =
+          element.dataset.searchCategory ||
+          categoryElement?.textContent?.trim() ||
+          "";
+
+        const url =
+          element.dataset.searchUrl ||
+          linkElement?.getAttribute("href") ||
+          "";
+
+        return {
+          title,
+          description,
+          category,
+          url,
+          searchableText: normalizePersianText(
+            `${title} ${description} ${category}`
+          )
+        };
+      })
+      .filter((item) => item.title && item.url);
+  }
+
+  const searchItems = collectSearchItems();
+
+  function clearSearchResults() {
+    if (searchResults) {
+      searchResults.innerHTML = "";
+    }
+
+    if (searchMessage) {
+      searchMessage.textContent = "";
+    }
+  }
+
+  function renderSearchResults(query) {
+    if (!searchResults || !searchMessage) return;
+
+    const normalizedQuery = normalizePersianText(query);
+
+    searchResults.innerHTML = "";
+
+    if (normalizedQuery.length < 2) {
+      searchMessage.textContent =
+        "برای جست‌وجو دست‌کم دو نویسه وارد کنید.";
       return;
     }
 
-    loadMoreButton.disabled = true;
-    loadMoreButton.textContent = "همه مطالب نمایش داده شدند";
-  });
+    const queryWords = normalizedQuery
+      .split(" ")
+      .filter(Boolean);
 
-  const updateScrollInterface = () => {
-    const scrollTop =
-      window.scrollY || document.documentElement.scrollTop;
+    const results = searchItems
+      .filter((item) =>
+        queryWords.every((word) =>
+          item.searchableText.includes(word)
+        )
+      )
+      .slice(0, 8);
 
-    const scrollableHeight =
-      document.documentElement.scrollHeight - window.innerHeight;
-
-    const progress =
-      scrollableHeight > 0
-        ? Math.min((scrollTop / scrollableHeight) * 100, 100)
-        : 0;
-
-    if (readingProgress) {
-      readingProgress.style.width = `${progress}%`;
-      readingProgress.setAttribute("aria-valuenow", String(Math.round(progress)));
+    if (results.length === 0) {
+      searchMessage.textContent =
+        "مطلبی مطابق عبارت واردشده پیدا نشد.";
+      return;
     }
 
-    siteHeader?.classList.toggle("is-scrolled", scrollTop > 12);
-    backToTop?.classList.toggle("is-visible", scrollTop > 550);
-  };
+    searchMessage.textContent =
+      `${results.length} نتیجه پیدا شد.`;
 
-  window.addEventListener("scroll", updateScrollInterface, {
-    passive: true
+    const resultList = document.createElement("div");
+    resultList.className = "search-results-list";
+
+    results.forEach((item) => {
+      const result = document.createElement("a");
+      result.className = "search-result-item";
+      result.href = item.url;
+
+      result.innerHTML = `
+        <span class="search-result-content">
+          ${
+            item.category
+              ? `<small>${escapeHTML(item.category)}</small>`
+              : ""
+          }
+
+          <strong>${escapeHTML(item.title)}</strong>
+
+          ${
+            item.description
+              ? `<span>${escapeHTML(item.description)}</span>`
+              : ""
+          }
+        </span>
+
+        <span class="search-result-arrow" aria-hidden="true">
+          ←
+        </span>
+      `;
+
+      resultList.appendChild(result);
+    });
+
+    searchResults.appendChild(resultList);
+  }
+
+  searchForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    renderSearchResults(searchInput?.value || "");
   });
 
-  window.addEventListener("resize", () => {
-    if (
-      window.innerWidth > 1050 &&
-      mobileMenu?.classList.contains("is-open")
-    ) {
-      closeMenu(false);
+  searchInput?.addEventListener("input", () => {
+    const query = searchInput.value.trim();
+
+    if (!query) {
+      clearSearchResults();
+      return;
     }
 
-    updateScrollInterface();
+    renderSearchResults(query);
   });
+
+  searchTagButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const term = button.dataset.searchTerm || "";
+
+      if (searchInput) {
+        searchInput.value = term;
+      }
+
+      renderSearchResults(term);
+      searchInput?.focus();
+    });
+  });
+
+  /* =======================================================
+     Reading progress
+     ======================================================= */
+
+  function updateReadingProgress() {
+    if (!readingProgress) return;
+
+    if (!postContent) {
+      readingProgress.style.transform = "scaleX(0)";
+      readingProgress.hidden = true;
+      return;
+    }
+
+    readingProgress.hidden = false;
+
+    const contentRect = postContent.getBoundingClientRect();
+    const contentTop = window.scrollY + contentRect.top;
+    const contentHeight = postContent.offsetHeight;
+
+    const viewportReference =
+      window.scrollY + window.innerHeight * 0.35;
+
+    const readableDistance = Math.max(contentHeight, 1);
+
+    const progress = Math.min(
+      Math.max(
+        (viewportReference - contentTop) / readableDistance,
+        0
+      ),
+      1
+    );
+
+    readingProgress.style.transform =
+      `scaleX(${progress})`;
+  }
+
+  /* =======================================================
+     Back to top and sticky header
+     ======================================================= */
+
+  function updateScrollInterface() {
+    const scrollPosition = window.scrollY;
+
+    if (backToTop) {
+      const shouldShowButton = scrollPosition > 600;
+
+      backToTop.classList.toggle(
+        "is-visible",
+        shouldShowButton
+      );
+
+      backToTop.setAttribute(
+        "aria-hidden",
+        shouldShowButton ? "false" : "true"
+      );
+
+      backToTop.tabIndex = shouldShowButton ? 0 : -1;
+    }
+
+    if (siteHeader) {
+      siteHeader.classList.toggle(
+        "is-scrolled",
+        scrollPosition > 20
+      );
+    }
+
+    updateReadingProgress();
+  }
 
   backToTop?.addEventListener("click", () => {
     window.scrollTo({
@@ -412,68 +541,74 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  const navigationLinks = document.querySelectorAll(
-    '.desktop-nav a[href^="#"], .main-menu a[href^="#"]'
+  let scrollFrameRequested = false;
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (scrollFrameRequested) return;
+
+      scrollFrameRequested = true;
+
+      window.requestAnimationFrame(() => {
+        updateScrollInterface();
+        scrollFrameRequested = false;
+      });
+    },
+    { passive: true }
   );
 
-  const observedSections = Array.from(navigationLinks)
-    .map((link) => {
-      const selector = link.getAttribute("href");
+  window.addEventListener("resize", updateScrollInterface);
 
-      if (!selector || selector === "#") {
-        return null;
+  /* =======================================================
+     Keyboard interactions
+     ======================================================= */
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      if (isSearchOpen()) {
+        closeSearchPanel();
+        return;
       }
 
-      try {
-        return document.querySelector(selector);
-      } catch {
-        return null;
+      if (isMobileMenuOpen()) {
+        closeMobileMenu();
       }
-    })
-    .filter(Boolean);
+    }
 
-  if ("IntersectionObserver" in window && observedSections.length) {
-    const navigationObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
+    const activeTag = document.activeElement?.tagName;
+    const isTyping =
+      activeTag === "INPUT" ||
+      activeTag === "TEXTAREA" ||
+      activeTag === "SELECT";
 
-          navigationLinks.forEach((link) => {
-            const isActive =
-              link.getAttribute("href") === `#${entry.target.id}`;
-
-            link.classList.toggle("active", isActive);
-
-            if (isActive) {
-              link.setAttribute("aria-current", "page");
-            } else {
-              link.removeAttribute("aria-current");
-            }
-          });
-        });
-      },
-      {
-        rootMargin: "-25% 0px -65% 0px",
-        threshold: 0
-      }
-    );
-
-    observedSections.forEach((section) => {
-      navigationObserver.observe(section);
-    });
-  }
-
-  document.querySelectorAll('a[href="#"]').forEach((link) => {
-    link.addEventListener("click", (event) => {
+    if (
+      event.key === "/" &&
+      !isTyping &&
+      !event.ctrlKey &&
+      !event.metaKey &&
+      !event.altKey
+    ) {
       event.preventDefault();
-    });
+      openSearchPanel();
+    }
   });
 
+  /* =======================================================
+     Footer year
+     ======================================================= */
+
   if (currentYear) {
-    currentYear.textContent = new Intl.DateTimeFormat("fa-IR", {
-      year: "numeric"
-    }).format(new Date());
+    currentYear.textContent = new Intl.DateTimeFormat(
+      "fa-IR",
+      { year: "numeric" }
+    ).format(new Date());
   }
 
+  /* =======================================================
+     Initial state
+     ======================================================= */
+
+  clearSearchResults();
   updateScrollInterface();
 });
