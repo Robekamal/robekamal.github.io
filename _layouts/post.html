@@ -2,74 +2,186 @@
 layout: default
 ---
 
-<main class="single-post-page">
-  <article class="single-post">
-    <header class="single-post-header">
-      {% if page.categories and page.categories.size > 0 %}
-        <a class="single-post-category" href="{{ '/categories/' | relative_url }}">
-          {{ page.categories[0] }}
-        </a>
-      {% endif %}
+<main class="post-page">
 
-      <h1 class="single-post-title">{{ page.title }}</h1>
+  <article
+    class="post-article"
+    itemscope
+    itemtype="https://schema.org/BlogPosting"
+  >
 
-      <div class="single-post-meta">
-        {% if page.author %}
-          <span>{{ page.author }}</span>
-          <span aria-hidden="true">•</span>
+    <header class="post-header">
+
+      <div class="container post-header-container">
+
+        {% if page.category %}
+          <a
+            class="post-category"
+            href="{{ '/category/' | relative_url }}?name={{ page.category | url_encode }}"
+          >
+            {{ page.category_label | default: page.category }}
+          </a>
         {% endif %}
 
-        {% if page.date %}
-          <time datetime="{{ page.date | date_to_xmlschema }}">
-            {{ page.date | date: "%Y/%m/%d" }}
-          </time>
-          <span aria-hidden="true">•</span>
+        <h1 class="post-title" itemprop="headline">
+          {{ page.title | escape }}
+        </h1>
+
+        {% if page.excerpt %}
+          <p class="post-excerpt" itemprop="description">
+            {{ page.excerpt | strip_html | strip_newlines }}
+          </p>
+        {% elsif page.description %}
+          <p class="post-excerpt" itemprop="description">
+            {{ page.description }}
+          </p>
         {% endif %}
 
-        <span>
-          {% assign words = content | strip_html | number_of_words %}
-          {% assign minutes = words | divided_by: 200 %}
-          {% if minutes < 1 %}
-            کمتر از ۱ دقیقه مطالعه
-          {% else %}
-            {{ minutes }} دقیقه مطالعه
+        <div class="post-meta">
+
+          <span class="post-author" itemprop="author">
+            {{ page.author | default: site.author | default: "نویسنده وبلاگ" }}
+          </span>
+
+          {% if page.date %}
+            <span aria-hidden="true">•</span>
+
+            <time
+              datetime="{{ page.date | date_to_xmlschema }}"
+              itemprop="datePublished"
+            >
+              {{ page.date | date: "%Y/%m/%d" }}
+            </time>
           {% endif %}
-        </span>
+
+          {% if page.reading_time %}
+            <span aria-hidden="true">•</span>
+
+            <span>
+              {{ page.reading_time }} دقیقه مطالعه
+            </span>
+          {% endif %}
+
+        </div>
+
       </div>
+
     </header>
 
     {% if page.image %}
-      <figure class="single-post-cover">
-        <img src="{{ page.image | relative_url }}" alt="{{ page.title | escape }}">
+      <figure class="post-cover container">
+
+        <img
+          src="{{ page.image | relative_url }}"
+          alt="{{ page.image_alt | default: page.title | escape }}"
+          width="1200"
+          height="675"
+          itemprop="image"
+        >
+
+        {% if page.image_caption %}
+          <figcaption>
+            {{ page.image_caption }}
+          </figcaption>
+        {% endif %}
+
       </figure>
     {% endif %}
 
-    <div class="single-post-content">
-      {{ content }}
+    <div class="container post-layout">
+
+      <div class="post-main">
+
+        <div class="post-content" itemprop="articleBody">
+          {{ content }}
+        </div>
+
+        {% if page.tags and page.tags.size > 0 %}
+          <footer class="post-tags" aria-label="برچسب‌های نوشته">
+
+            <span class="post-tags-title">
+              برچسب‌ها:
+            </span>
+
+            <div class="post-tags-list">
+              {% for tag in page.tags %}
+                <span class="post-tag">
+                  #{{ tag }}
+                </span>
+              {% endfor %}
+            </div>
+
+          </footer>
+        {% endif %}
+
+        <nav class="post-navigation" aria-label="نوشته‌های قبلی و بعدی">
+
+          <div class="post-navigation-item post-navigation-previous">
+            {% if page.previous %}
+              <span>نوشته قبلی</span>
+
+              <a href="{{ page.previous.url | relative_url }}">
+                {{ page.previous.title }}
+              </a>
+            {% endif %}
+          </div>
+
+          <div class="post-navigation-item post-navigation-next">
+            {% if page.next %}
+              <span>نوشته بعدی</span>
+
+              <a href="{{ page.next.url | relative_url }}">
+                {{ page.next.title }}
+              </a>
+            {% endif %}
+          </div>
+
+        </nav>
+
+      </div>
+
+      <aside class="post-sidebar" aria-label="اطلاعات نوشته">
+
+        <div class="post-sidebar-card">
+
+          <h2>درباره این نوشته</h2>
+
+          {% if page.description %}
+            <p>
+              {{ page.description }}
+            </p>
+          {% else %}
+            <p>
+              یادداشتی از مجموعه نوشته‌ها و پژوهش‌های این وبلاگ.
+            </p>
+          {% endif %}
+
+          <a class="post-sidebar-link" href="{{ '/' | relative_url }}">
+            بازگشت به صفحه اصلی
+          </a>
+
+        </div>
+
+        {% if page.tags and page.tags.size > 0 %}
+          <div class="post-sidebar-card">
+
+            <h2>موضوعات</h2>
+
+            <div class="post-sidebar-tags">
+              {% for tag in page.tags %}
+                <span>
+                  {{ tag }}
+                </span>
+              {% endfor %}
+            </div>
+
+          </div>
+        {% endif %}
+
+      </aside>
+
     </div>
 
-    <footer class="single-post-footer">
-      {% if page.tags and page.tags.size > 0 %}
-        <div class="single-post-tags">
-          {% for tag in page.tags %}
-            <a href="{{ '/tags/' | relative_url }}">#{{ tag }}</a>
-          {% endfor %}
-        </div>
-      {% endif %}
-
-      <a class="back-to-articles" href="{{ '/' | relative_url }}">
-        بازگشت به صفحه اصلی
-      </a>
-    </footer>
   </article>
-</main>
 
-<button
-  id="backToTop"
-  class="back-to-top"
-  type="button"
-  aria-label="بازگشت به بالای صفحه"
-  title="بازگشت به بالا"
->
-  ↑
-</button>
+</main>
