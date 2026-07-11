@@ -39,12 +39,12 @@ collections:
         pattern: "true"
 
       - label: "پیش‌نویس‌ها"
-        field: "draft"
-        pattern: "true"
+        field: "published"
+        pattern: "false"
 
       - label: "نوشته‌های منتشرشده"
-        field: "draft"
-        pattern: "false"
+        field: "published"
+        pattern: "true"
 
     view_groups:
       - label: "دسته‌بندی"
@@ -125,11 +125,12 @@ collections:
         default: false
         required: false
 
-      - label: "پیش‌نویس"
-        name: "draft"
+      - label: "منتشر شود"
+        name: "published"
         widget: "boolean"
-        default: false
-        required: false
+        default: true
+        required: true
+        hint: "اگر غیرفعال باشد، نوشته ذخیره می‌شود اما Jekyll آن را در سایت منتشر نمی‌کند."
 
       - label: "متن کامل نوشته"
         name: "body"
@@ -468,5 +469,3 @@ collections:
             name: "footer_text"
             widget: "string"
             required: false
-
-  
