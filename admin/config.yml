@@ -42,9 +42,13 @@ collections:
         field: "published"
         pattern: "false"
 
-      - label: "نوشته‌های منتشرشده"
-        field: "published"
-        pattern: "true"
+      - label: "منتشر شود"
+        name: "published"
+        widget: "boolean"
+        default: true
+        required: true
+        hint: "اگر غیرفعال باشد، نوشته ذخیره می‌شود اما Jekyll آن را در سایت منتشر نمی‌کند."
+
 
     view_groups:
       - label: "دسته‌بندی"
