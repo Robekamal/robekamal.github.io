@@ -10,6 +10,8 @@ tags:
   - وبلاگ
 image: /assets/images/uploads/8f5d1a44-94a9-4c8a-9408-600eb3ad828a.png
 featured: true
+published: true
+
 categories:
   - blog
 ---
