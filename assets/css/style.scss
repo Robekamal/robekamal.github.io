@@ -1,23 +1,5 @@
-/* =========================================================
-   Editorial RTL Theme
-   Inspired by minimalist magazine layouts
-   For Jekyll / GitHub Pages
-   ========================================================= */
-
-/* -------------------------
-   Fonts
-------------------------- */
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
-
-/* -------------------------
-   Root Variables
-------------------------- */
 ---
 ---
-
-/* =========================
-   تنظیمات پایه
-========================= */
 
 :root {
   --background: #f7f3e8;
@@ -2186,4 +2168,655 @@ body.dark-theme .single-post-tag {
     padding: 20px;
     font-size: 1.05rem;
   }
+}
+/* =========================================================
+   Single post page
+   ========================================================= */
+
+.post-page {
+  min-height: 70vh;
+  padding-bottom: 5rem;
+}
+
+.post-article {
+  width: 100%;
+}
+
+/* ---------- Post header ---------- */
+
+.post-header {
+  padding: 5rem 0 3rem;
+  background:
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(197, 154, 74, 0.13),
+      transparent 30rem
+    ),
+    linear-gradient(
+      180deg,
+      rgba(23, 63, 53, 0.06),
+      transparent
+    );
+}
+
+.post-header-container {
+  max-width: 900px;
+  text-align: center;
+}
+
+.post-category {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  margin-bottom: 1.25rem;
+  padding: 0.35rem 0.9rem;
+  color: #173f35;
+  background: rgba(23, 63, 53, 0.09);
+  border: 1px solid rgba(23, 63, 53, 0.14);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.post-category:hover {
+  color: #fff;
+  background: #173f35;
+  transform: translateY(-2px);
+}
+
+.post-title {
+  max-width: 850px;
+  margin: 0 auto;
+  color: #17201d;
+  font-size: clamp(2rem, 5vw, 4.25rem);
+  font-weight: 900;
+  line-height: 1.35;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.post-excerpt {
+  max-width: 720px;
+  margin: 1.4rem auto 0;
+  color: #66706c;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 2;
+  text-wrap: pretty;
+}
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  margin-top: 1.5rem;
+  color: #7b8581;
+  font-size: 0.9rem;
+}
+
+.post-author {
+  color: #3c4743;
+  font-weight: 700;
+}
+
+.post-meta time {
+  direction: ltr;
+  unicode-bidi: embed;
+}
+
+/* ---------- Cover image ---------- */
+
+.post-cover {
+  max-width: 1180px;
+  margin-top: 2.5rem;
+  margin-bottom: 0;
+}
+
+.post-cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 680px;
+  object-fit: cover;
+  background: #edf0ee;
+  border-radius: 1.75rem;
+  box-shadow: 0 24px 70px rgba(16, 37, 31, 0.12);
+}
+
+.post-cover figcaption {
+  margin-top: 0.8rem;
+  color: #7b8581;
+  font-size: 0.82rem;
+  line-height: 1.8;
+  text-align: center;
+}
+
+/* ---------- Main post layout ---------- */
+
+.post-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: start;
+  max-width: 1120px;
+  margin-top: 4rem;
+}
+
+.post-main {
+  min-width: 0;
+}
+
+/* ---------- Article typography ---------- */
+
+.post-content {
+  color: #2d3733;
+  font-size: 1.06rem;
+  line-height: 2.15;
+  overflow-wrap: anywhere;
+}
+
+.post-content > :first-child {
+  margin-top: 0;
+}
+
+.post-content > :last-child {
+  margin-bottom: 0;
+}
+
+.post-content p {
+  margin: 0 0 1.5rem;
+}
+
+.post-content h2,
+.post-content h3,
+.post-content h4 {
+  color: #16201c;
+  font-weight: 850;
+  line-height: 1.55;
+  scroll-margin-top: 7rem;
+}
+
+.post-content h2 {
+  margin: 3.4rem 0 1.2rem;
+  font-size: clamp(1.55rem, 3vw, 2.15rem);
+}
+
+.post-content h3 {
+  margin: 2.7rem 0 1rem;
+  font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+}
+
+.post-content h4 {
+  margin: 2.2rem 0 0.9rem;
+  font-size: 1.15rem;
+}
+
+.post-content a {
+  color: #176b57;
+  font-weight: 650;
+  text-decoration-color: rgba(23, 107, 87, 0.35);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.2em;
+}
+
+.post-content a:hover {
+  color: #0e4d3d;
+  text-decoration-color: currentColor;
+}
+
+.post-content strong {
+  color: #15221d;
+  font-weight: 850;
+}
+
+.post-content ul,
+.post-content ol {
+  margin: 1.4rem 0 1.8rem;
+  padding-right: 1.4rem;
+}
+
+.post-content li {
+  margin-bottom: 0.6rem;
+  padding-right: 0.35rem;
+}
+
+.post-content li::marker {
+  color: #b68837;
+  font-weight: 800;
+}
+
+.post-content blockquote {
+  position: relative;
+  margin: 2.2rem 0;
+  padding: 1.4rem 1.6rem 1.4rem 1.2rem;
+  color: #3c4944;
+  background: #f3f6f4;
+  border-right: 4px solid #b68837;
+  border-radius: 0.9rem 0 0 0.9rem;
+  font-size: 1.04rem;
+  line-height: 2;
+}
+
+.post-content blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.post-content img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin: 2.5rem auto;
+  border-radius: 1rem;
+}
+
+.post-content figure {
+  margin: 2.5rem 0;
+}
+
+.post-content figure img {
+  margin-bottom: 0.8rem;
+}
+
+.post-content figcaption {
+  color: #7c8782;
+  font-size: 0.82rem;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.post-content hr {
+  width: min(100%, 220px);
+  height: 1px;
+  margin: 3.5rem auto;
+  background: #dfe5e2;
+  border: 0;
+}
+
+.post-content table {
+  width: 100%;
+  margin: 2rem 0;
+  border-spacing: 0;
+  border-collapse: collapse;
+  font-size: 0.94rem;
+}
+
+.post-content th,
+.post-content td {
+  padding: 0.85rem 1rem;
+  border: 1px solid #dfe5e2;
+  text-align: right;
+}
+
+.post-content th {
+  color: #183b32;
+  background: #eef3f1;
+  font-weight: 800;
+}
+
+/* ---------- Code blocks ---------- */
+
+.post-content code {
+  direction: ltr;
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  color: #a23d2a;
+  background: #f4f1ed;
+  border-radius: 0.35rem;
+  font-family:
+    Consolas,
+    Monaco,
+    "Courier New",
+    monospace;
+  font-size: 0.88em;
+  unicode-bidi: embed;
+}
+
+.post-content pre {
+  direction: ltr;
+  max-width: 100%;
+  margin: 2rem 0;
+  padding: 1.3rem;
+  color: #edf7f3;
+  background: #12251f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  overflow-x: auto;
+  line-height: 1.75;
+  text-align: left;
+}
+
+.post-content pre code {
+  display: block;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border-radius: 0;
+  font-size: 0.88rem;
+  white-space: pre;
+}
+
+/* ---------- Tags ---------- */
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 3.5rem;
+  padding-top: 1.8rem;
+  border-top: 1px solid #e1e6e3;
+}
+
+.post-tags-title {
+  color: #3d4844;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.post-tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.post-tag {
+  padding: 0.35rem 0.7rem;
+  color: #52605a;
+  background: #f1f4f2;
+  border-radius: 999px;
+  font-size: 0.8rem;
+}
+
+/* ---------- Previous and next navigation ---------- */
+
+.post-navigation {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e1e6e3;
+}
+
+.post-navigation-item {
+  min-width: 0;
+}
+
+.post-navigation-item > span {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: #8a938f;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.post-navigation-item a {
+  display: block;
+  color: #23302b;
+  font-weight: 800;
+  line-height: 1.8;
+  text-decoration: none;
+}
+
+.post-navigation-item a:hover {
+  color: #176b57;
+}
+
+.post-navigation-next {
+  text-align: left;
+}
+
+/* ---------- Sidebar ---------- */
+
+.post-sidebar {
+  position: sticky;
+  top: 7rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.post-sidebar-card {
+  padding: 1.35rem;
+  background: #f7f9f8;
+  border: 1px solid #e4e9e6;
+  border-radius: 1.15rem;
+}
+
+.post-sidebar-card h2 {
+  margin: 0 0 0.8rem;
+  color: #1e2c27;
+  font-size: 1rem;
+  font-weight: 850;
+}
+
+.post-sidebar-card p {
+  margin: 0;
+  color: #68736e;
+  font-size: 0.87rem;
+  line-height: 1.9;
+}
+
+.post-sidebar-link {
+  display: inline-flex;
+  margin-top: 1rem;
+  color: #176b57;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.post-sidebar-link:hover {
+  color: #0e4d3d;
+}
+
+.post-sidebar-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.post-sidebar-tags span {
+  padding: 0.3rem 0.6rem;
+  color: #52605a;
+  background: #e9efec;
+  border-radius: 999px;
+  font-size: 0.74rem;
+}
+
+/* ---------- Responsive styles ---------- */
+
+@media (max-width: 900px) {
+  .post-header {
+    padding: 4rem 0 2.5rem;
+  }
+
+  .post-layout {
+    grid-template-columns: minmax(0, 1fr);
+    margin-top: 3rem;
+  }
+
+  .post-sidebar {
+    position: static;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    order: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .post-page {
+    padding-bottom: 3rem;
+  }
+
+  .post-header {
+    padding: 3rem 0 2rem;
+  }
+
+  .post-title {
+    font-size: clamp(1.8rem, 10vw, 2.65rem);
+    line-height: 1.45;
+  }
+
+  .post-excerpt {
+    font-size: 0.98rem;
+  }
+
+  .post-meta {
+    gap: 0.45rem;
+    font-size: 0.8rem;
+  }
+
+  .post-cover {
+    margin-top: 1.5rem;
+  }
+
+  .post-cover img {
+    border-radius: 1rem;
+  }
+
+  .post-layout {
+    gap: 2.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .post-content {
+    font-size: 1rem;
+    line-height: 2.05;
+  }
+
+  .post-content h2 {
+    margin-top: 2.8rem;
+  }
+
+  .post-content blockquote {
+    margin-right: 0;
+    margin-left: 0;
+    padding: 1.1rem 1.2rem 1.1rem 0.9rem;
+  }
+
+  .post-navigation {
+    grid-template-columns: 1fr;
+    gap: 1.8rem;
+  }
+
+  .post-navigation-next {
+    text-align: right;
+  }
+
+  .post-sidebar {
+    grid-template-columns: 1fr;
+  }
+}
+/* =========================================================
+   Post page — dark theme
+   ========================================================= */
+
+html[data-theme="dark"] .post-header {
+  background:
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(197, 154, 74, 0.12),
+      transparent 30rem
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.025),
+      transparent
+    );
+}
+
+html[data-theme="dark"] .post-title,
+html[data-theme="dark"] .post-content h2,
+html[data-theme="dark"] .post-content h3,
+html[data-theme="dark"] .post-content h4,
+html[data-theme="dark"] .post-content strong {
+  color: #f1f5f3;
+}
+
+html[data-theme="dark"] .post-excerpt,
+html[data-theme="dark"] .post-meta {
+  color: #a5afaa;
+}
+
+html[data-theme="dark"] .post-author {
+  color: #d7dfdb;
+}
+
+html[data-theme="dark"] .post-category {
+  color: #d8b66d;
+  background: rgba(216, 182, 109, 0.1);
+  border-color: rgba(216, 182, 109, 0.2);
+}
+
+html[data-theme="dark"] .post-category:hover {
+  color: #17201d;
+  background: #d8b66d;
+}
+
+html[data-theme="dark"] .post-content {
+  color: #cbd3cf;
+}
+
+html[data-theme="dark"] .post-content a,
+html[data-theme="dark"] .post-sidebar-link {
+  color: #73c9b1;
+}
+
+html[data-theme="dark"] .post-content blockquote {
+  color: #c7d0cc;
+  background: #1b2924;
+  border-right-color: #c49b4e;
+}
+
+html[data-theme="dark"] .post-content code {
+  color: #efaa91;
+  background: #2a2523;
+}
+
+html[data-theme="dark"] .post-content hr,
+html[data-theme="dark"] .post-tags,
+html[data-theme="dark"] .post-navigation {
+  border-color: #31413a;
+}
+
+html[data-theme="dark"] .post-tag,
+html[data-theme="dark"] .post-sidebar-tags span {
+  color: #c2cbc7;
+  background: #26362f;
+}
+
+html[data-theme="dark"] .post-navigation-item a,
+html[data-theme="dark"] .post-sidebar-card h2 {
+  color: #e6ece9;
+}
+
+html[data-theme="dark"] .post-navigation-item a:hover {
+  color: #73c9b1;
+}
+
+html[data-theme="dark"] .post-sidebar-card {
+  background: #192620;
+  border-color: #2c3c35;
+}
+
+html[data-theme="dark"] .post-sidebar-card p {
+  color: #a7b1ac;
+}
+
+html[data-theme="dark"] .post-content th {
+  color: #e6ece9;
+  background: #21312a;
+}
+
+html[data-theme="dark"] .post-content th,
+html[data-theme="dark"] .post-content td {
+  border-color: #34453d;
 }
