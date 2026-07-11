@@ -1,416 +1,479 @@
-(function () {
-  const root = document.documentElement;
-  const themeToggle = document.querySelector("[data-theme-toggle]");
-  const navToggle = document.querySelector("[data-nav-toggle]");
-  const siteNav = document.querySelector("[data-site-nav]");
-  const progressBar = document.querySelector("[data-reading-progress]");
-  const revealItems = document.querySelectorAll("[data-reveal]");
+document.addEventListener("DOMContentLoaded", () => {
+  const body = document.body;
+  const siteHeader = document.querySelector(".site-header");
+  const readingProgress = document.getElementById("readingProgress");
 
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme) {
-    root.setAttribute("data-theme", savedTheme);
-  }
+  const overlay =
+    document.getElementById("pageOverlay") ||
+    document.getElementById("overlay");
 
-  if (themeToggle) {
-    themeToggle.addEventListener("click", function () {
-      const currentTheme = root.getAttribute("data-theme") || "light";
-      const nextTheme = currentTheme === "dark" ? "light" : "dark";
+  const menuButton = document.getElementById("menuButton");
+  const closeMenuButton = document.getElementById("closeMenuButton");
+  const mobileMenu = document.getElementById("mobileMenu");
+  const mobileMenuLinks = document.querySelectorAll(".mobile-nav a");
 
-      root.setAttribute("data-theme", nextTheme);
-      localStorage.setItem("theme", nextTheme);
-    });
-  }
+  const searchButton = document.getElementById("searchButton");
+  const closeSearchButton = document.getElementById("closeSearchButton");
+  const searchPanel = document.getElementById("searchPanel");
+  const searchForm = document.getElementById("searchForm");
+  const searchInput = document.getElementById("searchInput");
+  const searchMessage = document.getElementById("searchMessage");
+  const searchTags = document.querySelectorAll(
+    "[data-search-term], .search-tags button, .search-tags a"
+  );
 
-  if (navToggle && siteNav) {
-    navToggle.addEventListener("click", function () {
-      const isOpen = siteNav.classList.toggle("is-open");
-      navToggle.setAttribute("aria-expanded", String(isOpen));
-    });
-  }
+  const themeButton = document.getElementById("themeButton");
+  const themeIcon = document.getElementById("themeIcon");
 
-  if (progressBar) {
-    window.addEventListener("scroll", function () {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  const articleList = document.querySelector(".article-list");
+  const loadMoreButton = document.getElementById("loadMoreButton");
+  const filterButtons = document.querySelectorAll("[data-filter]");
+  const articlesEmptyState =
+    document.getElementById("articlesEmptyState");
 
-      progressBar.style.width = progress + "%";
-    });
-  }
+  const backToTop = document.getElementById("backToTop");
+  const currentYear = document.getElementById("currentYear");
 
-  if ("IntersectionObserver" in window && revealItems.length) {
-    const observer = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15 }
+  const normalizeText = (text = "") =>
+    text
+      .toLocaleLowerCase("fa")
+      .replace(/[يى]/g, "ی")
+      .replace(/ك/g, "ک")
+      .replace(/\u200c/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+  const getArticles = () =>
+    Array.from(
+      document.querySelectorAll(
+        "[data-article], .article-list .horizontal-card"
+      )
     );
 
-    revealItems.forEach(function (item) {
-      observer.observe(item);
-    });
-  } else {
-    revealItems.forEach(function (item) {
-      item.classList.add("is-visible");
-    });
-  }
-})();
-/* ========================================
-   Single Post Enhancements
-======================================== */
+  const lockPageScroll = () => {
+    const shouldLock =
+      mobileMenu?.classList.contains("is-open") ||
+      searchPanel?.classList.contains("is-open");
 
-(() => {
-  "use strict";
+    body.classList.toggle("no-scroll", Boolean(shouldLock));
+  };
 
-  const whenReady = (callback) => {
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", callback, { once: true });
+  const setOverlayState = () => {
+    const shouldShow = mobileMenu?.classList.contains("is-open");
+    overlay?.classList.toggle("is-visible", Boolean(shouldShow));
+  };
+
+  const openMenu = () => {
+    if (!mobileMenu) return;
+
+    closeSearch(false);
+    mobileMenu.classList.add("is-open");
+    mobileMenu.setAttribute("aria-hidden", "false");
+    menuButton?.setAttribute("aria-expanded", "true");
+
+    setOverlayState();
+    lockPageScroll();
+    closeMenuButton?.focus();
+  };
+
+  const closeMenu = (restoreFocus = false) => {
+    if (!mobileMenu) return;
+
+    mobileMenu.classList.remove("is-open");
+    mobileMenu.setAttribute("aria-hidden", "true");
+    menuButton?.setAttribute("aria-expanded", "false");
+
+    setOverlayState();
+    lockPageScroll();
+
+    if (restoreFocus) {
+      menuButton?.focus();
+    }
+  };
+
+  const openSearch = () => {
+    if (!searchPanel) return;
+
+    closeMenu(false);
+    searchPanel.classList.add("is-open");
+    searchPanel.setAttribute("aria-hidden", "false");
+    searchButton?.setAttribute("aria-expanded", "true");
+
+    lockPageScroll();
+
+    window.setTimeout(() => {
+      searchInput?.focus();
+    }, 150);
+  };
+
+  const closeSearch = (restoreFocus = false) => {
+    if (!searchPanel) return;
+
+    searchPanel.classList.remove("is-open");
+    searchPanel.setAttribute("aria-hidden", "true");
+    searchButton?.setAttribute("aria-expanded", "false");
+
+    if (searchMessage) {
+      searchMessage.textContent = "";
+    }
+
+    lockPageScroll();
+
+    if (restoreFocus) {
+      searchButton?.focus();
+    }
+  };
+
+  menuButton?.addEventListener("click", openMenu);
+  closeMenuButton?.addEventListener("click", () => closeMenu(true));
+  overlay?.addEventListener("click", () => closeMenu(false));
+
+  mobileMenuLinks.forEach((link) => {
+    link.addEventListener("click", () => closeMenu(false));
+  });
+
+  searchButton?.addEventListener("click", openSearch);
+  closeSearchButton?.addEventListener("click", () => closeSearch(true));
+
+  searchPanel?.addEventListener("click", (event) => {
+    if (event.target === searchPanel) {
+      closeSearch(true);
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+
+    if (searchPanel?.classList.contains("is-open")) {
+      closeSearch(true);
       return;
     }
 
-    callback();
-  };
-
-  const normalizePersianNumbers = (value) => {
-    const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
-
-    return String(value).replace(/\d/g, (digit) => persianDigits[Number(digit)]);
-  };
-
-  const createHeadingId = (heading, index, usedIds) => {
-    if (heading.id && !usedIds.has(heading.id)) {
-      usedIds.add(heading.id);
-      return heading.id;
+    if (mobileMenu?.classList.contains("is-open")) {
+      closeMenu(true);
     }
+  });
 
-    const baseId = heading.textContent
-      .trim()
-      .toLowerCase()
-      .replace(/[^\p{L}\p{N}\s-]/gu, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-")
-      .replace(/^-|-$/g, "") || `section-${index + 1}`;
+  const searchArticles = (rawQuery) => {
+    const query = normalizeText(rawQuery);
+    const articles = getArticles();
+    let matchCount = 0;
 
-    let uniqueId = baseId;
-    let suffix = 2;
-
-    while (usedIds.has(uniqueId) || document.getElementById(uniqueId)) {
-      uniqueId = `${baseId}-${suffix}`;
-      suffix += 1;
-    }
-
-    usedIds.add(uniqueId);
-    heading.id = uniqueId;
-
-    return uniqueId;
-  };
-
-  const buildTableOfContents = () => {
-    const article = document.querySelector("[data-post-content]");
-    const toc = document.querySelector("[data-toc]");
-
-    if (!article || !toc) {
-      return;
-    }
-
-    const headings = [...article.querySelectorAll("h2, h3")].filter(
-      (heading) => heading.textContent.trim().length > 0
-    );
-
-    if (headings.length === 0) {
-      toc.innerHTML =
-        '<p class="post-toc__empty">این نوشته فهرست مطالب ندارد.</p>';
-      return;
-    }
-
-    const usedIds = new Set();
-    const rootList = document.createElement("ol");
-    const links = [];
-    let currentSublist = null;
-
-    headings.forEach((heading, index) => {
-      const headingId = createHeadingId(heading, index, usedIds);
-      const listItem = document.createElement("li");
-      const link = document.createElement("a");
-
-      link.href = `#${encodeURIComponent(headingId)}`;
-      link.textContent = heading.textContent.trim();
-      link.dataset.targetId = headingId;
-
-      link.addEventListener("click", (event) => {
-        event.preventDefault();
-
-        heading.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-
-        if (window.history.pushState) {
-          window.history.pushState(null, "", `#${encodeURIComponent(headingId)}`);
-        }
-      });
-
-      listItem.appendChild(link);
-      links.push(link);
-
-      if (heading.tagName === "H2") {
-        rootList.appendChild(listItem);
-        currentSublist = null;
-        return;
-      }
-
-      const lastRootItem = rootList.lastElementChild;
-
-      if (!lastRootItem) {
-        rootList.appendChild(listItem);
-        return;
-      }
-
-      if (!currentSublist) {
-        currentSublist = document.createElement("ol");
-        lastRootItem.appendChild(currentSublist);
-      }
-
-      currentSublist.appendChild(listItem);
-    });
-
-    toc.replaceChildren(rootList);
-
-    activateCurrentHeading(headings, links);
-  };
-
-  const activateCurrentHeading = (headings, links) => {
-    if (!("IntersectionObserver" in window)) {
-      if (links[0]) {
-        links[0].classList.add("is-active");
-      }
-
-      return;
-    }
-
-    const visibleHeadings = new Map();
-
-    const setActiveLink = () => {
-      let activeHeading = null;
-
-      headings.forEach((heading) => {
-        const state = visibleHeadings.get(heading.id);
-
-        if (!state?.isIntersecting) {
-          return;
-        }
-
-        if (
-          !activeHeading ||
-          Math.abs(state.top) < Math.abs(visibleHeadings.get(activeHeading.id).top)
-        ) {
-          activeHeading = heading;
-        }
-      });
-
-      if (!activeHeading) {
-        const scrollPosition = window.scrollY + 160;
-
-        activeHeading =
-          [...headings]
-            .reverse()
-            .find((heading) => heading.offsetTop <= scrollPosition) ||
-          headings[0];
-      }
-
-      links.forEach((link) => {
-        const isActive = link.dataset.targetId === activeHeading?.id;
-
-        link.classList.toggle("is-active", isActive);
-
-        if (isActive) {
-          link.setAttribute("aria-current", "location");
-          link.scrollIntoView({ block: "nearest" });
-        } else {
-          link.removeAttribute("aria-current");
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          visibleHeadings.set(entry.target.id, {
-            isIntersecting: entry.isIntersecting,
-            top: entry.boundingClientRect.top
-          });
-        });
-
-        setActiveLink();
-      },
-      {
-        rootMargin: "-110px 0px -65% 0px",
-        threshold: [0, 1]
-      }
-    );
-
-    headings.forEach((heading) => observer.observe(heading));
-
-    window.addEventListener("scroll", setActiveLink, { passive: true });
-    setActiveLink();
-  };
-
-  const initializeCopyLink = () => {
-    const copyButton = document.querySelector("[data-copy-link]");
-
-    if (!copyButton) {
-      return;
-    }
-
-    const label = copyButton.querySelector("[data-copy-label]");
-    const initialLabel = label?.textContent || "کپی لینک";
-    let resetTimer;
-
-    const updateButton = (message, copied = false) => {
-      if (label) {
-        label.textContent = message;
-      }
-
-      copyButton.classList.toggle("is-copied", copied);
-
-      window.clearTimeout(resetTimer);
-
-      resetTimer = window.setTimeout(() => {
-        if (label) {
-          label.textContent = initialLabel;
-        }
-
-        copyButton.classList.remove("is-copied");
-      }, 2200);
-    };
-
-    const fallbackCopy = (text) => {
-      const textarea = document.createElement("textarea");
-
-      textarea.value = text;
-      textarea.setAttribute("readonly", "");
-      textarea.style.position = "fixed";
-      textarea.style.opacity = "0";
-
-      document.body.appendChild(textarea);
-      textarea.select();
-
-      const copied = document.execCommand("copy");
-      textarea.remove();
-
-      return copied;
-    };
-
-    copyButton.addEventListener("click", async () => {
-      const pageUrl = window.location.href;
-
-      try {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(pageUrl);
-        } else if (!fallbackCopy(pageUrl)) {
-          throw new Error("Copy operation failed");
-        }
-
-        updateButton("لینک کپی شد", true);
-      } catch {
-        updateButton("کپی انجام نشد");
-      }
-    });
-  };
-
-  const initializeArticleProgress = () => {
-    const article = document.querySelector("[data-post-content]");
-    const progressBar = document.querySelector("[data-article-progress]");
-    const progressLabel = document.querySelector(
-      "[data-article-progress-label]"
-    );
-
-    if (!article || (!progressBar && !progressLabel)) {
-      return;
-    }
-
-    let ticking = false;
-
-    const updateProgress = () => {
-      const articleRect = article.getBoundingClientRect();
-      const articleTop = window.scrollY + articleRect.top;
-      const readableDistance = Math.max(
-        article.offsetHeight - window.innerHeight * 0.45,
-        1
+    articles.forEach((article) => {
+      const searchableText = normalizeText(
+        article.dataset.searchable || article.textContent
       );
 
-      const currentDistance = window.scrollY - articleTop + 140;
-      const progress = Math.min(
-        100,
-        Math.max(0, (currentDistance / readableDistance) * 100)
-      );
+      const isMatch = !query || searchableText.includes(query);
 
-      if (progressBar) {
-        progressBar.style.width = `${progress}%`;
+      article.hidden = !isMatch;
+      article.classList.toggle("is-search-hidden", !isMatch);
+
+      if (isMatch) {
+        matchCount += 1;
       }
-
-      if (progressLabel) {
-        progressLabel.textContent = `${normalizePersianNumbers(
-          Math.round(progress)
-        )}٪`;
-      }
-
-      ticking = false;
-    };
-
-    const requestProgressUpdate = () => {
-      if (ticking) {
-        return;
-      }
-
-      ticking = true;
-      window.requestAnimationFrame(updateProgress);
-    };
-
-    window.addEventListener("scroll", requestProgressUpdate, {
-      passive: true
     });
 
-    window.addEventListener("resize", requestProgressUpdate, {
-      passive: true
-    });
+    if (searchMessage) {
+      if (!query) {
+        searchMessage.textContent = "";
+      } else if (query.length < 2) {
+        searchMessage.textContent =
+          "لطفاً حداقل دو حرف برای جست‌وجو وارد کنید.";
+      } else if (matchCount) {
+        searchMessage.textContent =
+          `${matchCount.toLocaleString("fa-IR")} مطلب مرتبط پیدا شد.`;
+      } else {
+        searchMessage.textContent =
+          `نتیجه‌ای برای «${rawQuery.trim()}» پیدا نشد.`;
+      }
+    }
 
-    requestProgressUpdate();
+    return matchCount;
   };
 
-  const openInitialHeading = () => {
-    if (!window.location.hash) {
+  searchInput?.addEventListener("input", () => {
+  const query = searchInput.value.trim();
+
+  if (!query) {
+    searchArticles("");
+    return;
+  }
+
+  if (query.length < 2) {
+    if (searchMessage) {
+      searchMessage.textContent =
+        "لطفاً حداقل دو حرف برای جست‌وجو وارد کنید.";
+    }
+    return;
+  }
+
+  searchArticles(query);
+});
+
+
+  searchForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const query = searchInput?.value.trim() || "";
+
+    if (query.length < 2) {
+      if (searchMessage) {
+        searchMessage.textContent =
+          "لطفاً حداقل دو حرف برای جست‌وجو وارد کنید.";
+      }
+
+      searchInput?.focus();
       return;
     }
+
+    searchArticles(query);
+  });
+
+  searchTags.forEach((tag) => {
+    tag.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      const term =
+        tag.dataset.searchTerm ||
+        tag.textContent.trim().replace(/^#/, "");
+
+      if (!searchInput || !term) return;
+
+      searchInput.value = term;
+      searchArticles(term);
+      searchInput.focus();
+    });
+  });
+
+  const setTheme = (theme) => {
+    const isDark = theme === "dark";
+
+    body.classList.toggle("dark-theme", isDark);
+    body.dataset.theme = isDark ? "dark" : "light";
+
+    if (themeIcon) {
+      themeIcon.textContent = isDark ? "☀" : "☾";
+    }
+
+    themeButton?.setAttribute(
+      "aria-label",
+      isDark ? "فعال‌کردن پوسته روشن" : "فعال‌کردن پوسته تاریک"
+    );
+
+    themeButton?.setAttribute(
+      "title",
+      isDark ? "پوسته روشن" : "پوسته تاریک"
+    );
+  };
+
+  let savedTheme = null;
+
+  try {
+    savedTheme =
+      localStorage.getItem("revayat-theme") ||
+      localStorage.getItem("edge-theme");
+  } catch {
+    savedTheme = null;
+  }
+
+  const systemPrefersDark =
+    window.matchMedia?.("(prefers-color-scheme: dark)").matches;
+
+  setTheme(savedTheme || (systemPrefersDark ? "dark" : "light"));
+
+  themeButton?.addEventListener("click", () => {
+    const nextTheme = body.classList.contains("dark-theme")
+      ? "light"
+      : "dark";
+
+    setTheme(nextTheme);
 
     try {
-      const headingId = decodeURIComponent(window.location.hash.slice(1));
-      const heading = document.getElementById(headingId);
-
-      if (!heading) {
-        return;
-      }
-
-      window.setTimeout(() => {
-        heading.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-      }, 150);
+      localStorage.setItem("revayat-theme", nextTheme);
     } catch {
-      // آدرس‌های دارای fragment نامعتبر نادیده گرفته می‌شوند.
+      // پوسته همچنان برای نشست فعلی اعمال می‌شود.
+    }
+  });
+
+  const getArticleCategory = (article) =>
+    normalizeText(
+      article.dataset.category ||
+      article.querySelector(".category")?.textContent ||
+      ""
+    );
+
+  const filterArticles = (selectedFilter) => {
+    const normalizedFilter = normalizeText(selectedFilter);
+    const showAll =
+      !normalizedFilter ||
+      ["all", "همه", "همه مطالب"].includes(normalizedFilter);
+
+    let visibleCount = 0;
+
+    getArticles().forEach((article) => {
+      const category = getArticleCategory(article);
+      const isMatch =
+        showAll ||
+        category === normalizedFilter ||
+        category.includes(normalizedFilter);
+
+      article.hidden = !isMatch;
+      article.classList.toggle("is-filtered-out", !isMatch);
+
+      if (isMatch) {
+        visibleCount += 1;
+      }
+    });
+
+    filterButtons.forEach((button) => {
+      const isActive =
+        normalizeText(button.dataset.filter) === normalizedFilter;
+
+      button.classList.toggle("active", isActive);
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", String(isActive));
+    });
+
+    if (articlesEmptyState) {
+      articlesEmptyState.hidden = visibleCount > 0;
     }
   };
 
-  whenReady(() => {
-    buildTableOfContents();
-    initializeCopyLink();
-    initializeArticleProgress();
-    openInitialHeading();
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      filterArticles(button.dataset.filter || "all");
+    });
   });
-})();
+
+  loadMoreButton?.addEventListener("click", () => {
+    const hiddenExtraArticles = Array.from(
+      document.querySelectorAll(
+        ".article-list .is-extra[hidden], [data-article].is-extra[hidden]"
+      )
+    );
+
+    if (hiddenExtraArticles.length) {
+      hiddenExtraArticles.forEach((article, index) => {
+        article.hidden = false;
+        article.style.animationDelay = `${index * 80}ms`;
+        article.classList.add("is-revealed");
+      });
+
+      loadMoreButton.disabled = true;
+      loadMoreButton.textContent = "همه مطالب نمایش داده شدند";
+      return;
+    }
+
+    loadMoreButton.disabled = true;
+    loadMoreButton.textContent = "همه مطالب نمایش داده شدند";
+  });
+
+  const updateScrollInterface = () => {
+    const scrollTop =
+      window.scrollY || document.documentElement.scrollTop;
+
+    const scrollableHeight =
+      document.documentElement.scrollHeight - window.innerHeight;
+
+    const progress =
+      scrollableHeight > 0
+        ? Math.min((scrollTop / scrollableHeight) * 100, 100)
+        : 0;
+
+    if (readingProgress) {
+      readingProgress.style.width = `${progress}%`;
+      readingProgress.setAttribute("aria-valuenow", String(Math.round(progress)));
+    }
+
+    siteHeader?.classList.toggle("is-scrolled", scrollTop > 12);
+    backToTop?.classList.toggle("is-visible", scrollTop > 550);
+  };
+
+  window.addEventListener("scroll", updateScrollInterface, {
+    passive: true
+  });
+
+  window.addEventListener("resize", () => {
+    if (
+      window.innerWidth > 1050 &&
+      mobileMenu?.classList.contains("is-open")
+    ) {
+      closeMenu(false);
+    }
+
+    updateScrollInterface();
+  });
+
+  backToTop?.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+
+  const navigationLinks = document.querySelectorAll(
+    '.desktop-nav a[href^="#"], .main-menu a[href^="#"]'
+  );
+
+  const observedSections = Array.from(navigationLinks)
+    .map((link) => {
+      const selector = link.getAttribute("href");
+
+      if (!selector || selector === "#") {
+        return null;
+      }
+
+      try {
+        return document.querySelector(selector);
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean);
+
+  if ("IntersectionObserver" in window && observedSections.length) {
+    const navigationObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+
+          navigationLinks.forEach((link) => {
+            const isActive =
+              link.getAttribute("href") === `#${entry.target.id}`;
+
+            link.classList.toggle("active", isActive);
+
+            if (isActive) {
+              link.setAttribute("aria-current", "page");
+            } else {
+              link.removeAttribute("aria-current");
+            }
+          });
+        });
+      },
+      {
+        rootMargin: "-25% 0px -65% 0px",
+        threshold: 0
+      }
+    );
+
+    observedSections.forEach((section) => {
+      navigationObserver.observe(section);
+    });
+  }
+
+  document.querySelectorAll('a[href="#"]').forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+    });
+  });
+
+  if (currentYear) {
+    currentYear.textContent = new Intl.DateTimeFormat("fa-IR", {
+      year: "numeric"
+    }).format(new Date());
+  }
+
+  updateScrollInterface();
+});
