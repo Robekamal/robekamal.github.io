@@ -634,106 +634,106 @@
    Dark mode
 ========================================= */
 
-body.dark-mode .about-hero::before {
+html.dark-mode .about-hero::before {
   background: rgba(78, 162, 132, 0.07);
 }
 
-body.dark-mode .about-hero::after {
+html.dark-mode .about-hero::after {
   background: rgba(214, 153, 77, 0.06);
 }
 
-body.dark-mode .about-hero-content h1,
-body.dark-mode .about-section-heading h2,
-body.dark-mode .about-interest-card h3,
-body.dark-mode .about-value h3 {
+html.dark-mode .about-hero-content h1,
+html.dark-mode .about-section-heading h2,
+html.dark-mode .about-interest-card h3,
+html.dark-mode .about-value h3 {
   color: #edf6f2;
 }
 
-body.dark-mode .about-hero-content .about-lead {
+html.dark-mode .about-hero-content .about-lead {
   color: #dce9e3;
 }
 
-body.dark-mode .about-hero-content > p,
-body.dark-mode .about-prose,
-body.dark-mode .about-interest-card p,
-body.dark-mode .about-value p,
-body.dark-mode .about-stat span {
+html.dark-mode .about-hero-content > p,
+html.dark-mode .about-prose,
+html.dark-mode .about-interest-card p,
+html.dark-mode .about-value p,
+html.dark-mode .about-stat span {
   color: #a9b8b1;
 }
 
-body.dark-mode .about-primary-button {
+html.dark-mode .about-primary-button {
   color: #102a23;
   background: #9bd0ba;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
 }
 
-body.dark-mode .about-primary-button:hover {
+html.dark-mode .about-primary-button:hover {
   color: #0d241e;
   background: #b4dfcd;
 }
 
-body.dark-mode .about-secondary-button,
-body.dark-mode .about-stats,
-body.dark-mode .about-interest-card {
+html.dark-mode .about-secondary-button,
+html.dark-mode .about-stats,
+html.dark-mode .about-interest-card {
   color: #ecf6f1;
   border-color: rgba(255, 255, 255, 0.08);
   background: #19362f;
 }
 
-body.dark-mode .about-secondary-button {
+html.dark-mode .about-secondary-button {
   color: #edf6f2;
 }
 
-body.dark-mode .about-secondary-button:hover {
+html.dark-mode .about-secondary-button:hover {
   border-color: #6ca78f;
 }
 
-body.dark-mode .about-stat:not(:last-child)::after {
+html.dark-mode .about-stat:not(:last-child)::after {
   background-color: rgba(255, 255, 255, 0.08);
 }
 
-body.dark-mode .about-value {
+html.dark-mode .about-value {
   border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
-body.dark-mode .about-stat strong {
+html.dark-mode .about-stat strong {
   color: #9bd0ba;
 }
 
-body.dark-mode .about-image-note {
+html.dark-mode .about-image-note {
   border-color: rgba(255, 255, 255, 0.09);
   background: rgba(25, 54, 47, 0.94);
 }
 
-body.dark-mode .about-image-note strong {
+html.dark-mode .about-image-note strong {
   color: #eef7f3;
 }
 
-body.dark-mode .about-image-note small {
+html.dark-mode .about-image-note small {
   color: #9eaea7;
 }
 
-body.dark-mode .about-image-note > span,
-body.dark-mode .about-value > span {
+html.dark-mode .about-image-note > span,
+html.dark-mode .about-value > span {
   color: #9bd0ba;
   background: rgba(84, 149, 123, 0.14);
 }
 
-body.dark-mode .about-prose blockquote {
+html.dark-mode .about-prose blockquote {
   color: #cce1d8;
   background: #19362f;
 }
 
-body.dark-mode .about-interests-section {
+html.dark-mode .about-interests-section {
   background: #122a24;
 }
 
-body.dark-mode .about-interest-card:hover,
-body.dark-mode .about-interest-card:focus-within {
+html.dark-mode .about-interest-card:hover,
+html.dark-mode .about-interest-card:focus-within {
   border-color: rgba(112, 180, 152, 0.35);
 }
 
-body.dark-mode .about-social {
+html.dark-mode .about-social {
   color: #a9b8b1;
 }
 
