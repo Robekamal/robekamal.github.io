@@ -209,28 +209,68 @@ permalink: /about/
           </p>
         </div>
 
-        <div class="about-contact-links">
-
-        <a href="https://instagram.com/amirhoseinbasari"
-           target="_blank"
-           rel="noopener noreferrer">
-          <span>Instagram</span>
-          <strong>@amirhoseinbasari</strong>
-        </a>
-      
-        <a href="https://t.me/Robekamal"
-           target="_blank"
-           rel="noopener noreferrer">
-          <span>Telegram</span>
-          <strong>@Robekamal</strong>
-        </a>
-      
-        <a href="mailto:20ahbm@gmail.com">
-          <span>Email</span>
-          <strong>20ahbm@gmail.com</strong>
-        </a>
-
-</div>
+                <div class="about-contact-links">
+        
+          <!-- Instagram -->
+          <a href="https://instagram.com/amirhoseinbasari"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="اینستاگرام امیرحسین بصاری">
+        
+            <span class="about-contact-platform">
+              <svg class="about-social-icon"
+                   viewBox="0 0 24 24"
+                   aria-hidden="true">
+                <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm0 2h10c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3zm11.25 1.5a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5zM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/>
+              </svg>
+        
+              <span>Instagram</span>
+            </span>
+        
+            <strong>@amirhoseinbasari</strong>
+          </a>
+        
+        
+          <!-- Telegram -->
+          <a href="https://t.me/Robekamal"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="تلگرام امیرحسین بصاری">
+        
+            <span class="about-contact-platform">
+              <svg class="about-social-icon"
+                   viewBox="0 0 24 24"
+                   aria-hidden="true">
+                <path d="M21.94 4.66 18.91 19c-.23 1.01-.82 1.26-1.66.79l-4.61-3.4-2.22 2.14c-.25.25-.45.45-.93.45l.33-4.7 8.56-7.74c.37-.33-.08-.52-.58-.19L7.22 13.02l-4.56-1.43c-.99-.31-1.01-.99.21-1.47L20.7 3.25c.83-.3 1.55.2 1.24 1.41z"/>
+              </svg>
+        
+              <span>Telegram</span>
+            </span>
+        
+            <strong>@Robekamal</strong>
+          </a>
+        
+        
+          <!-- Email -->
+          <a href="mailto:20ahbm@gmail.com"
+             aria-label="ارسال ایمیل">
+        
+            <span class="about-contact-platform">
+              <svg class="about-social-icon"
+                   viewBox="0 0 24 24"
+                   aria-hidden="true">
+                <path d="M20 4H4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h16a2 2 0 0 0 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
+              </svg>
+        
+              <span>Email</span>
+            </span>
+        
+            <strong>20ahbm@gmail.com</strong>
+          </a>
+        
+        </div>
+        
+        </div>
 
       </div>
 
