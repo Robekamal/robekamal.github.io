@@ -581,137 +581,235 @@ permalink: /
   </section>
 
   <section
-    class="section content-section"
-    id="articles"
-    aria-labelledby="articlesTitle"
-  >
-    <div class="container content-layout">
+  class="journal-section"
+  id="articles"
+  aria-labelledby="articlesTitle"
+>
+  <div class="container">
 
-      <div class="articles-column">
+    <header class="journal-header reveal-item">
 
-        <div class="section-heading compact-heading">
-          <div>
-            <span class="eyebrow">تازه منتشر شده</span>
-            <h2 id="articlesTitle">آخرین نوشته‌ها</h2>
-          </div>
-        </div>
+      <div class="journal-heading">
 
-        <div
-          class="article-filters"
-          id="articleFilters"
-          aria-label="فیلتر نوشته‌ها"
+        <span class="journal-kicker">
+          <span class="journal-kicker-line"></span>
+          تازه منتشر شده
+        </span>
+
+        <h2 id="articlesTitle">
+          آخرین
+          <span>روایت‌ها</span>
+        </h2>
+
+        <p>
+          تازه‌ترین تجربه‌ها، یادداشت‌ها و آموخته‌هایی که
+          در مسیر زندگی و یادگیری ثبت کرده‌ام.
+        </p>
+
+      </div>
+
+      <div
+        class="journal-filters"
+        id="articleFilters"
+        aria-label="فیلتر نوشته‌ها"
+      >
+        <button
+          class="journal-filter is-active"
+          type="button"
+          data-filter="all"
+          aria-pressed="true"
         >
-          <button
-            class="active"
-            type="button"
-            data-filter="all"
-            aria-pressed="true"
+          همه
+        </button>
+
+        <button
+          class="journal-filter"
+          type="button"
+          data-filter="experience"
+          aria-pressed="false"
+        >
+          تجربه‌ها
+        </button>
+
+        <button
+          class="journal-filter"
+          type="button"
+          data-filter="notes"
+          aria-pressed="false"
+        >
+          یادداشت‌ها
+        </button>
+
+        <button
+          class="journal-filter"
+          type="button"
+          data-filter="tutorial"
+          aria-pressed="false"
+        >
+          آموزش‌ها
+        </button>
+
+        <button
+          class="journal-filter"
+          type="button"
+          data-filter="learning"
+          aria-pressed="false"
+        >
+          یادگیری
+        </button>
+
+        <button
+          class="journal-filter"
+          type="button"
+          data-filter="life"
+          aria-pressed="false"
+        >
+          زندگی
+        </button>
+      </div>
+
+    </header>
+
+    {% if published_posts.size > 0 %}
+
+      <div
+        class="journal-grid"
+        id="articleList"
+        aria-live="polite"
+      >
+
+        {% for post in published_posts %}
+
+          {% assign post_category = post.category | default: "experience" %}
+
+          {% assign post_image = post.image
+            | default: "/images/post-placeholder.jpg"
+          %}
+
+          {% case post_category %}
+            {% when "experience" %}
+              {% assign category_label = "تجربه" %}
+              {% assign category_class = "journal-category-green" %}
+
+            {% when "notes" %}
+              {% assign category_label = "یادداشت" %}
+              {% assign category_class = "journal-category-purple" %}
+
+            {% when "tutorial" %}
+              {% assign category_label = "آموزش" %}
+              {% assign category_class = "journal-category-blue" %}
+
+            {% when "learning" %}
+              {% assign category_label = "یادگیری" %}
+              {% assign category_class = "journal-category-orange" %}
+
+            {% when "life" %}
+              {% assign category_label = "زندگی" %}
+              {% assign category_class = "journal-category-green" %}
+
+            {% else %}
+              {% assign category_label = "مقاله" %}
+              {% assign category_class = "journal-category-green" %}
+          {% endcase %}
+
+          <article
+            class="journal-card{% if forloop.first %} journal-card-featured{% endif %}"
+            data-journal-card
+            data-article
+            data-category="{{ post_category | escape }}"
+            data-original-index="{{ forloop.index0 }}"
+            data-searchable="{{ post.title | escape }} {{ post.excerpt | strip_html | escape }} {{ post.tags | join: ' ' | escape }}"
+            {% if forloop.index > 7 %}hidden{% endif %}
           >
-            همه
-          </button>
 
-          <button
-            type="button"
-            data-filter="experience"
-            aria-pressed="false"
-          >
-            تجربه‌ها
-          </button>
+            <div class="journal-card-inner">
 
-          <button
-            type="button"
-            data-filter="notes"
-            aria-pressed="false"
-          >
-            یادداشت‌ها
-          </button>
-
-          <button
-            type="button"
-            data-filter="tutorial"
-            aria-pressed="false"
-          >
-            آموزش‌ها
-          </button>
-
-          <button
-            type="button"
-            data-filter="learning"
-            aria-pressed="false"
-          >
-            یادگیری
-          </button>
-
-          <button
-            type="button"
-            data-filter="life"
-            aria-pressed="false"
-          >
-            زندگی
-          </button>
-        </div>
-
-        <div class="article-list" id="articleList">
-
-          {% for post in published_posts %}
-
-            {% assign post_category = post.category | default: "experience" %}
-            {% assign post_image = post.image
-              | default: "/images/post-placeholder.jpg"
-            %}
-
-            {% case post_category %}
-              {% when "experience" %}
-                {% assign category_label = "تجربه" %}
-                {% assign category_class = "category-green" %}
-              {% when "notes" %}
-                {% assign category_label = "یادداشت" %}
-                {% assign category_class = "category-purple" %}
-              {% when "tutorial" %}
-                {% assign category_label = "آموزش" %}
-                {% assign category_class = "category-blue" %}
-              {% when "learning" %}
-                {% assign category_label = "یادگیری" %}
-                {% assign category_class = "category-orange" %}
-              {% when "life" %}
-                {% assign category_label = "زندگی" %}
-                {% assign category_class = "category-green" %}
-              {% else %}
-                {% assign category_label = "مقاله" %}
-                {% assign category_class = "category-green" %}
-            {% endcase %}
-
-            <article
-              class="article-list-item{% if forloop.index > 6 %} is-extra{% endif %}"
-              data-article
-              data-category="{{ post_category | escape }}"
-              data-searchable="{{ post.title | escape }} {{ post.excerpt | strip_html | escape }} {{ post.tags | join: ' ' | escape }}"
-              {% if forloop.index > 6 %}hidden{% endif %}
-            >
               <a
-                class="article-list-image"
+                class="journal-card-media"
                 href="{{ post.url | relative_url }}"
+                aria-label="خواندن مطلب {{ post.title | escape }}"
+                tabindex="-1"
               >
                 <img
                   src="{{ post_image | relative_url }}"
                   alt="{{ post.title | escape }}"
-                  loading="lazy"
+                  {% if forloop.first %}
+                    width="1400"
+                    height="900"
+                    loading="eager"
+                  {% else %}
+                    width="1000"
+                    height="700"
+                    loading="lazy"
+                  {% endif %}
                 >
+
+                <span class="journal-image-overlay"></span>
+
+                {% if forloop.first %}
+                  <span class="journal-featured-label">
+                    جدیدترین روایت
+                  </span>
+                {% endif %}
+
+                <span
+                  class="journal-card-arrow"
+                  aria-hidden="true"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="22"
+                    height="22"
+                    fill="none"
+                  >
+                    <path
+                      d="M19 12H5M11 18L5 12L11 6"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
               </a>
 
-              <div class="article-list-content">
+              <div class="journal-card-content">
 
-                <div class="post-meta">
+                <div class="journal-card-meta">
+
                   <a
-                    class="category {{ category_class }}"
+                    class="journal-category {{ category_class }}"
                     href="{{ '/category/' | relative_url }}?name={{ post_category | url_encode }}"
                   >
                     {{ category_label }}
                   </a>
 
-                  <span>
+                  <span class="journal-reading-time">
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="16"
+                      height="16"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="8.5"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                      />
+                      <path
+                        d="M12 7.5V12L15 14"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+
                     {{ post.reading_time | default: "۵ دقیقه مطالعه" }}
                   </span>
+
                 </div>
 
                 <h3>
@@ -721,76 +819,158 @@ permalink: /
                 </h3>
 
                 {% if post.excerpt %}
-                  <p>{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
+                  <p class="journal-card-excerpt">
+                    {% if forloop.first %}
+                      {{ post.excerpt | strip_html | truncatewords: 38 }}
+                    {% else %}
+                      {{ post.excerpt | strip_html | truncatewords: 24 }}
+                    {% endif %}
+                  </p>
                 {% endif %}
 
-                <div class="post-card-footer">
+                <footer class="journal-card-footer">
 
-                  <div class="mini-author">
+                  <div class="journal-author">
 
                     {% if post.author_image %}
                       <img
                         src="{{ post.author_image | relative_url }}"
                         alt=""
-                        width="80"
-                        height="80"
+                        width="72"
+                        height="72"
                         loading="lazy"
                       >
                     {% else %}
                       <img
                         src="https://i.pravatar.cc/80?img=11"
                         alt=""
-                        width="80"
-                        height="80"
+                        width="72"
+                        height="72"
                         loading="lazy"
                       >
                     {% endif %}
 
-                    <span>
-                      {{ post.author | default: "نویسنده روایت" }}
-                    </span>
+                    <div>
+                      <strong>
+                        {{ post.author | default: "نویسنده روایت" }}
+                      </strong>
+
+                      <time datetime="{{ post.date | date_to_xmlschema }}">
+                        {% if post.display_date %}
+                          {{ post.display_date }}
+                        {% else %}
+                          {{ post.date | date: "%Y/%m/%d" }}
+                        {% endif %}
+                      </time>
+                    </div>
+
                   </div>
 
-                  <time datetime="{{ post.date | date_to_xmlschema }}">
-                    {% if post.display_date %}
-                      {{ post.display_date }}
-                    {% else %}
-                      {{ post.date | date: "%Y/%m/%d" }}
-                    {% endif %}
-                  </time>
+                  <a
+                    class="journal-read-link"
+                    href="{{ post.url | relative_url }}"
+                    aria-label="مطالعه {{ post.title | escape }}"
+                  >
+                    مطالعه
+                    <span aria-hidden="true">←</span>
+                  </a>
 
-                </div>
+                </footer>
 
               </div>
-            </article>
 
-          {% endfor %}
+            </div>
 
-        </div>
+          </article>
 
-        <p
-          class="empty-state"
-          id="articlesEmptyState"
-          {% if published_posts.size > 0 %}hidden{% endif %}
-        >
-          مطلبی در این دسته پیدا نشد.
-        </p>
-
-        <button
-          class="load-more-button"
-          id="loadMoreButton"
-          type="button"
-          aria-controls="articleList"
-          {% if published_posts.size <= 6 %}hidden{% endif %}
-        >
-          نمایش مطالب بیشتر
-        </button>
+        {% endfor %}
 
       </div>
 
-      
+      <div
+        class="journal-empty"
+        id="articlesEmptyState"
+        hidden
+      >
+        <span aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            width="34"
+            height="34"
+            fill="none"
+          >
+            <circle
+              cx="11"
+              cy="11"
+              r="6.5"
+              stroke="currentColor"
+              stroke-width="1.5"
+            />
+            <path
+              d="M16 16L20 20"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+          </svg>
+        </span>
 
-    </div>
-  </section>
+        <h3>مطلبی پیدا نشد</h3>
+
+        <p>
+          هنوز مطلبی در این دسته منتشر نشده است.
+        </p>
+      </div>
+
+      {% if published_posts.size > 7 %}
+
+        <div class="journal-load-more-wrapper">
+
+          <button
+            class="journal-load-more"
+            id="loadMoreButton"
+            type="button"
+            aria-controls="articleList"
+          >
+            <span>نمایش روایت‌های بیشتر</span>
+
+            <svg
+              viewBox="0 0 24 24"
+              width="19"
+              height="19"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M6 9L12 15L18 9"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+
+        </div>
+
+      {% endif %}
+
+    {% else %}
+
+      <div class="journal-empty">
+
+        <h3>هنوز روایتی منتشر نشده است</h3>
+
+        <p>
+          اولین نوشته به‌زودی در این قسمت قرار می‌گیرد.
+        </p>
+
+      </div>
+
+    {% endif %}
+
+  </div>
+</section>
+
 
 </main>
