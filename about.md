@@ -32,14 +32,11 @@ permalink: /about/
         </p>
 
         <div class="about-actions">
-          <a class="about-primary-btn" href="{{ '/archive/' | relative_url }}">
+          <a class="about-primary-btn" href="{{ '/' | relative_url }}">
             خواندن نوشته‌ها
           </a>
 
-          <a class="about-secondary-btn" href="{{ '/' | relative_url }}">
-  بازگشت به خانه
-</a>
-
+          <a class="about-secondary-btn" href="#about-contact">
             ارتباط با من
           </a>
         </div>
