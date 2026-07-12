@@ -893,4 +893,137 @@ document.addEventListener("DOMContentLoaded", () => {
   clearSearchResults();
   updateOverlay();
   updateScrollInterface();
+  /* =======================================================
+   Modern journal section
+======================================================= */
+
+const journalSection =
+  document.querySelector(".journal-section");
+
+const journalGrid =
+  document.getElementById("articleList");
+
+const journalCards = Array.from(
+  document.querySelectorAll("[data-journal-card]")
+);
+
+const journalFilterButtons = Array.from(
+  document.querySelectorAll(".journal-filter")
+);
+
+const journalLoadMoreButton =
+  document.getElementById("loadMoreButton");
+
+const journalEmptyState =
+  document.getElementById("articlesEmptyState");
+
+const journalReducedMotion =
+  window.matchMedia &&
+  window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+let journalActiveFilter = "all";
+let journalVisibleLimit = 7;
+
+/* =======================================================
+   Scroll reveal animation
+======================================================= */
+
+function revealJournalCard(card, delay = 0) {
+  if (!card || card.hidden) return;
+
+  if (journalReducedMotion) {
+    card.classList.add("is-revealed");
+    return;
+  }
+
+  window.setTimeout(() => {
+    card.classList.add("is-revealed");
+  }, delay);
+}
+
+if (
+  "IntersectionObserver" in window &&
+  !journalReducedMotion
+) {
+  const journalObserver =
+    new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+
+          const visibleCards =
+            journalCards.filter(
+              (card) =>
+                !card.hidden &&
+                !card.classList.contains(
+                  "is-revealed"
+                )
+            );
+
+          const cardIndex =
+            visibleCards.indexOf(entry.target);
+
+          const delay =
+            Math.max(cardIndex, 0) * 80;
+
+          revealJournalCard(
+            entry.target,
+            Math.min(delay, 320)
+          );
+
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.14,
+        rootMargin: "0px 0px -45px 0px"
+      }
+    );
+
+  journalCards.forEach((card) => {
+    if (!card.hidden) {
+      journalObserver.observe(card);
+    }
+  });
+
+  const journalHeader =
+    document.querySelector(".journal-header");
+
+  if (journalHeader) {
+    journalHeader.style.opacity = "0";
+    journalHeader.style.transform =
+      "translateY(25px)";
+
+    journalHeader.style.transition =
+      "opacity 700ms ease, transform 700ms ease";
+
+    const headerObserver =
+      new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+
+            entry.target.style.opacity = "1";
+            entry.target.style.transform =
+              "translateY(0)";
+
+            observer.unobserve(entry.target);
+          });
+        },
+        {
+          threshold: 0.2
+        }
+      );
+
+    headerObserver.observe(journalHeader);
+  }
+} else {
+  journalCards.forEach((card) => {
+    card.classList.add("is-revealed");
+  });
+}
+
+/* ============================
 });
