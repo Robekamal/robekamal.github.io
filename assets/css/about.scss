@@ -1187,3 +1187,10 @@ body.dark-mode.about-page {
     break-inside: avoid;
   }
 }
+body.about-page {
+  background: red !important;
+}
+
+body.about-page .about-content {
+  outline: 10px solid blue !important;
+}
