@@ -1,26 +1,41 @@
 ---
 layout: default
-title: آرشیو نوشته‌ها
+title: "آرشیو نوشته‌ها"
 permalink: /archive/
 ---
 
 <section class="page-heading">
-  <h1>آرشیو نوشته‌ها</h1>
+  <h1>{{ page.title }}</h1>
   <p>همه مطالب منتشرشده در وبلاگ</p>
 </section>
 
-<section class="archive-list">
-  {% for post in site.posts %}
-    <article class="archive-item">
-      <div>
-        <h2>
-          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-        </h2>
+<section class="archive-list" aria-label="فهرست نوشته‌ها">
+  {% if site.posts.size > 0 %}
+    {% for post in site.posts %}
+      <article class="archive-item">
+        <div class="archive-item__content">
+          <h2 class="archive-item__title">
+            <a href="{{ post.url | relative_url }}">
+              {{ post.title | escape }}
+            </a>
+          </h2>
 
-        <p>{{ post.excerpt | strip_html | truncate: 160 }}</p>
-      </div>
+          {% if post.excerpt %}
+            <p class="archive-item__excerpt">
+              {{ post.excerpt | strip_html | normalize_whitespace | truncate: 160 | escape }}
+            </p>
+          {% endif %}
+        </div>
 
-      <time>{{ post.date | date: "%Y/%m/%d" }}</time>
-    </article>
-  {% endfor %}
+        <time
+          class="archive-item__date"
+          datetime="{{ post.date | date_to_xmlschema }}"
+        >
+          {{ post.date | date: "%Y/%m/%d" }}
+        </time>
+      </article>
+    {% endfor %}
+  {% else %}
+    <p class="archive-list__empty">هنوز نوشته‌ای منتشر نشده است.</p>
+  {% endif %}
 </section>
