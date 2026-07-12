@@ -183,7 +183,7 @@ permalink: /about/
         <div class="about-value-item">
           <span>03</span>
           <div>
-            <h3>به قلم اوردن زندگی</h3>
+            <h3>به قلم آوردن زندگی</h3>
             <p>
               این وبلاگ یک مقصد نهایی نیست؛ بخشی از فرایند لمس مسیر زندگی است.
             </p>
@@ -203,7 +203,7 @@ permalink: /about/
       <div class="about-contact-card">
         <div>
           <span class="about-eyebrow">ارتباط</span>
-          <h2>اگر دوست داشتی، در ارتباط باشیم.</h2>
+          <h2>پل ارتباطی من و تو.</h2>
           <p>
             برای گفت‌وگو، پیشنهاد، همکاری یا دنبال‌کردن نوشته‌های جدید می‌توانی از راه‌های زیر با من در ارتباط باشی.
           </p>
@@ -215,7 +215,7 @@ permalink: /about/
           <a href="https://instagram.com/amirhoseinbasari"
              target="_blank"
              rel="noopener noreferrer"
-             aria-label="اینستاگرام امیرحسین بصاری">
+             aria-label="اینستاگرام امیرحسین بصری">
         
             <span class="about-contact-platform">
               <svg class="about-social-icon"
