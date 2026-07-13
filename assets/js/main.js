@@ -11,38 +11,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const siteHeader = document.getElementById("siteHeader");
 
   const menuButton = document.getElementById("menuButton");
-  const closeMenuButton =
-    document.getElementById("closeMenuButton");
+  const closeMenuButton = document.getElementById("closeMenuButton");
   const mobileMenu = document.getElementById("mobileMenu");
 
-  const searchButton =
-    document.getElementById("searchButton");
-  const closeSearchButton =
-    document.getElementById("closeSearchButton");
-  const searchPanel =
-    document.getElementById("searchPanel");
-  const searchForm =
-    document.getElementById("searchForm");
-  const searchInput =
-    document.getElementById("searchInput");
-  const searchMessage =
-    document.getElementById("searchMessage");
-  const searchResults =
-    document.getElementById("searchResults");
-  const searchTagButtons =
-    document.querySelectorAll("[data-search-term]");
+  const searchButton = document.getElementById("searchButton");
+  const closeSearchButton = document.getElementById("closeSearchButton");
+  const searchPanel = document.getElementById("searchPanel");
+  const searchForm = document.getElementById("searchForm");
+  const searchInput = document.getElementById("searchInput");
+  const searchMessage = document.getElementById("searchMessage");
+  const searchResults = document.getElementById("searchResults");
+  const searchOpenButtons = document.querySelectorAll(".js-open-search");
+  const searchTagButtons = document.querySelectorAll("[data-search-term]");
 
-  const pageOverlay =
-    document.getElementById("pageOverlay");
-  const readingProgress =
-    document.getElementById("readingProgress");
-  const postContent =
-    document.querySelector(".post-content");
+  const pageOverlay = document.getElementById("pageOverlay");
+  const readingProgress = document.getElementById("readingProgress");
+  const postContent = document.querySelector(".post-content");
 
-  const backToTop =
-    document.getElementById("backToTop");
-  const currentYear =
-    document.getElementById("currentYear");
+  const backToTop = document.getElementById("backToTop");
+  const currentYear = document.getElementById("currentYear");
 
   /* =======================================================
      Force light mode
@@ -66,9 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.removeItem("color-theme");
   } catch (error) {
     /*
-     * localStorage ممکن است در حالت خصوصی مرورگر
-     * یا به‌دلیل تنظیمات امنیتی در دسترس نباشد.
-     */
+      localStorage ممکن است در حالت خصوصی مرورگر
+      یا به‌دلیل تنظیمات امنیتی در دسترس نباشد.
+    */
   }
 
   /* =======================================================
@@ -92,11 +79,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function escapeHTML(value = "") {
-    const temporaryElement =
-      document.createElement("div");
-
+    const temporaryElement = document.createElement("div");
     temporaryElement.textContent = String(value);
-
     return temporaryElement.innerHTML;
   }
 
@@ -110,29 +94,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function isMobileMenuOpen() {
-    return (
-      mobileMenu?.classList.contains("is-open") ??
-      false
-    );
+    return mobileMenu?.classList.contains("is-open") ?? false;
   }
 
   function isSearchOpen() {
-    return (
-      searchPanel?.classList.contains("is-open") ??
-      false
-    );
+    return searchPanel?.classList.contains("is-open") ?? false;
   }
 
   function updateOverlay() {
     if (!pageOverlay) return;
 
-    const shouldShowOverlay =
-      isMobileMenuOpen() || isSearchOpen();
+    const shouldShowOverlay = isMobileMenuOpen() || isSearchOpen();
 
-    pageOverlay.classList.toggle(
-      "is-visible",
-      shouldShowOverlay
-    );
+    pageOverlay.classList.toggle("is-visible", shouldShowOverlay);
 
     pageOverlay.setAttribute(
       "aria-hidden",
@@ -155,21 +129,14 @@ document.addEventListener("DOMContentLoaded", () => {
     mobileMenu.setAttribute("aria-hidden", "false");
 
     menuButton.classList.add("is-active");
-    menuButton.setAttribute(
-      "aria-expanded",
-      "true"
-    );
-    menuButton.setAttribute(
-      "aria-label",
-      "بستن منوی اصلی"
-    );
+    menuButton.setAttribute("aria-expanded", "true");
+    menuButton.setAttribute("aria-label", "بستن منوی اصلی");
 
     updateOverlay();
 
-    const firstFocusableElement =
-      mobileMenu.querySelector(
-        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
-      );
+    const firstFocusableElement = mobileMenu.querySelector(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
 
     window.setTimeout(() => {
       firstFocusableElement?.focus();
@@ -185,14 +152,8 @@ document.addEventListener("DOMContentLoaded", () => {
     mobileMenu.setAttribute("aria-hidden", "true");
 
     menuButton.classList.remove("is-active");
-    menuButton.setAttribute(
-      "aria-expanded",
-      "false"
-    );
-    menuButton.setAttribute(
-      "aria-label",
-      "بازکردن منوی اصلی"
-    );
+    menuButton.setAttribute("aria-expanded", "false");
+    menuButton.setAttribute("aria-label", "بازکردن منوی اصلی");
 
     updateOverlay();
 
@@ -209,226 +170,118 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  closeMenuButton?.addEventListener(
-    "click",
-    () => {
-      closeMobileMenu();
-    }
-  );
+  closeMenuButton?.addEventListener("click", () => {
+    closeMobileMenu();
+  });
 
-  mobileMenu
-    ?.querySelectorAll("a")
-    .forEach((link) => {
-      link.addEventListener("click", () => {
-        closeMobileMenu(false);
-      });
+  mobileMenu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      closeMobileMenu(false);
     });
+  });
 
   /* =======================================================
      Search panel
   ======================================================= */
 
+  let searchIndex = [];
+  let searchIndexLoaded = false;
+  let searchIndexLoading = false;
+
+  function clearSearchResults() {
+    if (searchMessage) {
+      searchMessage.textContent =
+        "برای شروع، عبارتی را وارد کنید.";
+    }
+
+    if (searchResults) {
+      searchResults.innerHTML = "";
+    }
+  }
+
   function openSearchPanel() {
-    if (!searchPanel || !searchButton) return;
+    if (!searchPanel) return;
 
     closeMobileMenu(false);
 
     searchPanel.classList.add("is-open");
-    searchPanel.setAttribute(
-      "aria-hidden",
-      "false"
-    );
+    searchPanel.setAttribute("aria-hidden", "false");
 
-    searchButton.setAttribute(
-      "aria-expanded",
-      "true"
-    );
-    searchButton.setAttribute(
-      "aria-label",
-      "بستن جست‌وجو"
-    );
+    searchOpenButtons.forEach((button) => {
+      button.setAttribute("aria-expanded", "true");
+    });
+
+    if (searchButton) {
+      searchButton.setAttribute("aria-label", "بستن جست‌وجو");
+    }
 
     updateOverlay();
 
     window.setTimeout(() => {
       searchInput?.focus();
     }, 100);
-  }
-
-  function closeSearchPanel(returnFocus = true) {
-    if (!searchPanel || !searchButton) return;
-
-    const wasOpen = isSearchOpen();
-
-    searchPanel.classList.remove("is-open");
-    searchPanel.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-    searchButton.setAttribute(
-      "aria-expanded",
-      "false"
-    );
-    searchButton.setAttribute(
-      "aria-label",
-      "بازکردن جست‌وجو"
-    );
-
-    updateOverlay();
-
-    if (wasOpen && returnFocus) {
-      searchButton.focus();
-    }
-  }
-
-  searchButton?.addEventListener("click", () => {
-    if (isSearchOpen()) {
-      closeSearchPanel();
-    } else {
-      openSearchPanel();
-    }
-  });
-
-  closeSearchButton?.addEventListener(
-    "click",
-    () => {
-      closeSearchPanel();
-    }
-  );
-
-  pageOverlay?.addEventListener("click", () => {
-    closeMobileMenu(false);
-    closeSearchPanel(false);
-    updateOverlay();
-  });
-
- document.addEventListener("DOMContentLoaded", () => {
-  const body = document.body;
-
-  const pageOverlay = document.getElementById("pageOverlay");
-  const mobileMenu = document.getElementById("mobileMenu");
-  const menuButton = document.getElementById("menuButton");
-  const closeMenuButton = document.getElementById("closeMenuButton");
-
-  const searchPanel = document.getElementById("searchPanel");
-  const searchForm = document.getElementById("searchForm");
-  const searchInput = document.getElementById("searchInput");
-  const searchMessage = document.getElementById("searchMessage");
-  const searchResults = document.getElementById("searchResults");
-  const closeSearchButton = document.getElementById("closeSearchButton");
-  const searchOpenButtons = document.querySelectorAll(".js-open-search");
-  const searchTagButtons = document.querySelectorAll("[data-search-term]");
-
-  let searchIndex = [];
-  let searchIndexLoaded = false;
-  let searchIndexLoading = false;
-
-  function setOverlayState(isVisible) {
-    if (!pageOverlay) return;
-    pageOverlay.classList.toggle("is-visible", isVisible);
-    pageOverlay.setAttribute("aria-hidden", String(!isVisible));
-  }
-
-  function closeMobileMenu() {
-    if (!mobileMenu || !menuButton) return;
-    mobileMenu.classList.remove("is-open");
-    mobileMenu.setAttribute("aria-hidden", "true");
-    menuButton.setAttribute("aria-expanded", "false");
-    body.classList.remove("menu-open");
-    setOverlayState(false);
-  }
-
-  function openMobileMenu() {
-    if (!mobileMenu || !menuButton) return;
-    mobileMenu.classList.add("is-open");
-    mobileMenu.setAttribute("aria-hidden", "false");
-    menuButton.setAttribute("aria-expanded", "true");
-    body.classList.add("menu-open");
-    setOverlayState(true);
-  }
-
-  function openSearchPanel() {
-    if (!searchPanel) return;
-
-    closeMobileMenu();
-
-    searchPanel.classList.add("is-open");
-    searchPanel.setAttribute("aria-hidden", "false");
-    body.classList.add("search-open");
-    setOverlayState(true);
-
-    searchOpenButtons.forEach((button) => {
-      button.setAttribute("aria-expanded", "true");
-    });
-
-    window.setTimeout(() => {
-      searchInput?.focus();
-    }, 60);
 
     if (!searchIndexLoaded && !searchIndexLoading) {
       loadSearchIndex();
     }
   }
 
-  function closeSearchPanel() {
+  function closeSearchPanel(returnFocus = true) {
     if (!searchPanel) return;
+
+    const wasOpen = isSearchOpen();
 
     searchPanel.classList.remove("is-open");
     searchPanel.setAttribute("aria-hidden", "true");
-    body.classList.remove("search-open");
 
     searchOpenButtons.forEach((button) => {
       button.setAttribute("aria-expanded", "false");
     });
 
-    setOverlayState(false);
-  }
+    if (searchButton) {
+      searchButton.setAttribute("aria-label", "بازکردن جست‌وجو");
+    }
 
-  function escapeHtml(value) {
-    return String(value)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#39;");
-  }
+    updateOverlay();
 
-  function normalizeText(value) {
-    return String(value || "")
-      .toLowerCase()
-      .trim()
-      .replace(/\s+/g, " ");
+    if (wasOpen && returnFocus) {
+      searchButton?.focus();
+    }
   }
 
   function renderSearchResults(items, query) {
     if (!searchResults || !searchMessage) return;
 
     if (!query) {
-      searchMessage.textContent = "برای شروع، عبارتی را وارد کنید.";
-      searchResults.innerHTML = "";
+      clearSearchResults();
       return;
     }
 
     if (!items.length) {
-      searchMessage.textContent = `نتیجه‌ای برای «${query}» پیدا نشد.`;
+      searchMessage.textContent =
+        `نتیجه‌ای برای «${query}» پیدا نشد.`;
+
       searchResults.innerHTML = "";
       return;
     }
 
-    searchMessage.textContent = `${items.length} نتیجه برای «${query}» پیدا شد.`;
+    searchMessage.textContent =
+      `${items.length} نتیجه برای «${query}» پیدا شد.`;
 
     searchResults.innerHTML = items
       .map((item) => {
         const excerpt = item.excerpt || item.content || "";
+
         return `
           <article class="search-result-item">
-            <a class="search-result-link" href="${item.url}">
+            <a class="search-result-link" href="${escapeHTML(item.url || "#")}">
               <div class="search-result-meta">
-                <span>${escapeHtml(item.date || "")}</span>
+                <span>${escapeHTML(item.date || "")}</span>
               </div>
-              <h3>${escapeHtml(item.title || "بدون عنوان")}</h3>
-              <p>${escapeHtml(excerpt)}</p>
+
+              <h3>${escapeHTML(item.title || "بدون عنوان")}</h3>
+
+              <p>${escapeHTML(excerpt.slice(0, 180))}</p>
             </a>
           </article>
         `;
@@ -437,21 +290,27 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function runSearch(rawQuery) {
-    const query = normalizeText(rawQuery);
+    const query = normalizePersianText(rawQuery);
 
     if (!query) {
-      renderSearchResults([], "");
+      clearSearchResults();
       return;
     }
 
     const results = searchIndex.filter((item) => {
-      const haystack = normalizeText([
-        item.title,
-        item.excerpt,
-        item.content,
-        Array.isArray(item.categories) ? item.categories.join(" ") : "",
-        Array.isArray(item.tags) ? item.tags.join(" ") : ""
-      ].join(" "));
+      const haystack = normalizePersianText(
+        [
+          item.title,
+          item.excerpt,
+          item.content,
+          Array.isArray(item.categories)
+            ? item.categories.join(" ")
+            : "",
+          Array.isArray(item.tags)
+            ? item.tags.join(" ")
+            : ""
+        ].join(" ")
+      );
 
       return haystack.includes(query);
     });
@@ -463,7 +322,8 @@ document.addEventListener("DOMContentLoaded", () => {
     searchIndexLoading = true;
 
     if (searchMessage) {
-      searchMessage.textContent = "در حال بارگذاری جست‌وجو...";
+      searchMessage.textContent =
+        "در حال بارگذاری جست‌وجو...";
     }
 
     try {
@@ -478,52 +338,43 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const data = await response.json();
+
       searchIndex = Array.isArray(data) ? data : [];
       searchIndexLoaded = true;
 
       if (searchInput?.value.trim()) {
         runSearch(searchInput.value);
-      } else if (searchMessage) {
-        searchMessage.textContent = "برای شروع، عبارتی را وارد کنید.";
+      } else {
+        clearSearchResults();
       }
     } catch (error) {
       if (searchMessage) {
-        searchMessage.textContent = "بارگذاری جست‌وجو انجام نشد.";
+        searchMessage.textContent =
+          "بارگذاری جست‌وجو انجام نشد.";
       }
-      searchResults.innerHTML = "";
+
+      if (searchResults) {
+        searchResults.innerHTML = "";
+      }
+
       console.error(error);
     } finally {
       searchIndexLoading = false;
     }
   }
 
-  menuButton?.addEventListener("click", () => {
-    const isOpen = mobileMenu?.classList.contains("is-open");
-    if (isOpen) {
-      closeMobileMenu();
-    } else {
-      openMobileMenu();
-    }
-  });
-
-  closeMenuButton?.addEventListener("click", closeMobileMenu);
-
   searchOpenButtons.forEach((button) => {
-    button.addEventListener("click", openSearchPanel);
+    button.addEventListener("click", () => {
+      if (isSearchOpen()) {
+        closeSearchPanel();
+      } else {
+        openSearchPanel();
+      }
+    });
   });
 
-  closeSearchButton?.addEventListener("click", closeSearchPanel);
-
-  pageOverlay?.addEventListener("click", () => {
-    closeMobileMenu();
+  closeSearchButton?.addEventListener("click", () => {
     closeSearchPanel();
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeMobileMenu();
-      closeSearchPanel();
-    }
   });
 
   searchForm?.addEventListener("submit", (event) => {
@@ -538,6 +389,7 @@ document.addEventListener("DOMContentLoaded", () => {
   searchTagButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const term = button.getAttribute("data-search-term") || "";
+
       if (!searchInput) return;
 
       searchInput.value = term;
@@ -546,10 +398,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  if (searchMessage) {
-    searchMessage.textContent = "برای شروع، عبارتی را وارد کنید.";
-  }
-});
+  /* =======================================================
+     Overlay interactions
+  ======================================================= */
+
+  pageOverlay?.addEventListener("click", () => {
+    closeMobileMenu(false);
+    closeSearchPanel(false);
+    updateOverlay();
+  });
 
   /* =======================================================
      Reading progress
@@ -559,51 +416,34 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!readingProgress) return;
 
     if (!postContent) {
-      readingProgress.style.transform =
-        "scaleX(0)";
-
+      readingProgress.style.transform = "scaleX(0)";
       readingProgress.hidden = true;
-
       return;
     }
 
     readingProgress.hidden = false;
 
-    const contentRect =
-      postContent.getBoundingClientRect();
+    const contentRect = postContent.getBoundingClientRect();
+    const contentTop = window.scrollY + contentRect.top;
+    const contentHeight = postContent.offsetHeight;
 
-    const contentTop =
-      window.scrollY + contentRect.top;
-
-    const contentHeight =
-      postContent.offsetHeight;
-
-    const viewportReferenceOffset =
-      window.innerHeight * 0.35;
-
-    const viewportReference =
-      window.scrollY +
-      viewportReferenceOffset;
+    const viewportReferenceOffset = window.innerHeight * 0.35;
+    const viewportReference = window.scrollY + viewportReferenceOffset;
 
     const readableDistance = Math.max(
-      contentHeight -
-        viewportReferenceOffset,
+      contentHeight - viewportReferenceOffset,
       1
     );
 
     const progress = Math.min(
       Math.max(
-        (
-          viewportReference -
-          contentTop
-        ) / readableDistance,
+        (viewportReference - contentTop) / readableDistance,
         0
       ),
       1
     );
 
-    readingProgress.style.transform =
-      `scaleX(${progress})`;
+    readingProgress.style.transform = `scaleX(${progress})`;
   }
 
   /* =======================================================
@@ -614,23 +454,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const scrollPosition = window.scrollY;
 
     if (backToTop) {
-      const shouldShowButton =
-        scrollPosition > 600;
+      const shouldShowButton = scrollPosition > 600;
 
-      backToTop.classList.toggle(
-        "is-visible",
-        shouldShowButton
-      );
+      backToTop.classList.toggle("is-visible", shouldShowButton);
 
       backToTop.setAttribute(
         "aria-hidden",
-        shouldShowButton
-          ? "false"
-          : "true"
+        shouldShowButton ? "false" : "true"
       );
 
-      backToTop.tabIndex =
-        shouldShowButton ? 0 : -1;
+      backToTop.tabIndex = shouldShowButton ? 0 : -1;
     }
 
     if (siteHeader) {
@@ -643,17 +476,12 @@ document.addEventListener("DOMContentLoaded", () => {
     updateReadingProgress();
   }
 
-  backToTop?.addEventListener(
-    "click",
-    () => {
-      window.scrollTo({
-        top: 0,
-        behavior: prefersReducedMotion()
-          ? "auto"
-          : "smooth"
-      });
-    }
-  );
+  backToTop?.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: prefersReducedMotion() ? "auto" : "smooth"
+    });
+  });
 
   let scrollFrameRequested = false;
 
@@ -666,7 +494,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       window.requestAnimationFrame(() => {
         updateScrollInterface();
-
         scrollFrameRequested = false;
       });
     },
@@ -675,207 +502,166 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   );
 
-  window.addEventListener(
-    "resize",
-    () => {
-      updateScrollInterface();
+  window.addEventListener("resize", () => {
+    updateScrollInterface();
 
-      /*
-       * اگر عرض صفحه از حالت موبایل بزرگ‌تر شد،
-       * منوی موبایل به‌صورت خودکار بسته می‌شود.
-       */
-
-      if (
-        window.innerWidth > 900 &&
-        isMobileMenuOpen()
-      ) {
-        closeMobileMenu(false);
-      }
+    if (window.innerWidth > 900 && isMobileMenuOpen()) {
+      closeMobileMenu(false);
     }
-  );
+  });
 
   /* =======================================================
      Keyboard interactions
   ======================================================= */
 
-  document.addEventListener(
-    "keydown",
-    (event) => {
-      if (event.key === "Escape") {
-        if (isSearchOpen()) {
-          closeSearchPanel();
-          return;
-        }
-
-        if (isMobileMenuOpen()) {
-          closeMobileMenu();
-        }
-
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      if (isSearchOpen()) {
+        closeSearchPanel();
         return;
       }
 
-      const activeElement =
-        document.activeElement;
-
-      const activeTag =
-        activeElement?.tagName;
-
-      const isTyping =
-        activeTag === "INPUT" ||
-        activeTag === "TEXTAREA" ||
-        activeTag === "SELECT" ||
-        activeElement?.isContentEditable;
-
-      if (
-        event.key === "/" &&
-        !isTyping &&
-        !event.ctrlKey &&
-        !event.metaKey &&
-        !event.altKey
-      ) {
-        event.preventDefault();
-        openSearchPanel();
+      if (isMobileMenuOpen()) {
+        closeMobileMenu();
       }
+
+      return;
     }
-  );
+
+    const activeElement = document.activeElement;
+    const activeTag = activeElement?.tagName;
+
+    const isTyping =
+      activeTag === "INPUT" ||
+      activeTag === "TEXTAREA" ||
+      activeTag === "SELECT" ||
+      activeElement?.isContentEditable;
+
+    if (
+      event.key === "/" &&
+      !isTyping &&
+      !event.ctrlKey &&
+      !event.metaKey &&
+      !event.altKey
+    ) {
+      event.preventDefault();
+      openSearchPanel();
+    }
+  });
 
   /* =======================================================
      Footer year
   ======================================================= */
 
   if (currentYear) {
-    currentYear.textContent =
-      new Intl.DateTimeFormat(
-        "fa-IR",
-        {
-          year: "numeric"
-        }
-      ).format(new Date());
+    currentYear.textContent = new Intl.DateTimeFormat(
+      "fa-IR",
+      {
+        year: "numeric"
+      }
+    ).format(new Date());
   }
 
   /* =======================================================
-     Initial state
+     Modern journal section
   ======================================================= */
 
-  clearSearchResults();
-  updateOverlay();
-  updateScrollInterface();
-  /* =======================================================
-   Modern journal section
-======================================================= */
+  const latestSection = document.querySelector(".latest-section");
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const section = document.querySelector(".latest-section");
-
-    if (!section) {
-      return;
-    }
-
+  if (latestSection) {
     const cards = Array.from(
-      section.querySelectorAll("[data-latest-card]")
+      latestSection.querySelectorAll("[data-latest-card]")
     );
 
     const filterButtons = Array.from(
-      section.querySelectorAll(".latest-filter")
+      latestSection.querySelectorAll(".latest-filter")
     );
 
-    const emptyState = section.querySelector("#latestEmpty");
-    const loadMoreButton = section.querySelector("#latestLoadMore");
-    const loadMoreWrapper = section.querySelector(
+    const emptyState = latestSection.querySelector("#latestEmpty");
+    const loadMoreButton = latestSection.querySelector("#latestLoadMore");
+    const loadMoreWrapper = latestSection.querySelector(
       "#latestLoadMoreWrapper"
     );
 
-    if (!cards.length) {
-      return;
-    }
+    if (cards.length) {
+      const initialVisibleCount = 7;
+      const loadMoreStep = 4;
 
-    const initialVisibleCount = 7;
-    const loadMoreStep = 4;
+      let activeFilter = "all";
+      let visibleCount = initialVisibleCount;
 
-    let activeFilter = "all";
-    let visibleCount = initialVisibleCount;
+      function getFilteredCards() {
+        return cards.filter((card) => {
+          const category = card.dataset.category;
 
-    /**
-     * کارت‌های سازگار با فیلتر فعلی را برمی‌گرداند.
-     */
-    function getFilteredCards() {
-      return cards.filter(function (card) {
-        const category = card.dataset.category;
+          return (
+            activeFilter === "all" ||
+            category === activeFilter
+          );
+        });
+      }
 
-        return (
-          activeFilter === "all" ||
-          category === activeFilter
-        );
-      });
-    }
+      function renderCards(options = {}) {
+        const shouldAnimate = options.animate === true;
+        const filteredCards = getFilteredCards();
 
-    /**
-     * وضعیت کارت‌ها، حالت خالی و دکمه نمایش بیشتر را به‌روزرسانی می‌کند.
-     */
-    function renderCards(options = {}) {
-      const shouldAnimate = options.animate === true;
-      const filteredCards = getFilteredCards();
+        cards.forEach((card) => {
+          card.hidden = true;
+          card.classList.remove("is-visible");
+        });
 
-      cards.forEach(function (card) {
-        card.hidden = true;
-        card.classList.remove("is-visible");
-      });
+        filteredCards.forEach((card, index) => {
+          if (index < visibleCount) {
+            card.hidden = false;
 
-      filteredCards.forEach(function (card, index) {
-        if (index < visibleCount) {
-          card.hidden = false;
-
-          if (shouldAnimate) {
-            requestAnimationFrame(function () {
+            if (shouldAnimate) {
+              requestAnimationFrame(() => {
+                card.classList.add("is-visible");
+              });
+            } else {
               card.classList.add("is-visible");
-            });
+            }
           }
+        });
+
+        if (emptyState) {
+          emptyState.hidden = filteredCards.length !== 0;
         }
-      });
 
-      if (emptyState) {
-        emptyState.hidden = filteredCards.length !== 0;
+        if (loadMoreWrapper) {
+          loadMoreWrapper.hidden =
+            filteredCards.length === 0 ||
+            visibleCount >= filteredCards.length;
+        }
       }
 
-      if (loadMoreWrapper) {
-        loadMoreWrapper.hidden =
-          filteredCards.length === 0 ||
-          visibleCount >= filteredCards.length;
+      function setActiveFilter(button) {
+        filterButtons.forEach((filterButton) => {
+          const isCurrentButton = filterButton === button;
+
+          filterButton.classList.toggle(
+            "is-active",
+            isCurrentButton
+          );
+
+          filterButton.setAttribute(
+            "aria-pressed",
+            String(isCurrentButton)
+          );
+        });
       }
-    }
 
-    /**
-     * فعال‌سازی دکمه فیلتر انتخاب‌شده
-     */
-    function setActiveFilter(button) {
-      filterButtons.forEach(function (filterButton) {
-        const isCurrentButton = filterButton === button;
+      filterButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          activeFilter = button.dataset.filter || "all";
+          visibleCount = initialVisibleCount;
 
-        filterButton.classList.toggle(
-          "is-active",
-          isCurrentButton
-        );
-
-        filterButton.setAttribute(
-          "aria-pressed",
-          String(isCurrentButton)
-        );
+          setActiveFilter(button);
+          renderCards({ animate: true });
+        });
       });
-    }
 
-    filterButtons.forEach(function (button) {
-      button.addEventListener("click", function () {
-        activeFilter = button.dataset.filter || "all";
-        visibleCount = initialVisibleCount;
-
-        setActiveFilter(button);
-        renderCards({ animate: true });
-      });
-    });
-
-    if (loadMoreButton) {
-      loadMoreButton.addEventListener("click", function () {
+      loadMoreButton?.addEventListener("click", () => {
         const previouslyVisible = visibleCount;
 
         visibleCount += loadMoreStep;
@@ -886,24 +672,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (firstNewCard) {
           firstNewCard.setAttribute("tabindex", "-1");
+
           firstNewCard.focus({
             preventScroll: true
           });
 
           firstNewCard.scrollIntoView({
-            behavior: window.matchMedia(
-              "(prefers-reduced-motion: reduce)"
-            ).matches
-              ? "auto"
-              : "smooth",
+            behavior: prefersReducedMotion() ? "auto" : "smooth",
             block: "center"
           });
         }
       });
+
+      renderCards();
     }
+  }
 
-    renderCards();
-  });
-</script>
+  /* =======================================================
+     Initial state
+  ======================================================= */
 
+  clearSearchResults();
+  updateOverlay();
+  updateScrollInterface();
+
+  console.log("Main JS loaded successfully.");
 });
