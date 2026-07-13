@@ -5330,8 +5330,52 @@ img {
   .search-error {
     background: #281c1c;
   }
+  
 }
- 
+ .icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+  padding: 0;
+
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.icon-button svg {
+  display: block;
+  pointer-events: none;
+}
+
+.search-button {
+  position: relative;
+  z-index: 20;
+
+  color: #1d2a23;
+  border: 1px solid rgba(35, 91, 67, 0.14);
+}
+
+.search-button:hover {
+  color: #ffffff;
+  background-color: #235b43;
+  border-color: #235b43;
+  transform: translateY(-1px);
+}
+
 .quote-avatar::after {
   display: none;
 }
