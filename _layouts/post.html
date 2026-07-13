@@ -39,30 +39,27 @@ layout: default
 
         <div class="post-meta">
 
-          <span class="post-author" itemprop="author">
-            {{ page.author | default: site.author | default: "نویسنده وبلاگ" }}
-          </span>
+  {% if page.date %}
+    <time
+      datetime="{{ page.date | date_to_xmlschema }}"
+      itemprop="datePublished"
+    >
+      {{ page.date | date: "%Y/%m/%d" }}
+    </time>
+  {% endif %}
 
-          {% if page.date %}
-            <span aria-hidden="true">•</span>
+  {% if page.date and page.reading_time %}
+    <span aria-hidden="true">•</span>
+  {% endif %}
 
-            <time
-              datetime="{{ page.date | date_to_xmlschema }}"
-              itemprop="datePublished"
-            >
-              {{ page.date | date: "%Y/%m/%d" }}
-            </time>
-          {% endif %}
+  {% if page.reading_time %}
+    <span>
+      {{ page.reading_time }} دقیقه مطالعه
+    </span>
+  {% endif %}
 
-          {% if page.reading_time %}
-            <span aria-hidden="true">•</span>
+</div>
 
-            <span>
-              {{ page.reading_time }} دقیقه مطالعه
-            </span>
-          {% endif %}
-
-        </div>
 
       </div>
 
