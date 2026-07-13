@@ -897,133 +897,146 @@ document.addEventListener("DOMContentLoaded", () => {
    Modern journal section
 ======================================================= */
 
-const journalSection =
-  document.querySelector(".journal-section");
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const section = document.querySelector(".latest-section");
 
-const journalGrid =
-  document.getElementById("articleList");
+    if (!section) {
+      return;
+    }
 
-const journalCards = Array.from(
-  document.querySelectorAll("[data-journal-card]")
-);
-
-const journalFilterButtons = Array.from(
-  document.querySelectorAll(".journal-filter")
-);
-
-const journalLoadMoreButton =
-  document.getElementById("loadMoreButton");
-
-const journalEmptyState =
-  document.getElementById("articlesEmptyState");
-
-const journalReducedMotion =
-  window.matchMedia &&
-  window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches;
-
-let journalActiveFilter = "all";
-let journalVisibleLimit = 7;
-
-/* =======================================================
-   Scroll reveal animation
-======================================================= */
-
-function revealJournalCard(card, delay = 0) {
-  if (!card || card.hidden) return;
-
-  if (journalReducedMotion) {
-    card.classList.add("is-revealed");
-    return;
-  }
-
-  window.setTimeout(() => {
-    card.classList.add("is-revealed");
-  }, delay);
-}
-
-if (
-  "IntersectionObserver" in window &&
-  !journalReducedMotion
-) {
-  const journalObserver =
-    new IntersectionObserver(
-      (entries, observer) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-
-          const visibleCards =
-            journalCards.filter(
-              (card) =>
-                !card.hidden &&
-                !card.classList.contains(
-                  "is-revealed"
-                )
-            );
-
-          const cardIndex =
-            visibleCards.indexOf(entry.target);
-
-          const delay =
-            Math.max(cardIndex, 0) * 80;
-
-          revealJournalCard(
-            entry.target,
-            Math.min(delay, 320)
-          );
-
-          observer.unobserve(entry.target);
-        });
-      },
-      {
-        threshold: 0.14,
-        rootMargin: "0px 0px -45px 0px"
-      }
+    const cards = Array.from(
+      section.querySelectorAll("[data-latest-card]")
     );
 
-  journalCards.forEach((card) => {
-    if (!card.hidden) {
-      journalObserver.observe(card);
+    const filterButtons = Array.from(
+      section.querySelectorAll(".latest-filter")
+    );
+
+    const emptyState = section.querySelector("#latestEmpty");
+    const loadMoreButton = section.querySelector("#latestLoadMore");
+    const loadMoreWrapper = section.querySelector(
+      "#latestLoadMoreWrapper"
+    );
+
+    if (!cards.length) {
+      return;
     }
-  });
 
-  const journalHeader =
-    document.querySelector(".journal-header");
+    const initialVisibleCount = 7;
+    const loadMoreStep = 4;
 
-  if (journalHeader) {
-    journalHeader.style.opacity = "0";
-    journalHeader.style.transform =
-      "translateY(25px)";
+    let activeFilter = "all";
+    let visibleCount = initialVisibleCount;
 
-    journalHeader.style.transition =
-      "opacity 700ms ease, transform 700ms ease";
+    /**
+     * کارت‌های سازگار با فیلتر فعلی را برمی‌گرداند.
+     */
+    function getFilteredCards() {
+      return cards.filter(function (card) {
+        const category = card.dataset.category;
 
-    const headerObserver =
-      new IntersectionObserver(
-        (entries, observer) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
+        return (
+          activeFilter === "all" ||
+          category === activeFilter
+        );
+      });
+    }
 
-            entry.target.style.opacity = "1";
-            entry.target.style.transform =
-              "translateY(0)";
+    /**
+     * وضعیت کارت‌ها، حالت خالی و دکمه نمایش بیشتر را به‌روزرسانی می‌کند.
+     */
+    function renderCards(options = {}) {
+      const shouldAnimate = options.animate === true;
+      const filteredCards = getFilteredCards();
 
-            observer.unobserve(entry.target);
-          });
-        },
-        {
-          threshold: 0.2
+      cards.forEach(function (card) {
+        card.hidden = true;
+        card.classList.remove("is-visible");
+      });
+
+      filteredCards.forEach(function (card, index) {
+        if (index < visibleCount) {
+          card.hidden = false;
+
+          if (shouldAnimate) {
+            requestAnimationFrame(function () {
+              card.classList.add("is-visible");
+            });
+          }
         }
-      );
+      });
 
-    headerObserver.observe(journalHeader);
-  }
-} else {
-  journalCards.forEach((card) => {
-    card.classList.add("is-revealed");
+      if (emptyState) {
+        emptyState.hidden = filteredCards.length !== 0;
+      }
+
+      if (loadMoreWrapper) {
+        loadMoreWrapper.hidden =
+          filteredCards.length === 0 ||
+          visibleCount >= filteredCards.length;
+      }
+    }
+
+    /**
+     * فعال‌سازی دکمه فیلتر انتخاب‌شده
+     */
+    function setActiveFilter(button) {
+      filterButtons.forEach(function (filterButton) {
+        const isCurrentButton = filterButton === button;
+
+        filterButton.classList.toggle(
+          "is-active",
+          isCurrentButton
+        );
+
+        filterButton.setAttribute(
+          "aria-pressed",
+          String(isCurrentButton)
+        );
+      });
+    }
+
+    filterButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        activeFilter = button.dataset.filter || "all";
+        visibleCount = initialVisibleCount;
+
+        setActiveFilter(button);
+        renderCards({ animate: true });
+      });
+    });
+
+    if (loadMoreButton) {
+      loadMoreButton.addEventListener("click", function () {
+        const previouslyVisible = visibleCount;
+
+        visibleCount += loadMoreStep;
+        renderCards({ animate: true });
+
+        const filteredCards = getFilteredCards();
+        const firstNewCard = filteredCards[previouslyVisible];
+
+        if (firstNewCard) {
+          firstNewCard.setAttribute("tabindex", "-1");
+          firstNewCard.focus({
+            preventScroll: true
+          });
+
+          firstNewCard.scrollIntoView({
+            behavior: window.matchMedia(
+              "(prefers-reduced-motion: reduce)"
+            ).matches
+              ? "auto"
+              : "smooth",
+            block: "center"
+          });
+        }
+      });
+    }
+
+    renderCards();
   });
-}
+</script>
 
-/* ============================
 });
