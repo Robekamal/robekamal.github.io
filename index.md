@@ -125,39 +125,15 @@ permalink: /
                 {% endif %}
 
                 <div class="author-row">
-
-                  {% if hero_post.author_image %}
-                    <img
-                      src="{{ hero_post.author_image | relative_url }}"
-                      alt="تصویر {{ hero_post.author | default: 'نویسنده روایت' | escape }}"
-                      width="100"
-                      height="100"
-                    >
-                  {% else %}
-                    <img
-                      src="https://i.pravatar.cc/80?img=11"
-                      alt="تصویر نویسنده روایت"
-                      width="100"
-                      height="100"
-                    >
-                  {% endif %}
-
-                  <div>
-                    <strong>
-                      {{ hero_post.author | default: "نویسنده روایت" }}
-                    </strong>
-
-                    <span>
-                      <time datetime="{{ hero_post.date | date_to_xmlschema }}">
-                        {% if hero_post.display_date %}
-                          {{ hero_post.display_date }}
-                        {% else %}
-                          {{ hero_post.date | date: "%Y/%m/%d" }}
-                        {% endif %}
-                      </time>
-                    </span>
-                  </div>
-
+                  <span>
+                    <time datetime="{{ hero_post.date | date_to_xmlschema }}">
+                      {% if hero_post.display_date %}
+                        {{ hero_post.display_date }}
+                      {% else %}
+                        {{ hero_post.date | date: "%Y/%m/%d" }}
+                      {% endif %}
+                    </time>
+                  </span>
                 </div>
 
               </div>
@@ -375,32 +351,6 @@ permalink: /
                   {% endif %}
 
                   <div class="post-card-footer">
-
-                    <div class="mini-author">
-
-                      {% if post.author_image %}
-                        <img
-                          src="{{ post.author_image | relative_url }}"
-                          alt=""
-                          width="80"
-                          height="80"
-                          loading="lazy"
-                        >
-                      {% else %}
-                        <img
-                          src="https://i.pravatar.cc/80?img=11"
-                          alt=""
-                          width="80"
-                          height="80"
-                          loading="lazy"
-                        >
-                      {% endif %}
-
-                      <span>
-                        {{ post.author | default: "نویسنده روایت" }}
-                      </span>
-                    </div>
-
                     <time datetime="{{ post.date | date_to_xmlschema }}">
                       {% if post.display_date %}
                         {{ post.display_date }}
@@ -408,7 +358,6 @@ permalink: /
                         {{ post.date | date: "%Y/%m/%d" }}
                       {% endif %}
                     </time>
-
                   </div>
 
                 </div>
@@ -495,31 +444,6 @@ permalink: /
                 {% endif %}
 
                 <div class="post-card-footer">
-
-                  <div class="mini-author">
-                    {% if post.author_image %}
-                      <img
-                        src="{{ post.author_image | relative_url }}"
-                        alt=""
-                        width="80"
-                        height="80"
-                        loading="lazy"
-                      >
-                    {% else %}
-                      <img
-                        src="https://i.pravatar.cc/80?img=11"
-                        alt=""
-                        width="80"
-                        height="80"
-                        loading="lazy"
-                      >
-                    {% endif %}
-
-                    <span>
-                      {{ post.author | default: "نویسنده روایت" }}
-                    </span>
-                  </div>
-
                   <time datetime="{{ post.date | date_to_xmlschema }}">
                     {% if post.display_date %}
                       {{ post.display_date }}
@@ -527,7 +451,6 @@ permalink: /
                       {{ post.date | date: "%Y/%m/%d" }}
                     {% endif %}
                   </time>
-
                 </div>
 
               </div>
@@ -931,53 +854,19 @@ permalink: /
 
               <footer class="latest-card__footer">
 
-                <div class="latest-author">
+                <time datetime="{{ post.date | date_to_xmlschema }}">
 
-                  {% if post.author_image %}
+                  {% if post.display_date %}
 
-                    <img
-                      src="{{ post.author_image | relative_url }}"
-                      alt="تصویر {{ post.author | default: 'نویسنده روایت' | escape }}"
-                      width="64"
-                      height="64"
-                      loading="lazy"
-                    >
+                    {{ post.display_date }}
 
                   {% else %}
 
-                    <img
-                      src="https://i.pravatar.cc/80?img=11"
-                      alt="تصویر نویسنده روایت"
-                      width="64"
-                      height="64"
-                      loading="lazy"
-                    >
+                    {{ post.date | date: "%Y/%m/%d" }}
 
                   {% endif %}
 
-                  <div>
-
-                    <strong>
-                      {{ post.author | default: "نویسنده روایت" }}
-                    </strong>
-
-                    <time datetime="{{ post.date | date_to_xmlschema }}">
-
-                      {% if post.display_date %}
-
-                        {{ post.display_date }}
-
-                      {% else %}
-
-                        {{ post.date | date: "%Y/%m/%d" }}
-
-                      {% endif %}
-
-                    </time>
-
-                  </div>
-
-                </div>
+                </time>
 
                 <a
                   class="latest-read-more"
@@ -1131,4 +1020,3 @@ permalink: /
   src="{{ '/assets/js/quote-slider.js' | relative_url }}"
   defer>
 </script>
-
