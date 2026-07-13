@@ -274,7 +274,7 @@ permalink: /about/
 
       </div>
 
-    </div>
+   
   </section>
 
 </main>
