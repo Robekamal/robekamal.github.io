@@ -21,21 +21,40 @@
     >
       <a href="{{ '/' | relative_url }}">خانه</a>
       <a href="{{ '/about/' | relative_url }}">درباره من</a>
+      <a href="{{ '/search/' | relative_url }}">جست‌وجو</a>
     </nav>
 
     <div class="header-actions">
 
-            <button
+      <a
         class="icon-button search-button"
         id="searchButton"
-        type="button"
-        aria-label="بازکردن جست‌وجو"
-        aria-expanded="false"
-        aria-controls="searchPanel"
+        href="{{ '/search/' | relative_url }}"
+        aria-label="جست‌وجو در سایت"
         title="جست‌وجو"
       >
-        <span aria-hidden="true">⌕</span>
-      </button>
+        <svg
+          width="21"
+          height="21"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+        >
+          <circle
+            cx="11"
+            cy="11"
+            r="7"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+          <path
+            d="M16.5 16.5L21 21"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+      </a>
 
       <button
         class="menu-button"
@@ -96,6 +115,7 @@
   <nav class="mobile-nav" aria-label="دسترسی موبایل">
     <a href="{{ '/' | relative_url }}">خانه</a>
     <a href="{{ '/about/' | relative_url }}">درباره من</a>
+    <a href="{{ '/search/' | relative_url }}">جست‌وجو</a>
   </nav>
 
   <div class="mobile-menu-footer">
@@ -128,62 +148,3 @@
     </div>
   </div>
 </aside>
-
-<section
-  class="search-panel"
-  id="searchPanel"
-  role="dialog"
-  aria-modal="true"
-  aria-hidden="true"
-  aria-labelledby="searchPanelTitle"
->
-  <div class="search-dialog">
-
-    <button
-      class="close-button search-close"
-      id="closeSearchButton"
-      type="button"
-      aria-label="بستن جست‌وجو"
-    >
-      ×
-    </button>
-
-    <span class="eyebrow">جست‌وجو در {{ site.title | default: "روایت" }}</span>
-
-    <h2 id="searchPanelTitle">دنبال چه چیزی می‌گردید؟</h2>
-
-    <p>عنوان، موضوع یا واژه موردنظر خود را وارد کنید.</p>
-
-    <form
-      class="search-form"
-      id="searchForm"
-      role="search"
-    >
-      <label class="sr-only" for="searchInput">عبارت موردنظر</label>
-
-      <input
-        id="searchInput"
-        name="query"
-        type="search"
-        placeholder="مثلاً نوشتن، تمرکز یا یادگیری..."
-        autocomplete="off"
-      >
-
-      <button type="submit">جست‌وجو</button>
-    </form>
-
-    <p
-      class="search-message"
-      id="searchMessage"
-      aria-live="polite"
-    ></p>
-
-    <div
-      class="search-results"
-      id="searchResults"
-      aria-live="polite"
-    ></div>
-
-  </div>
-</section>
-
