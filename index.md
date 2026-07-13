@@ -1127,4 +1127,8 @@ permalink: /
   </div>
 </section>
   
+<script
+  src="{{ '/assets/js/quote-slider.js' | relative_url }}"
+  defer>
+</script>
 
