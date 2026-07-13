@@ -3837,6 +3837,15 @@ img {
     transition: none !important;
   }
 }
+.latest-header,
+.latest-list,
+.latest-card,
+.latest-card:not(.latest-card--featured):nth-child(odd),
+.latest-card:not(.latest-card--featured):nth-child(even) {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
 
 
 html {
