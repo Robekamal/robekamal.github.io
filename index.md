@@ -581,402 +581,421 @@ permalink: /
   </section>
 
    <section
-    class="latest-section"
-    id="articles"
-    aria-labelledby="latestTitle"
-  >
-    <div class="container">
-  
-      <!-- عنوان و فیلترها -->
-      <header class="latest-header">
-  
-        <div class="latest-heading">
-          <span class="latest-eyebrow">
-            <span aria-hidden="true"></span>
-            تازه منتشر شده
-          </span>
-  
-          <h2 id="latestTitle">
-            آخرین روایت‌ها
-          </h2>
-  
-          <p>
-            تازه‌ترین تجربه‌ها، یادداشت‌ها و آموخته‌هایی که
-            در مسیر زندگی و یادگیری ثبت کرده‌ام.
-          </p>
-        </div>
-  
-        <div
-          class="latest-filters"
-          id="latestFilters"
-          aria-label="فیلتر نوشته‌ها"
-        >
-          <button
-            class="latest-filter is-active"
-            type="button"
-            data-filter="all"
-            aria-pressed="true"
-          >
-            همه
-          </button>
-  
-          <button
-            class="latest-filter"
-            type="button"
-            data-filter="experience"
-            aria-pressed="false"
-          >
-            تجربه‌ها
-          </button>
-  
-          <button
-            class="latest-filter"
-            type="button"
-            data-filter="notes"
-            aria-pressed="false"
-          >
-            یادداشت‌ها
-          </button>
-  
-          <button
-            class="latest-filter"
-            type="button"
-            data-filter="tutorial"
-            aria-pressed="false"
-          >
-            آموزش‌ها
-          </button>
-  
-          <button
-            class="latest-filter"
-            type="button"
-            data-filter="learning"
-            aria-pressed="false"
-          >
-            یادگیری
-          </button>
-  
-          <button
-            class="latest-filter"
-            type="button"
-            data-filter="life"
-            aria-pressed="false"
-          >
-            زندگی
-          </button>
-        </div>
-  
-      </header>
-  
-      {% if published_posts.size > 0 %}
-  
-        <!-- فهرست مطالب -->
-        <div
-          class="latest-list"
-          id="latestList"
-          aria-live="polite"
-        >
-  
-          {% for post in published_posts %}
-  
-            {% assign post_category = post.category | default: "experience" %}
-            {% assign post_image = post.image | default: "/images/post-placeholder.jpg" %}
-  
-            {% case post_category %}
-              {% when "experience" %}
-                {% assign category_label = "تجربه" %}
-                {% assign category_class = "latest-category--green" %}
-  
-              {% when "notes" %}
-                {% assign category_label = "یادداشت" %}
-                {% assign category_class = "latest-category--purple" %}
-  
-              {% when "tutorial" %}
-                {% assign category_label = "آموزش" %}
-                {% assign category_class = "latest-category--blue" %}
-  
-              {% when "learning" %}
-                {% assign category_label = "یادگیری" %}
-                {% assign category_class = "latest-category--orange" %}
-  
-              {% when "life" %}
-                {% assign category_label = "زندگی" %}
-                {% assign category_class = "latest-category--rose" %}
-  
-              {% else %}
-                {% assign category_label = "مقاله" %}
-                {% assign category_class = "latest-category--gray" %}
-            {% endcase %}
-  
-            <article
-              class="latest-card{% if forloop.first %} latest-card--featured{% endif %}"
-              data-latest-card
-              data-category="{{ post_category | escape }}"
-              data-index="{{ forloop.index0 }}"
-              data-searchable="{{ post.title | escape }} {{ post.excerpt | strip_html | escape }} {{ post.tags | join: ' ' | escape }}"
-            >
-  
-              <!-- تصویر مطلب -->
-              <a
-                class="latest-card__media"
-                href="{{ post.url | relative_url }}"
-                aria-label="خواندن مطلب: {{ post.title | escape }}"
-              >
-                <img
-                  src="{{ post_image | relative_url }}"
-                  alt="{{ post.title | escape }}"
-                  width="{% if forloop.first %}1400{% else %}900{% endif %}"
-                  height="{% if forloop.first %}900{% else %}650{% endif %}"
-                  {% if forloop.first %}
-                    loading="eager"
-                  {% else %}
-                    loading="lazy"
-                  {% endif %}
-                >
-  
-                <span class="latest-card__overlay" aria-hidden="true"></span>
-  
-                {% if forloop.first %}
-                  <span class="latest-card__new">
-                    جدیدترین روایت
-                  </span>
-                {% endif %}
-              </a>
-  
-              <!-- محتوای مطلب -->
-              <div class="latest-card__content">
-  
-                <div class="latest-card__meta">
-  
-                  <a
-                    class="latest-category {{ category_class }}"
-                    href="{{ '/category/' | relative_url }}?name={{ post_category | url_encode }}"
-                  >
-                    {{ category_label }}
-                  </a>
-  
-                                    <span class="latest-reading-time">
-                    <svg
-                      viewBox="0 0 24 24"
-                      width="16"
-                      height="16"
-                      fill="none"
-                      aria-hidden="true"
-                    >
-                      <circle
-                        cx="12"
-                        cy="12"
-                        r="8.5"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                      />
-                  
-                      <path
-                        d="M12 7.5V12L15 14"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                      />
-                    </svg>
-                  
-                    {% include reading-time.html content=post.content %}
-                  </span>
+  class="latest-section"
+  id="articles"
+  aria-labelledby="latestTitle"
+>
+  <div class="container">
 
-  
-                </div>
-  
-                <h3 class="latest-card__title">
-                  <a href="{{ post.url | relative_url }}">
-                    {{ post.title | default: "بدون عنوان" }}
-                  </a>
-                </h3>
-  
-                {% if post.excerpt %}
-                  <p class="latest-card__excerpt">
-                    {% if forloop.first %}
-                      {{ post.excerpt | strip_html | truncatewords: 35 }}
-                    {% else %}
-                      {{ post.excerpt | strip_html | truncatewords: 22 }}
-                    {% endif %}
-                  </p>
-                {% endif %}
-  
-                <footer class="latest-card__footer">
-  
-                  <div class="latest-author">
-  
-                    {% if post.author_image %}
-                      <img
-                        src="{{ post.author_image | relative_url }}"
-                        alt=""
-                        width="64"
-                        height="64"
-                        loading="lazy"
-                      >
-                    {% else %}
-                      <img
-                        src="https://i.pravatar.cc/80?img=11"
-                        alt=""
-                        width="64"
-                        height="64"
-                        loading="lazy"
-                      >
-                    {% endif %}
-  
-                    <div>
-                      <strong>
-                        {{ post.author | default: "نویسنده روایت" }}
-                      </strong>
-  
-                      <time datetime="{{ post.date | date_to_xmlschema }}">
-                        {% if post.display_date %}
-                          {{ post.display_date }}
-                        {% else %}
-                          {{ post.date | date: "%Y/%m/%d" }}
-                        {% endif %}
-                      </time>
-                    </div>
-  
-                  </div>
-  
-                  <a
-                    class="latest-read-more"
-                    href="{{ post.url | relative_url }}"
-                    aria-label="مطالعه مطلب {{ post.title | escape }}"
-                  >
-                    <span>مطالعه</span>
-  
-                    <svg
-                      viewBox="0 0 24 24"
-                      width="18"
-                      height="18"
-                      fill="none"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M19 12H5M11 18L5 12L11 6"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </a>
-  
-                </footer>
-  
-              </div>
-  
-            </article>
-  
-          {% endfor %}
-  
-        </div>
-  
-        <!-- حالت نبود مطلب در فیلتر انتخاب‌شده -->
-        <div
-          class="latest-empty"
-          id="latestEmpty"
-          role="status"
-          hidden
+    <!-- عنوان و فیلترها -->
+    <header class="latest-header">
+
+      <div class="latest-heading">
+        <span class="latest-eyebrow">
+          <span aria-hidden="true"></span>
+          تازه منتشر شده
+        </span>
+
+        <h2 id="latestTitle">
+          آخرین روایت‌ها
+        </h2>
+
+        <p>
+          تازه‌ترین تجربه‌ها، یادداشت‌ها و آموخته‌هایی که
+          در مسیر زندگی و یادگیری ثبت کرده‌ام.
+        </p>
+      </div>
+
+      <div
+        class="latest-filters"
+        id="latestFilters"
+        aria-label="فیلتر نوشته‌ها"
+      >
+        <button
+          class="latest-filter is-active"
+          type="button"
+          data-filter="all"
+          aria-pressed="true"
         >
-          <span class="latest-empty__icon" aria-hidden="true">
-            <svg
-              viewBox="0 0 24 24"
-              width="32"
-              height="32"
-              fill="none"
-            >
-              <path
-                d="M5 7.5A2.5 2.5 0 0 1 7.5 5h9A2.5 2.5 0 0 1 19 7.5v9a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 5 16.5v-9Z"
-                stroke="currentColor"
-                stroke-width="1.5"
-              />
-  
-              <path
-                d="M8.5 9H15.5M8.5 12H15.5M8.5 15H13"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
-            </svg>
-          </span>
-  
-          <h3>مطلبی پیدا نشد</h3>
-  
-          <p>
-            هنوز روایتی در این دسته منتشر نشده است.
-          </p>
-        </div>
-  
-        <!-- دکمه نمایش بیشتر -->
-        <div
-          class="latest-load-more-wrapper"
-          id="latestLoadMoreWrapper"
+          همه
+        </button>
+
+        <button
+          class="latest-filter"
+          type="button"
+          data-filter="experience"
+          aria-pressed="false"
         >
-          <button
-            class="latest-load-more"
-            id="latestLoadMore"
-            type="button"
-            aria-controls="latestList"
+          تجربه‌ها
+        </button>
+
+        <button
+          class="latest-filter"
+          type="button"
+          data-filter="notes"
+          aria-pressed="false"
+        >
+          یادداشت‌ها
+        </button>
+
+        <button
+          class="latest-filter"
+          type="button"
+          data-filter="tutorial"
+          aria-pressed="false"
+        >
+          آموزش‌ها
+        </button>
+
+        <button
+          class="latest-filter"
+          type="button"
+          data-filter="learning"
+          aria-pressed="false"
+        >
+          یادگیری
+        </button>
+
+        <button
+          class="latest-filter"
+          type="button"
+          data-filter="life"
+          aria-pressed="false"
+        >
+          زندگی
+        </button>
+      </div>
+
+    </header>
+
+    {% if published_posts.size > 0 %}
+
+      <!-- فهرست آخرین روایت‌ها -->
+      <div
+        class="latest-list"
+        id="latestList"
+        aria-live="polite"
+      >
+
+        {% for post in published_posts %}
+
+          {% assign post_category = post.category | default: "experience" %}
+
+          {% assign post_image = post.image
+            | default: "/images/post-placeholder.jpg"
+          %}
+
+          {% case post_category %}
+
+            {% when "experience" %}
+              {% assign category_label = "تجربه" %}
+              {% assign category_class = "latest-category--green" %}
+
+            {% when "notes" %}
+              {% assign category_label = "یادداشت" %}
+              {% assign category_class = "latest-category--purple" %}
+
+            {% when "tutorial" %}
+              {% assign category_label = "آموزش" %}
+              {% assign category_class = "latest-category--blue" %}
+
+            {% when "learning" %}
+              {% assign category_label = "یادگیری" %}
+              {% assign category_class = "latest-category--orange" %}
+
+            {% when "life" %}
+              {% assign category_label = "زندگی" %}
+              {% assign category_class = "latest-category--rose" %}
+
+            {% else %}
+              {% assign category_label = "مقاله" %}
+              {% assign category_class = "latest-category--gray" %}
+
+          {% endcase %}
+
+          <article
+            class="latest-card"
+            data-latest-card
+            data-article
+            data-category="{{ post_category | escape }}"
+            data-index="{{ forloop.index0 }}"
+            data-searchable="{{ post.title | escape }} {{ post.excerpt | strip_html | escape }} {{ post.tags | join: ' ' | escape }}"
           >
-            <span>نمایش روایت‌های بیشتر</span>
-  
-            <svg
-              viewBox="0 0 24 24"
-              width="18"
-              height="18"
-              fill="none"
-              aria-hidden="true"
+
+            <!-- تصویر نوشته -->
+            <a
+              class="latest-card__media"
+              href="{{ post.url | relative_url }}"
+              aria-label="خواندن مطلب: {{ post.title | escape }}"
             >
-              <path
-                d="M6 9L12 15L18 9"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </button>
-        </div>
-  
-      {% else %}
-  
-        <div class="latest-empty latest-empty--initial">
-  
-          <span class="latest-empty__icon" aria-hidden="true">
-            <svg
-              viewBox="0 0 24 24"
-              width="32"
-              height="32"
-              fill="none"
-            >
-              <path
-                d="M6 4.5H14L18 8.5V19.5H6V4.5Z"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linejoin="round"
-              />
-  
-              <path
-                d="M14 4.5V8.5H18M9 12H15M9 15H14"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
-            </svg>
-          </span>
-  
-          <h3>هنوز روایتی منتشر نشده است</h3>
-  
-          <p>
-            اولین نوشته به‌زودی در این قسمت قرار می‌گیرد.
-          </p>
-  
-        </div>
-  
-      {% endif %}
-  
-    </div>
+              <img
+                src="{{ post_image | relative_url }}"
+                alt="{{ post.title | escape }}"
+                width="900"
+                height="650"
+                loading="lazy"
+              >
+
+              <span
+                class="latest-card__overlay"
+                aria-hidden="true"
+              ></span>
+            </a>
+
+            <!-- محتوای کارت -->
+            <div class="latest-card__content">
+
+              <div class="latest-card__meta">
+
+                <a
+                  class="latest-category {{ category_class }}"
+                  href="{{ '/category/' | relative_url }}?name={{ post_category | url_encode }}"
+                >
+                  {{ category_label }}
+                </a>
+
+                <span class="latest-reading-time">
+
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="16"
+                    height="16"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="8.5"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    />
+
+                    <path
+                      d="M12 7.5V12L15 14"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+
+                  {% include reading-time.html content=post.content %}
+
+                </span>
+
+              </div>
+
+              <h3 class="latest-card__title">
+                <a href="{{ post.url | relative_url }}">
+                  {{ post.title | default: "بدون عنوان" }}
+                </a>
+              </h3>
+
+              {% if post.excerpt %}
+                <p class="latest-card__excerpt">
+                  {{ post.excerpt
+                    | strip_html
+                    | truncatewords: 22
+                  }}
+                </p>
+              {% endif %}
+
+              <footer class="latest-card__footer">
+
+                <div class="latest-author">
+
+                  {% if post.author_image %}
+
+                    <img
+                      src="{{ post.author_image | relative_url }}"
+                      alt="تصویر {{ post.author | default: 'نویسنده روایت' | escape }}"
+                      width="64"
+                      height="64"
+                      loading="lazy"
+                    >
+
+                  {% else %}
+
+                    <img
+                      src="https://i.pravatar.cc/80?img=11"
+                      alt="تصویر نویسنده روایت"
+                      width="64"
+                      height="64"
+                      loading="lazy"
+                    >
+
+                  {% endif %}
+
+                  <div>
+
+                    <strong>
+                      {{ post.author | default: "نویسنده روایت" }}
+                    </strong>
+
+                    <time datetime="{{ post.date | date_to_xmlschema }}">
+
+                      {% if post.display_date %}
+
+                        {{ post.display_date }}
+
+                      {% else %}
+
+                        {{ post.date | date: "%Y/%m/%d" }}
+
+                      {% endif %}
+
+                    </time>
+
+                  </div>
+
+                </div>
+
+                <a
+                  class="latest-read-more"
+                  href="{{ post.url | relative_url }}"
+                  aria-label="مطالعه مطلب {{ post.title | escape }}"
+                >
+                  <span>مطالعه</span>
+
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="18"
+                    height="18"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M19 12H5M11 18L5 12L11 6"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </a>
+
+              </footer>
+
+            </div>
+
+          </article>
+
+        {% endfor %}
+
+      </div>
+
+      <!-- پیام نبودن نوشته در دسته انتخاب‌شده -->
+      <div
+        class="latest-empty"
+        id="latestEmpty"
+        role="status"
+        hidden
+      >
+        <span
+          class="latest-empty__icon"
+          aria-hidden="true"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="32"
+            height="32"
+            fill="none"
+          >
+            <path
+              d="M5 7.5A2.5 2.5 0 0 1 7.5 5h9A2.5 2.5 0 0 1 19 7.5v9a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 5 16.5v-9Z"
+              stroke="currentColor"
+              stroke-width="1.5"
+            />
+
+            <path
+              d="M8.5 9H15.5M8.5 12H15.5M8.5 15H13"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+          </svg>
+        </span>
+
+        <h3>مطلبی پیدا نشد</h3>
+
+        <p>
+          هنوز روایتی در این دسته منتشر نشده است.
+        </p>
+      </div>
+
+      <!-- دکمه نمایش نوشته‌های بیشتر -->
+      <div
+        class="latest-load-more-wrapper"
+        id="latestLoadMoreWrapper"
+      >
+        <button
+          class="latest-load-more"
+          id="latestLoadMore"
+          type="button"
+          aria-controls="latestList"
+        >
+          <span>نمایش روایت‌های بیشتر</span>
+
+          <svg
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M6 9L12 15L18 9"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+
+    {% else %}
+
+      <!-- حالت نبود هیچ نوشته‌ای در سایت -->
+      <div class="latest-empty latest-empty--initial">
+
+        <span
+          class="latest-empty__icon"
+          aria-hidden="true"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="32"
+            height="32"
+            fill="none"
+          >
+            <path
+              d="M6 4.5H14L18 8.5V19.5H6V4.5Z"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linejoin="round"
+            />
+
+            <path
+              d="M14 4.5V8.5H18M9 12H15M9 15H14"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+          </svg>
+        </span>
+
+        <h3>هنوز روایتی منتشر نشده است</h3>
+
+        <p>
+          اولین نوشته به‌زودی در این قسمت قرار می‌گیرد.
+        </p>
+
+      </div>
+
+    {% endif %}
+
+  </div>
+</section>
   </section>
 
