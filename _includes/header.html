@@ -172,3 +172,163 @@
     </div>
   </div>
 </aside>
+<section
+  class="search-panel"
+  id="searchPanel"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+  aria-labelledby="searchPanelTitle"
+>
+  <div class="search-dialog" role="document">
+
+    <button
+      class="close-button search-close"
+      id="closeSearchButton"
+      type="button"
+      aria-label="بستن جست‌وجو"
+    >
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path
+          d="M6 6L18 18"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+        />
+
+        <path
+          d="M18 6L6 18"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+
+    <span class="eyebrow">
+      جست‌وجو در روایت
+    </span>
+
+    <h2 id="searchPanelTitle">
+      دنبال چه چیزی می‌گردید؟
+    </h2>
+
+    <p class="search-intro">
+      عنوان، موضوع یا واژه موردنظر خود را وارد کنید.
+    </p>
+
+    <form
+      class="search-form"
+      id="searchForm"
+      role="search"
+      novalidate
+    >
+      <label
+        class="sr-only"
+        for="searchInput"
+      >
+        عبارت موردنظر برای جست‌وجو
+      </label>
+
+      <input
+        id="searchInput"
+        name="query"
+        type="search"
+        placeholder="مثلاً نوشتن، تمرکز یا یادگیری..."
+        autocomplete="off"
+        autocapitalize="none"
+        spellcheck="false"
+        enterkeyhint="search"
+        aria-describedby="searchMessage"
+      >
+
+      <button
+        class="search-submit"
+        type="submit"
+      >
+        <svg
+          width="19"
+          height="19"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <circle
+            cx="11"
+            cy="11"
+            r="7"
+            stroke="currentColor"
+            stroke-width="1.8"
+          />
+
+          <path
+            d="M16.25 16.25L21 21"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+          />
+        </svg>
+
+        <span>جست‌وجو</span>
+      </button>
+    </form>
+
+    <div
+      class="search-tags"
+      aria-label="موضوعات پیشنهادی برای جست‌وجو"
+    >
+      <button
+        type="button"
+        data-search-term="تجربه"
+      >
+        تجربه
+      </button>
+
+      <button
+        type="button"
+        data-search-term="یادگیری"
+      >
+        یادگیری
+      </button>
+
+      <button
+        type="button"
+        data-search-term="نوشتن"
+      >
+        نوشتن
+      </button>
+
+      <button
+        type="button"
+        data-search-term="تمرکز"
+      >
+        تمرکز
+      </button>
+    </div>
+
+    <p
+      class="search-message"
+      id="searchMessage"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    ></p>
+
+    <div
+      class="search-results"
+      id="searchResults"
+      aria-label="نتایج جست‌وجو"
+    ></div>
+
+  </div>
+</section>
