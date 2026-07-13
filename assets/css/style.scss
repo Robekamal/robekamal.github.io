@@ -3206,6 +3206,10 @@ img {
    Latest posts
    ========================================================= */
 
+/* =========================================================
+   Latest posts
+   ========================================================= */
+
 .latest-section {
   --latest-text: #17201b;
   --latest-muted: #6d756f;
@@ -3222,7 +3226,7 @@ img {
       rgba(35, 91, 67, 0.055),
       transparent 30rem
     ),
-    #fff;
+    #ffffff;
 }
 
 .latest-section *,
@@ -3231,7 +3235,9 @@ img {
   box-sizing: border-box;
 }
 
-/* Header */
+/* =========================================================
+   Header
+   ========================================================= */
 
 .latest-header {
   display: flex;
@@ -3239,7 +3245,6 @@ img {
   justify-content: space-between;
   gap: 2.5rem;
   padding-bottom: 2.25rem;
-  border-bottom: 1px solid var(--latest-border);
 }
 
 .latest-heading {
@@ -3282,7 +3287,9 @@ img {
   line-height: 2;
 }
 
-/* Filters */
+/* =========================================================
+   Filters
+   ========================================================= */
 
 .latest-filters {
   display: flex;
@@ -3316,7 +3323,7 @@ img {
 }
 
 .latest-filter.is-active {
-  color: #fff;
+  color: #ffffff;
   border-color: var(--latest-accent);
   background: var(--latest-accent);
 }
@@ -3330,56 +3337,41 @@ img {
   outline-offset: 3px;
 }
 
-/* List */
+/* =========================================================
+   Latest posts grid
+   دو کارت در هر ردیف
+   ========================================================= */
 
 .latest-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0;
+  align-items: stretch;
+  gap: 3rem 2rem;
+  width: 100%;
   margin-top: 1.25rem;
 }
 
+/* تمام کارت‌ها یکسان هستند */
+
 .latest-card {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
-  padding: 2rem 0;
-  border-bottom: 1px solid var(--latest-border);
-}
-
-.latest-card:not(.latest-card--featured):nth-child(even) {
-  padding-left: 1.75rem;
-}
-
-.latest-card:not(.latest-card--featured):nth-child(odd) {
-  padding-right: 1.75rem;
-  border-left: 1px solid var(--latest-border);
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  box-shadow: none;
 }
 
 .latest-card[hidden] {
   display: none !important;
 }
 
-/* Featured first post */
-
-.latest-card--featured {
-  grid-column: 1 / -1;
-  padding-top: 1rem;
-}
-
-.latest-card--featured .latest-card__content {
-  padding: 0.5rem 0.5rem 0.5rem 0;
-}
-
-.latest-card--featured .latest-card__title {
-  max-width: 750px;
-  font-size: clamp(1.7rem, 3.2vw, 2.75rem);
-}
-
-.latest-card--featured .latest-card__excerpt {
-  max-width: 760px;
-  font-size: 1.02rem;
-}
-
-/* Media */
+/* =========================================================
+   Card media
+   ========================================================= */
 
 .latest-card__media {
   position: relative;
@@ -3392,16 +3384,12 @@ img {
   color: inherit;
 }
 
-.latest-card--featured .latest-card__media {
-  aspect-ratio: 16 / 7.2;
-  border-radius: 24px;
-}
-
 .latest-card__media img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   transition:
     transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1),
     filter 300ms ease;
@@ -3424,24 +3412,22 @@ img {
   filter: saturate(1.04);
 }
 
+/* در صورتی که نشان جدیدترین روایت هنوز در HTML مانده باشد */
+
 .latest-card__new {
-  position: absolute;
-  top: 1.25rem;
-  right: 1.25rem;
-  z-index: 2;
-  padding: 0.55rem 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 999px;
-  background: rgba(20, 35, 27, 0.72);
-  color: #fff;
-  font-size: 0.78rem;
-  font-weight: 800;
-  backdrop-filter: blur(10px);
+  display: none;
 }
 
-/* Card content */
+/* =========================================================
+   Card content
+   ========================================================= */
 
 .latest-card__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  width: 100%;
   padding-top: 1.3rem;
 }
 
@@ -3449,7 +3435,8 @@ img {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
   margin-bottom: 0.85rem;
 }
 
@@ -3504,13 +3491,19 @@ img {
   white-space: nowrap;
 }
 
+/* =========================================================
+   Card title
+   ========================================================= */
+
 .latest-card__title {
+  width: 100%;
   margin: 0;
   color: var(--latest-text);
   font-size: clamp(1.25rem, 2vw, 1.65rem);
   font-weight: 900;
   line-height: 1.55;
   letter-spacing: -0.035em;
+  overflow-wrap: break-word;
 }
 
 .latest-card__title a {
@@ -3533,29 +3526,35 @@ img {
   background-size: 100% 1px;
 }
 
+/* =========================================================
+   Card excerpt
+   ========================================================= */
+
 .latest-card__excerpt {
   display: -webkit-box;
   overflow: hidden;
+  width: 100%;
   margin: 0.8rem 0 0;
   color: var(--latest-muted);
   font-size: 0.92rem;
   line-height: 1.95;
+  overflow-wrap: break-word;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
 
-.latest-card--featured .latest-card__excerpt {
-  -webkit-line-clamp: 3;
-}
-
-/* Footer */
+/* =========================================================
+   Card footer
+   ========================================================= */
 
 .latest-card__footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.25rem;
-  margin-top: 1.5rem;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 1.5rem;
 }
 
 .latest-author {
@@ -3569,7 +3568,7 @@ img {
   flex: 0 0 auto;
   width: 38px;
   height: 38px;
-  border: 2px solid #fff;
+  border: 2px solid #ffffff;
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 0 0 1px var(--latest-border);
@@ -3598,6 +3597,7 @@ img {
 .latest-read-more {
   display: inline-flex;
   align-items: center;
+  flex: 0 0 auto;
   gap: 0.45rem;
   color: var(--latest-text);
   font-size: 0.8rem;
@@ -3613,7 +3613,9 @@ img {
   color: var(--latest-accent);
 }
 
-/* Load more */
+/* =========================================================
+   Load more button
+   ========================================================= */
 
 .latest-load-more-wrapper {
   display: flex;
@@ -3634,7 +3636,7 @@ img {
   padding: 0.75rem 1.45rem;
   border: 1px solid var(--latest-border);
   border-radius: 999px;
-  background: #fff;
+  background: #ffffff;
   color: var(--latest-text);
   font: inherit;
   font-size: 0.86rem;
@@ -3650,14 +3652,16 @@ img {
 }
 
 .latest-load-more:hover {
-  color: #fff;
+  color: #ffffff;
   border-color: var(--latest-accent);
   background: var(--latest-accent);
   transform: translateY(-2px);
   box-shadow: 0 12px 30px rgba(35, 91, 67, 0.18);
 }
 
-/* Empty state */
+/* =========================================================
+   Empty state
+   ========================================================= */
 
 .latest-empty {
   margin-top: 2rem;
@@ -3679,7 +3683,7 @@ img {
   height: 62px;
   margin-bottom: 1rem;
   border-radius: 50%;
-  background: #fff;
+  background: #ffffff;
   color: var(--latest-accent);
   box-shadow: 0 8px 25px rgba(22, 40, 30, 0.06);
 }
@@ -3698,7 +3702,9 @@ img {
   line-height: 1.8;
 }
 
-/* Animation */
+/* =========================================================
+   Card animation
+   ========================================================= */
 
 .latest-card.is-visible {
   animation: latestCardReveal 450ms ease both;
@@ -3716,7 +3722,9 @@ img {
   }
 }
 
-/* Tablet */
+/* =========================================================
+   Tablet
+   ========================================================= */
 
 @media (max-width: 980px) {
   .latest-section {
@@ -3732,9 +3740,15 @@ img {
     justify-content: flex-start;
     width: 100%;
   }
+
+  .latest-list {
+    gap: 2.5rem 1.5rem;
+  }
 }
 
-/* Mobile */
+/* =========================================================
+   Mobile
+   ========================================================= */
 
 @media (max-width: 720px) {
   .latest-section {
@@ -3752,6 +3766,7 @@ img {
   .latest-filters {
     flex-wrap: nowrap;
     overflow-x: auto;
+    width: 100%;
     padding-bottom: 0.4rem;
     scrollbar-width: none;
   }
@@ -3764,42 +3779,30 @@ img {
     flex: 0 0 auto;
   }
 
+  /* در موبایل، یک کارت در هر ردیف */
+
   .latest-list {
-    display: block;
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
   }
 
-  .latest-card,
-  .latest-card:not(.latest-card--featured):nth-child(even),
-  .latest-card:not(.latest-card--featured):nth-child(odd) {
-    padding: 1.5rem 0;
-    border-left: 0;
+  .latest-card {
+    width: 100%;
   }
 
-  .latest-card--featured {
-    padding-top: 0.75rem;
-  }
-
-  .latest-card--featured .latest-card__media,
   .latest-card__media {
     aspect-ratio: 16 / 10.5;
     border-radius: 16px;
   }
 
-  .latest-card--featured .latest-card__title {
-    font-size: 1.6rem;
-  }
-
   .latest-card__title {
     font-size: 1.25rem;
   }
-
-  .latest-card__new {
-    top: 0.85rem;
-    right: 0.85rem;
-  }
 }
 
-/* Small mobile */
+/* =========================================================
+   Small mobile
+   ========================================================= */
 
 @media (max-width: 480px) {
   .latest-card__meta {
@@ -3807,7 +3810,7 @@ img {
   }
 
   .latest-card__footer {
-    align-items: flex-start;
+    align-items: center;
   }
 
   .latest-read-more span {
@@ -3825,7 +3828,9 @@ img {
   }
 }
 
-/* Reduced motion */
+/* =========================================================
+   Reduced motion
+   ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
   .latest-card,
@@ -3836,15 +3841,6 @@ img {
     animation: none !important;
     transition: none !important;
   }
-}
-.latest-header,
-.latest-list,
-.latest-card,
-.latest-card:not(.latest-card--featured):nth-child(odd),
-.latest-card:not(.latest-card--featured):nth-child(even) {
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
 }
 
 
