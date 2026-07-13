@@ -755,7 +755,7 @@ permalink: /
                     {{ category_label }}
                   </a>
   
-                  <span class="latest-reading-time">
+                                    <span class="latest-reading-time">
                     <svg
                       viewBox="0 0 24 24"
                       width="16"
@@ -770,7 +770,7 @@ permalink: /
                         stroke="currentColor"
                         stroke-width="1.5"
                       />
-  
+                  
                       <path
                         d="M12 7.5V12L15 14"
                         stroke="currentColor"
@@ -778,9 +778,10 @@ permalink: /
                         stroke-linecap="round"
                       />
                     </svg>
-  
+                  
                     {% include reading-time.html content=post.content %}
                   </span>
+
   
                 </div>
   
