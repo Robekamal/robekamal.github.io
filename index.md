@@ -481,17 +481,14 @@ permalink: /
 
       <div class="quote-slider__viewport">
 
-        <!-- نقل‌قول اول -->
+        <!-- نقل‌قول اول: آندره ژید -->
 
-        <figure
-          class="quote-card is-active"
-          aria-hidden="false"
-        >
+        <figure class="quote-card is-active" aria-hidden="false">
 
           <div class="quote-avatar">
             <img
-              src="{{ '/assets/images/uploads/about-quote-author-1.jpg' | relative_url }}"
-              alt="تصویر نویسنده روایت"
+              src="{{ '/assets/images/uploads/andre-gide.jpg' | relative_url }}"
+              alt="تصویر آندره ژید"
               width="160"
               height="160"
               loading="eager"
@@ -504,31 +501,28 @@ permalink: /
 
             <blockquote>
               <p>
-                نوشتن برای من راهی است برای اینکه تجربه‌های پراکنده
-                را به معنایی روشن‌تر تبدیل کنم.
+                لذت بردن نه تنها نیازی طبیعی است، بلکه باید به تعهدی
+                اخلاقی نیز تبدیل شود.
               </p>
             </blockquote>
 
             <figcaption class="quote-author">
-              <strong>نویسنده روایت</strong>
-              <span>پژوهشگر، نویسنده و یادگیرنده همیشگی</span>
+              <strong>آندره ژید</strong>
+              <span>نویسنده فرانسوی و برنده جایزه ادبی نوبل ۱۹۴۷</span>
             </figcaption>
 
           </div>
 
         </figure>
 
-        <!-- نقل‌قول دوم -->
+        <!-- نقل‌قول دوم: آرتور شوپنهاور -->
 
-        <figure
-          class="quote-card"
-          aria-hidden="true"
-        >
+        <figure class="quote-card" aria-hidden="true">
 
           <div class="quote-avatar">
             <img
-              src="{{ '/assets/images/uploads/about-quote-author-2.jpg' | relative_url }}"
-              alt="تصویر نویسنده دوم"
+              src="{{ '/assets/images/uploads/arthur-schopenhauer.jpg' | relative_url }}"
+              alt="تصویر آرتور شوپنهاور"
               width="160"
               height="160"
               loading="lazy"
@@ -541,31 +535,28 @@ permalink: /
 
             <blockquote>
               <p>
-                گاهی برای یافتن مسیر درست، باید چند قدم از هیاهوی
-                راه فاصله گرفت و دوباره به مقصد نگاه کرد.
+                متأسفانه آدمی در دنیا به سهم بسیار کمتر از چیزی که
+                شایسته‌اش است، می‌رسد.
               </p>
             </blockquote>
 
             <figcaption class="quote-author">
-              <strong>نویسنده دوم</strong>
-              <span>نویسنده و پژوهشگر علوم انسانی</span>
+              <strong>آرتور شوپنهاور</strong>
+              <span>فیلسوف آلمانی</span>
             </figcaption>
 
           </div>
 
         </figure>
 
-        <!-- نقل‌قول سوم -->
+        <!-- نقل‌قول سوم: دیل کارنگی -->
 
-        <figure
-          class="quote-card"
-          aria-hidden="true"
-        >
+        <figure class="quote-card" aria-hidden="true">
 
           <div class="quote-avatar">
             <img
-              src="{{ '/assets/images/uploads/about-quote-author-3.jpg' | relative_url }}"
-              alt="تصویر نویسنده سوم"
+              src="{{ '/assets/images/uploads/dale-carnegie.jpg' | relative_url }}"
+              alt="تصویر دیل کارنگی"
               width="160"
               height="160"
               loading="lazy"
@@ -578,14 +569,117 @@ permalink: /
 
             <blockquote>
               <p>
-                پرسش درست، گاهی بیشتر از یک پاسخ آماده ما را به
-                حقیقت و درک عمیق‌تر جهان نزدیک می‌کند.
+                از بهترین راه‌های گریز از نگرانی، پرداختن به کارهای مفید
+                و تمرکز بر آن‌هاست. خود را به کار مفید مشغول کن تا
+                فرصتی برای نگرانی نداشته باشی.
               </p>
             </blockquote>
 
             <figcaption class="quote-author">
-              <strong>نویسنده سوم</strong>
-              <span>مترجم، مدرس و جست‌وجوگر معنا</span>
+              <strong>دیل کارنگی</strong>
+              <span>نویسنده آمریکایی</span>
+            </figcaption>
+
+          </div>
+
+        </figure>
+
+        <!-- نقل‌قول چهارم: آلبر کامو -->
+
+        <figure class="quote-card" aria-hidden="true">
+
+          <div class="quote-avatar">
+            <img
+              src="{{ '/assets/images/uploads/albert-camus.jpg' | relative_url }}"
+              alt="تصویر آلبر کامو"
+              width="160"
+              height="160"
+              loading="lazy"
+            >
+          </div>
+
+          <div class="quote-content">
+
+            <span class="quote-mark" aria-hidden="true">“</span>
+
+            <blockquote>
+              <p>
+                در جهانی که ناگهان از هر خیال واهی و از هر نوری محروم
+                شده است، انسان احساس می‌کند که بیگانه است. در این تبعید،
+                دست‌آویز و امکان برگشتی نیست؛ چون از یادگار زمان‌های گذشته
+                و از امید ارض موعود هم محروم شده است.
+              </p>
+            </blockquote>
+
+            <figcaption class="quote-author">
+              <strong>آلبر کامو</strong>
+              <span>فیلسوف و نویسنده فرانسوی الجزایری</span>
+            </figcaption>
+
+          </div>
+
+        </figure>
+
+        <!-- نقل‌قول پنجم: میشل فوکو -->
+
+        <figure class="quote-card" aria-hidden="true">
+
+          <div class="quote-avatar">
+            <img
+              src="{{ '/assets/images/uploads/michel-foucault.jpg' | relative_url }}"
+              alt="تصویر میشل فوکو"
+              width="160"
+              height="160"
+              loading="lazy"
+            >
+          </div>
+
+          <div class="quote-content">
+
+            <span class="quote-mark" aria-hidden="true">“</span>
+
+            <blockquote>
+              <p>
+                تنها لذتی که از شدتش کاسته نمی‌شود، خودشکوفایی است.
+              </p>
+            </blockquote>
+
+            <figcaption class="quote-author">
+              <strong>میشل فوکو</strong>
+              <span>فیلسوف و جامعه‌شناس فرانسوی</span>
+            </figcaption>
+
+          </div>
+
+        </figure>
+
+        <!-- نقل‌قول ششم: آلبر کامو -->
+
+        <figure class="quote-card" aria-hidden="true">
+
+          <div class="quote-avatar">
+            <img
+              src="{{ '/assets/images/uploads/albert-camus.jpg' | relative_url }}"
+              alt="تصویر آلبر کامو"
+              width="160"
+              height="160"
+              loading="lazy"
+            >
+          </div>
+
+          <div class="quote-content">
+
+            <span class="quote-mark" aria-hidden="true">“</span>
+
+            <blockquote>
+              <p>
+                بدبختی آنجایی به سراغتان می‌آید که همه از شما تعریف کنند.
+              </p>
+            </blockquote>
+
+            <figcaption class="quote-author">
+              <strong>آلبر کامو</strong>
+              <span>فیلسوف و نویسنده فرانسوی الجزایری</span>
             </figcaption>
 
           </div>
@@ -593,7 +687,6 @@ permalink: /
         </figure>
 
       </div>
-
 
       <!-- کنترل‌های اسلایدر -->
 
@@ -633,6 +726,7 @@ permalink: /
   </div>
 </section>
 
+
    <section
   class="latest-section"
   id="articles"
@@ -655,7 +749,7 @@ permalink: /
 
         <p>
           تازه‌ترین تجربه‌ها، یادداشت‌ها و آموخته‌هایی که
-          در مسیر زندگی و یادگیری ثبت کرده‌ام.
+          در مسیر زندگی ثبت کرده‌ام.
         </p>
       </div>
 
