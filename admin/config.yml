@@ -72,7 +72,7 @@ collections:
       - label: "نویسنده"
         name: "author"
         widget: "string"
-        default: "Elmmdo"
+        default: "امیرحسین بصری"
         required: false
 
       - label: "دسته‌بندی"
