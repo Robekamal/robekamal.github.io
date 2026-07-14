@@ -1,9 +1,9 @@
 backend:
   name: github
-  repo: elmmdo/elmmdo.github.io
+  repo: Robekamal/robekamal.github.io
   branch: main
-  base_url: https://decap-oauth.elmmdo78.workers.dev
-  auth_endpoint: /auth
+  base_url: https://decap-oauth-provider.amirkamo1960.workers.dev
+  auth_endpoint: auth
 
 locale: "fa"
 
