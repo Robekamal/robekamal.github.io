@@ -3,7 +3,6 @@ layout: post
 title: خطای شناختی ذهن‌خوانی
 date: 2026-07-11T17:07
 author: امیر بصری
-category: عمومی
 tags:
   - فلسفی
   - شروع
@@ -11,9 +10,9 @@ tags:
 image: /assets/images/uploads/8f5d1a44-94a9-4c8a-9408-600eb3ad828a.png
 featured: true
 published: true
-
 categories:
   - blog
+category: دانش و اندیشه
 ---
 سلام! این اولین نوشته من در وبلاگ GitHub Pages است.
 
