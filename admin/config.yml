@@ -42,7 +42,6 @@ collections:
         field: "published"
         pattern: "false"
 
-
     view_groups:
       - label: "دسته‌بندی"
         field: "category"
@@ -80,15 +79,14 @@ collections:
         widget: "select"
         required: true
         options:
-          - label: "یادداشت‌های شخصی"
-            value: "یادداشت‌های شخصی"
+          - label: "یادداشت های شخصی"
+            value: "یادداشت های شخصی"
           - label: "دانش و اندیشه"
             value: "دانش و اندیشه"
-          - label: "کسب‌وکار"
-            value: "کسب‌وکار"
-          - label: "چالش‌ها"
-            value: "چالش‌ها"
-
+          - label: "کسب و کار"
+            value: "کسب و کار"
+          - label: "چالش ها"
+            value: "چالش ها"
 
       - label: "برچسب‌ها"
         name: "tags"
@@ -405,7 +403,7 @@ collections:
           - label: "عنوان سایت"
             name: "site_title"
             widget: "string"
-            default: "Elmmdo"
+            default: "رو به کمال"
             required: true
 
           - label: "توضیحات سایت"
@@ -434,7 +432,7 @@ collections:
           - label: "نام نویسنده"
             name: "author_name"
             widget: "string"
-            default: "Elmmdo"
+            default: "امیرحسین بصری"
             required: false
 
           - label: "ایمیل"
@@ -464,4 +462,5 @@ collections:
           - label: "متن پایین سایت"
             name: "footer_text"
             widget: "string"
+            default: "© رو به کمال"
             required: false
