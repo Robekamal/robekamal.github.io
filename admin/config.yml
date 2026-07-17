@@ -75,21 +75,20 @@ collections:
         default: "امیرحسین بصری"
         required: false
 
-      - label: "دسته‌بندی"
+            - label: "دسته‌بندی"
         name: "category"
         widget: "select"
-        required: false
+        required: true
         options:
-          - label: "علمی"
-            value: "علمی"
-          - label: "فناوری"
-            value: "فناوری"
-          - label: "آموزشی"
-            value: "آموزشی"
-          - label: "برنامه‌نویسی"
-            value: "برنامه‌نویسی"
-          - label: "عمومی"
-            value: "عمومی"
+          - label: "یادداشت‌های شخصی"
+            value: "یادداشت‌های شخصی"
+          - label: "دانش و اندیشه"
+            value: "دانش و اندیشه"
+          - label: "کسب‌وکار"
+            value: "کسب‌وکار"
+          - label: "چالش‌ها"
+            value: "چالش‌ها"
+
 
       - label: "برچسب‌ها"
         name: "tags"
