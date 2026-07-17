@@ -75,7 +75,7 @@ collections:
         default: "امیرحسین بصری"
         required: false
 
-            - label: "دسته‌بندی"
+      - label: "دسته‌بندی"
         name: "category"
         widget: "select"
         required: true
